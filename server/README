@@ -1,0 +1,29 @@
+
+This file contains all the node js mysql commands that I have learned
+
+To do all this, you must have created a connection to mysql using something like const db = mysql.createConnection({})
+
+* Connect to the DB
+db.connect((err) => {
+	if (err) console.log(err);
+    console.log('Connected to the DB');
+    
+    !---------------------------Create DB: nodeDB
+	db.query('CREATE DATABASE nodeDB', (err, result) => {
+		if (err) console.log(err);
+		console.log('Database Created!');
+    });
+
+    !----------------------------CREATE TABLE: movies
+    	let sql =
+		'CREATE TABLE movies (id INT AUTO_INCREMENT PRIMARY KEY, movieName VARCHAR(255), movieReview VARCHAR(255))';
+	db.query(sql, (err, result) => {
+		if (err) throw err;
+		console.log('table has been created');
+    });
+});
+
+
+
+
+
