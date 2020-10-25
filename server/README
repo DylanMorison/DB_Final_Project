@@ -14,13 +14,37 @@ db.connect((err) => {
 		console.log('Database Created!');
     });
 
-    !----------------------------CREATE TABLE: movies
-    	let sql =
-		'CREATE TABLE movies (id INT AUTO_INCREMENT PRIMARY KEY, movieName VARCHAR(255), movieReview VARCHAR(255))';
+    !----------------------------CREATE TABLE: users
+    let sql = 'CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(255), password VARCHAR(255))';
 	db.query(sql, (err, result) => {
 		if (err) throw err;
 		console.log('table has been created');
     });
+
+
+
+    !----------------------------ALTER TABLE: users
+	let sql = 'ALTER TABLE users ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY';
+	db.query(sql, (err, result) => {
+		if (err) throw err;
+		console.log('table has been created');
+	});
+
+
+	!----------------------------ALTER TABLE: users
+	let sql = 'ALTER TABLE users ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY';
+	db.query(sql, (err, result) => {
+		if (err) throw err;
+		console.log('table has been altered');
+	});
+
+
+	!----------------------------INSERT INTO: movies
+	let sql = "INSERT INTO movies (name, email) VALUES ()";
+	db.query(sql, (err, result) => {
+		if (err) throw err;
+		console.log('Data has been inserted into the table');
+	})
 });
 
 

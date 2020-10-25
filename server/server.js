@@ -1,6 +1,8 @@
 const express = require('express');
+const path = require('path');
 const mysql = require('mysql');
 const dotenv = require('dotenv');
+const hbs = require('hbs');
 
 dotenv.config({ path: './.env' });
 
@@ -13,20 +15,19 @@ const db = mysql.createConnection({
 	database: process.env.DATABASE
 });
 
+// __dirname gives access to current directory
+const publicDirectory = path.join(__dirname, './public');
+app.use(express.static(publicDirectory));
+app.set('view engine', 'hbs');
+
 db.connect((err) => {
 	if (err) console.log(err);
 	console.log('Connected to the DB');
-
-	let sql =
-		'CREATE TABLE movies (id INT AUTO_INCREMENT PRIMARY KEY, movieName VARCHAR(255), movieReview VARCHAR(255))';
-	db.query(sql, (err, result) => {
-		if (err) throw err;
-		console.log('table has been created');
-	});
 });
 
 app.get('/', (req, res) => {
-	res.send('<h1>Home Page</h1>');
+	// res.send('<h1>Home Page</h1>');
+	res.render('index.hbs');
 });
 
 app.listen(5000, () => {
