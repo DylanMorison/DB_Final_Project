@@ -5,7 +5,7 @@
 export default {
   /**
    * Font
-   */
+    */
   font: {
     family: "'Open Sans', sans-serif",
     weight: {
