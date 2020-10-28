@@ -1,0 +1,70 @@
+/* code to enable glass design
+.container {
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);   
+  position: relative;
+  z-index: 4;
+  background: inherit;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  border-radius: 10%;
+  background-color: rgba(255, 255, 255, .15);  
+}
+
+.container:before {
+  content: "";
+  position: absolute;
+  background: inherit;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);
+  filter: blur(10px);
+  margin: -20px;
+}
+*/
+
+.container {
+  position: relative;
+  background: inherit;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  background: #149BDE;
+  border-radius: 14.6296px;
+  filter: drop-shadow(-19px 8px 40px #198FD2);
+}
+
+.Slide-title-25 {
+  color: #fff;
+  overflow: hidden;
+  font-size: 2px;
+}
+
+
+
+.CardWrapper {
+  padding: 10px;
+  background: inherit;
+  overflow: hidden;
+  width: 90%;
+  background: linear-gradient(106.32deg, rgba(95, 202, 255, 0.29) -35.82%, rgba(25, 149, 210, 0.29) 44.66%);
+  border-radius: 12.7685px;
+
+}
+
+@media (max-width: 1315px) {
+  .CardWrapper {
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);   
+    background: inherit;
+    width: 90%;
+    height: auto;
+    background-color: rgba(255, 255, 255, .15);  
+    border-radius: 12.7685px;
+  
+  }
+}
+
+

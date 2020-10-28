@@ -20,16 +20,15 @@ const publicDirectory = path.join(__dirname, './public');
 app.use(express.static(publicDirectory));
 app.set('view engine', 'hbs');
 
-db.connect((err) => {
+db.connect(err => {
 	if (err) console.log(err);
 	console.log('Connected to the DB');
 });
 
-app.get('/', (req, res) => {
-	// res.send('<h1>Home Page</h1>');
-	res.render('index.hbs');
-});
+//! Define Routes
+app.use('/', require('./routes/pages'));
 
 app.listen(5000, () => {
 	console.log('server started on port 5000');
 });
+
