@@ -7,7 +7,7 @@ router.get('/api', (req, res) => {
 });
 
 router.get('/auth/register', (req, res) => {
-	res.render('register.hbs');
+	const { user } = req.body;
 });
 
 module.exports = router;
