@@ -191,7 +191,7 @@ const SignUp = (props) => {
 			);
 		}
 	};
-	props.createUser("test");
+	//props.createUser("test");
 	return (
 		<Formik
 			initialValues={{

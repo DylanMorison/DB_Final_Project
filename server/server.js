@@ -1,34 +1,18 @@
 const express = require('express');
-const path = require('path');
-const mysql = require('mysql');
+const cors = require('cors');
 const dotenv = require('dotenv');
-const hbs = require('hbs');
+
+const dbService = require('./dbService');
 
 dotenv.config({ path: './.env' });
 
 const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-const db = mysql.createConnection({
-	host: process.env.DATABASE_HOST,
-	user: process.env.DATABASE_USER,
-	password: process.env.DATABASE_PASSWORD,
-	database: process.env.DATABASE
-});
-
-// __dirname gives access to current directory
-const publicDirectory = path.join(__dirname, './public');
-app.use(express.static(publicDirectory));
-app.set('view engine', 'hbs');
-
-db.connect(err => {
-	if (err) console.log(err);
-	console.log('Connected to the DB');
-});
-
-//! Define Routes
-app.use('/', require('./routes/pages'));
+require('./routes/auth')(app);
 
 app.listen(5000, () => {
 	console.log('server started on port 5000');
 });
-
