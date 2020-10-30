@@ -151,6 +151,17 @@ const SignUp = (props) => {
 			);
 	};
 
+	const testSqlSignup = (email, password, displayName) => {
+		const userData = {
+			email : email, 
+			username: displayName, 
+			password: password
+		}
+
+		createUser(userData)
+		
+	}
+
 	const handleSignUp = async (email, password, displayName, fullName) => {
 		const { user } = await auth
 			.createUserWithEmailAndPassword(email, password)
@@ -218,9 +229,11 @@ const SignUp = (props) => {
 				}
 				return errors;
 			}}
-			onSubmit={({ email, password, displayName, fullName }) =>
+			onSubmit={({ email, password, displayName, fullName }) =>{
+				testSqlSignup(email, password, displayName)
 				handleSignUp(email, password, displayName, fullName)
-			}
+
+			}}
 		>
 			{({
 				values: { email, password, displayName, fullName },

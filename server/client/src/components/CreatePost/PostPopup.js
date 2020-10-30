@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import PostAvatar from "./PostAvatar";
 import ThumbnailUpload from "./UploadButtons/ThumbnailUpload";
 import FileUpload from "./UploadButtons/FileUpload";
 import { Image } from "cloudinary-react";
-import { storage }  from "../../Firebase/Firebase";
+import { storage } from "../../Firebase/Firebase";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 import "firebase/storage";
-
+import ThumbnailUploadIcon from "../../img/ThumbnailUpload.svg";
 
 const Popup = styled.div`
   margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
+  padding: 25px;
   border: none;
   width: 60vw;
   height: 30vw;
@@ -23,11 +23,15 @@ const Popup = styled.div`
   grid-template-rows: auto;
   color: black;
   grid-gap: 10px;
-  background: rgba(19, 18, 18, 0.8);
+  background: rgba(19, 18, 18, 1);
 
   &:before {
     box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5);
     filter: blur(10px);
+  }
+
+  @media(max-width: 1600){
+    height: 50vw
   }
 `;
 
@@ -111,7 +115,7 @@ const UploadButtons = styled.div`
   width: 100%
   height: 100%;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
 `;
 
@@ -132,6 +136,7 @@ const ButtonWrapper = styled.div`
   align-items: center;
 `;
 
+const UploadInput = styled.input``;
 const PostPopup = (props) => {
   const firebaseApp = firebase.apps[0];
   const allInputs = { imgUrl: "" };
@@ -139,40 +144,50 @@ const PostPopup = (props) => {
   const [imageAsUrl, setImageAsUrl] = useState(allInputs);
   const user = firebase.auth().currentUser;
 
-
   const handleImageAsFile = (e, userId) => {
     const image = e.target.files[0];
     setImageAsFile((imageFile) => image);
   };
 
   const handleFireBaseUpload = (e) => {
-    e.preventDefault()
-  console.log('start of upload')
-  const userId = user.uid
-  // async magic goes here...
-  if(imageAsFile === '') {
-    console.error(`not an image, the image file is a ${typeof(imageAsFile)}`)
-  }
-  //ser the file path as the user id and file name 
-  const uploadTask = storage.ref(`/${userId}/${imageAsFile.name}`).put(imageAsFile)
-  //initiates the firebase side uploading 
-  uploadTask.on('state_changed', 
-  (snapShot) => {
-    //takes a snap shot of the process as it is happening
-    console.log(snapShot)
-  }, (err) => {
-    //catches the errors
-    console.log(err)
-  }, () => {
-    // gets the functions from storage refences the image storage in firebase by the children
-    // gets the download url then sets the image from firebase as the value for the imgUrl key:
-    storage.ref('images').child(imageAsFile.name).getDownloadURL()
-     .then(fireBaseUrl => {
-       setImageAsUrl(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
-     })
-  })
-  }
-
+    e.preventDefault();
+    console.log("start of upload");
+    const userId = user.uid;
+    // async magic goes here...
+    if (imageAsFile === "") {
+      console.error(`not an image, the image file is a ${typeof imageAsFile}`);
+    }
+    //ser the file path as the user id and file name
+    const uploadTask = storage
+      .ref(`/${userId}/${imageAsFile.name}`)
+      .put(imageAsFile);
+    //initiates the firebase side uploading
+    uploadTask.on(
+      "state_changed",
+      (snapShot) => {
+        //takes a snap shot of the process as it is happening
+        console.log(snapShot);
+      },
+      (err) => {
+        //catches the errors
+        console.log(err);
+      },
+      () => {
+        // gets the functions from storage refences the image storage in firebase by the children
+        // gets the download url then sets the image from firebase as the value for the imgUrl key:
+        storage
+          .ref("images")
+          .child(imageAsFile.name)
+          .getDownloadURL()
+          .then((fireBaseUrl) => {
+            setImageAsUrl((prevObject) => ({
+              ...prevObject,
+              imgUrl: fireBaseUrl,
+            }));
+          });
+      }
+    );
+  };
 
   return (
     <Popup>
@@ -190,11 +205,6 @@ const PostPopup = (props) => {
           <UploadButtons>
             <FileUpload />
             <ButtonWrapper>
-              <input
-                // allows you to reach into your file directory and upload image to the browser
-                type="file"
-                onChange={handleImageAsFile}
-              />
               <ThumbnailUpload />
             </ButtonWrapper>
             <SubmitButton type="submit" value="Submit">

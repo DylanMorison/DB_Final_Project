@@ -26,12 +26,17 @@ const exitIcon = styled.div`
   margin-left: 35px;
 `;
 
+const AvatarWrapper = styled.div`
+  padding-top: 25px;
+`;
+
 const PostAvatar = (props) => {
 
   return (
     <Wrapper>
       <img src={exit} alt="exit" onClick={props.buttonClick} />
-      <Avatar image={Default} size={150} />{" "}
+      <AvatarWrapper><Avatar image={Default} size={150} /> </AvatarWrapper>
+      
     </Wrapper>
   );
 };

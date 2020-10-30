@@ -72,15 +72,7 @@ const FullName = styled.div`
     p.active ? p.theme.colors.primary.main : p.theme.colors.text.primary};
 `;
 
-const CreatePostWrapper = styled.div`
-  display: flex;
-  flex-direction: columnl
-  justify-content: flex-end;
 
-  @media (max-width: 1007px) {
-    display: none;
-  }
-`;
 
 /**
  * Displays left side bar
@@ -92,9 +84,6 @@ const SideBar = ({ location, isOpen, sideBarRef }) => {
 
   return (
     <Root isOpen={isOpen} ref={sideBarRef}>
-      <CreatePostWrapper>
-        <CreatePostTest />
-      </CreatePostWrapper>
       <Navigation />
     </Root>
   );
