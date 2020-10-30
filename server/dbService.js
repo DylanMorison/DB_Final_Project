@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
 	database: process.env.DATABASE
 });
 
-connection.connect(err => {
+connection.connect((err) => {
 	if (err) {
 		console.log(err.message);
 	}
@@ -27,7 +27,6 @@ class DbService {
 		try {
 			const response = await new Promise((resolve, reject) => {
 				const query = "SELECT * FROM users";
-
 				connection.query(query, (err, results) => {
 					if (err) reject(new Error(err.message));
 					resolve(results);
