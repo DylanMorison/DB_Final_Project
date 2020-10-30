@@ -4,9 +4,11 @@ import PostAvatar from "./PostAvatar";
 import ThumbnailUpload from "./UploadButtons/ThumbnailUpload";
 import FileUpload from "./UploadButtons/FileUpload";
 import { Image } from "cloudinary-react";
-import firebase from "firebase";
 import { storage }  from "../../Firebase/Firebase";
-import { useStore } from "store";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
+import "firebase/storage";
 
 
 const Popup = styled.div`
@@ -135,7 +137,8 @@ const PostPopup = (props) => {
   const allInputs = { imgUrl: "" };
   const [imageAsFile, setImageAsFile] = useState("");
   const [imageAsUrl, setImageAsUrl] = useState(allInputs);
-  const [{ auth }] = useStore();
+  const user = firebase.auth().currentUser;
+
 
   const handleImageAsFile = (e, userId) => {
     const image = e.target.files[0];
@@ -145,7 +148,7 @@ const PostPopup = (props) => {
   const handleFireBaseUpload = (e) => {
     e.preventDefault()
   console.log('start of upload')
-  const userId = auth.user.id
+  const userId = user.uid
   // async magic goes here...
   if(imageAsFile === '') {
     console.error(`not an image, the image file is a ${typeof(imageAsFile)}`)

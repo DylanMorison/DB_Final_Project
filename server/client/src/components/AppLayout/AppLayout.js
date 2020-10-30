@@ -130,7 +130,6 @@ const BackgroundColor = styled.div`
  * Main layout of the app, when user is authenticated
  */
 const AppLayout = ({ location, authUser }) => {
-  const [{ auth }, dispatch] = useStore();
 
   const windowSize = useWindowSize();
   const isDesktop = windowSize.width >= parseInt(theme.screen.md, 10);
@@ -141,9 +140,6 @@ const AppLayout = ({ location, authUser }) => {
   const screenLarge = useMediaQuery("(min-width: 971px)");
   const screenSmall = useMediaQuery("(max-width: 971px)");
 
-  useEffect(() => {
-    dispatch({ type: SET_AUTH_USER, payload: authUser });
-  }, [dispatch, authUser]);
 
   useClickOutside(sideBarRef, () => {
     if (!isDesktop && isSideBarOpen) {

@@ -70,7 +70,6 @@ const Heading = styled.div`
  * Displays user suggestions
  */
 const UserSuggestions = ({ pathname }) => {
-  const [{ auth }] = useStore();
 
 
   return (

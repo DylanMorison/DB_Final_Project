@@ -5,6 +5,7 @@ import Avatar from "components/Avatar";
 import * as Routes from "routes";
 import { useStore } from "store";
 import exit from "../../img/exitIcon.svg";
+import Default from "../../img/default-pic.png"
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,12 +27,11 @@ const exitIcon = styled.div`
 `;
 
 const PostAvatar = (props) => {
-  const [{ auth }] = useStore();
 
   return (
     <Wrapper>
       <img src={exit} alt="exit" onClick={props.buttonClick} />
-      <Avatar image={auth.user.image} size={150} />{" "}
+      <Avatar image={Default} size={150} />{" "}
     </Wrapper>
   );
 };

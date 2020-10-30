@@ -86,7 +86,6 @@ const CreatePostWrapper = styled.div`
  * Displays left side bar
  */
 const SideBar = ({ location, isOpen, sideBarRef }) => {
-  const [{ auth }] = useStore();
 
  // const isAuthUsersProfilePage =
     //auth.user.username === location.pathname.substring(1);

@@ -58,12 +58,7 @@ const Person = styled.div`
  * People page
  */
 const People = () => {
-  const [{ auth }] = useStore();
-  const variables = {
-    userId: auth.user.id,
-    skip: 0,
-    limit: PEOPLE_PAGE_USERS_LIMIT,
-  };
+
 
   return (
     <Root maxWidth="md">
