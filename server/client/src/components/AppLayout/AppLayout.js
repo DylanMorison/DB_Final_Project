@@ -30,6 +30,8 @@ import DesignOfWeek from "../../img/DesignOfWeek.png";
 import HeroModelCreator from "./HeroModelCreator";
 import HomeBackground from "../../img/HomeBackground.svg";
 
+import CreatePostTest from "../CreatePost/CreatePostTest";
+
 import styles from "./ServiceStyle.module.css";
 //className={styles.container}>
 
@@ -41,11 +43,6 @@ const Root = styled.div`
   color: white;
   padding-bottom: 100px;
   z-index: 1;
-  
-
-  
-
-
 `;
 
 const NavBar = styled.div`
@@ -120,17 +117,21 @@ const BackgroundElement = styled.div`
   background-color: #1ca7ec;
 `;
 
-const BackgroundColor = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: #1ca7ec;
+const CreatePostWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 25px;
+
+  @media (max-width: 1007px) {
+    display: none;
+  }
 `;
 
 /**
  * Main layout of the app, when user is authenticated
  */
 const AppLayout = ({ location, authUser }) => {
-
   const windowSize = useWindowSize();
   const isDesktop = windowSize.width >= parseInt(theme.screen.md, 10);
   const [isSideBarOpen, setIsSidebarOpen] = useState(isDesktop);
@@ -139,7 +140,6 @@ const AppLayout = ({ location, authUser }) => {
 
   const screenLarge = useMediaQuery("(min-width: 971px)");
   const screenSmall = useMediaQuery("(max-width: 971px)");
-
 
   useClickOutside(sideBarRef, () => {
     if (!isDesktop && isSideBarOpen) {
@@ -199,41 +199,51 @@ const AppLayout = ({ location, authUser }) => {
         </HeroImage>{" "}
       </Hero>
       <BackgroundElement>
-      <Root>
-        <Box
-          flexDirection="row"
-          justifyContent={GetJustifyContent()}
-          display="flex"
-          ml={GetSidebarMarginSize()}
-        >
-          <Box>
-            <Box flexDirection="column" justifyContent="center" display="flex">
-              <Box pb={12}>
-                {" "}
-                <SideBar isOpen={isSideBarOpen} sideBarRef={sideBarRef} />
-              </Box>
-              <Box>
-                {" "}
-                <UserSuggestions pathname={location.pathname} />
+        <Root>
+          <Box
+            flexDirection="row"
+            justifyContent={GetJustifyContent()}
+            display="flex"
+            ml={GetSidebarMarginSize()}
+          >
+            <Box>
+              <Box
+                flexDirection="column"
+                justifyContent="center"
+                display="flex"
+              >
+                <Box pb={12}>
+                  {" "}
+                  <CreatePostWrapper>
+                <CreatePostTest />
+              </CreatePostWrapper>
+                  <SideBar isOpen={isSideBarOpen} sideBarRef={sideBarRef} />
+                </Box>
+                <Box>
+                  {" "}
+                  <UserSuggestions pathname={location.pathname} />
+                </Box>
               </Box>
             </Box>
+            <Box pl={GetHomeMarginSize()}>
+              <Switch>
+                <Route exact path={Routes.HOME} component={Home} />
+
+                <Route exact path={Routes.EXPLORE} component={Explore} />
+
+                <Route exact path={Routes.PEOPLE} component={People} />
+
+                <Route
+                  exact
+                  path={Routes.USER_PROFILE}
+                  component={UserProfile}
+                />
+
+                <Route component={NotFound} />
+              </Switch>
+            </Box>
           </Box>
-          <Box pl={GetHomeMarginSize()}>
-            <Switch>
-              <Route exact path={Routes.HOME} component={Home} />
-
-              <Route exact path={Routes.EXPLORE} component={Explore} />
-
-              <Route exact path={Routes.PEOPLE} component={People} />
-              
-              <Route exact path={Routes.USER_PROFILE} component={UserProfile} />
-
-              <Route component={NotFound} />
-
-            </Switch>
-          </Box>
-        </Box>
-      </Root>
+        </Root>
       </BackgroundElement>
     </>
   );
