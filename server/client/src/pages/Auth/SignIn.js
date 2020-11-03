@@ -13,7 +13,7 @@ import * as Yup from "yup";
 import { connect } from "react-redux";
 
 import * as Routes from "routes";
-import { SignInUser } from "../../actions";
+import { signInUser } from "../../actions";
 
 const Root = styled.div`
   display: flex;
@@ -56,7 +56,7 @@ const SignIn = (props) => {
         password: Yup.string().required("Required"),
       })}
       onSubmit={({ username, password }) => {
-        props.SignInUser(username, password)
+        props.signInUser(username, password)
       }}
     >
       {({
@@ -118,4 +118,4 @@ function mapStatetoProps(state) {
   };
 }
 
-export default connect(mapStatetoProps, { SignInUser })(withRouter(SignIn));
+export default connect(mapStatetoProps, { signInUser })(withRouter(SignIn));

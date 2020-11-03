@@ -13,21 +13,7 @@ const Root = styled.div`
   color: white;
   cursor: pointer;
 `;
-const Button1 = styled.button`
-  height: 40px;
-  width: 120px;
-  border-radius: 54px;
-  border: none;
-  margin-left: 20px;
-  background: #056696;
-  color: white;
-  cursor: pointer;
-  outline: none;
 
-  &:hover {
-    background: #056696;
-  }
-`;
 
 const Wrapper = styled.div`
   display: flex;

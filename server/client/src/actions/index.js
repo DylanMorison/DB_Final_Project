@@ -41,7 +41,7 @@ export const logOut = ( ) => async (dispatch) => {
 };
 
 
-export const SignInUser = (username, password) => async (dispatch) => {
+export const signInUser = (username, password) => async (dispatch) => {
   // const res = await axios.post   # Your DB Call here <---
    console.log("Sign IN");
    console.log(username, " ", password);
@@ -56,4 +56,5 @@ export const SignInUser = (username, password) => async (dispatch) => {
   };
    dispatch({ type: USER_LOGIN, payload: userState });
  };
+
 
