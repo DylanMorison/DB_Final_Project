@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { Mutation } from 'react-apollo';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { Mutation } from "react-apollo";
+import styled from "styled-components";
 
-import { A } from 'components/Text';
-import { Spacing } from 'components/Layout';
-import { Error } from 'components/Text';
-import { InputText, Button } from 'components/Form';
+import { A } from "components/Text";
+import { Spacing } from "components/Layout";
+import { Error } from "components/Text";
+import { InputText, Button } from "components/Form";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { connect } from "react-redux";
 
-
-import * as Routes from 'routes';
+import * as Routes from "routes";
+import { SignInUser } from "../../actions";
 
 const Root = styled.div`
   display: flex;
   flex-direction: row;
   align-items: space-between;
-  font-size: ${p => p.theme.font.size.xxs};
-  margin-top: ${p => p.theme.spacing.sm};
+  font-size: ${(p) => p.theme.font.size.xxs};
+  margin-top: ${(p) => p.theme.spacing.sm};
 `;
 
 const InputContainer = styled(Spacing)`
@@ -27,63 +30,92 @@ const InputContainer = styled(Spacing)`
 const ErrorMessage = styled.div`
   position: absolute;
   top: 1px;
+  color: red;
 `;
 
 const ForgotPassword = styled.div`
-  font-size: ${p => p.theme.font.size.xxs};
-  margin-top: ${p => p.theme.spacing.xxs};
-  color: ${p => p.theme.colors.white};
+  font-size: ${(p) => p.theme.font.size.xxs};
+  margin-top: ${(p) => p.theme.spacing.xxs};
+  color: ${(p) => p.theme.colors.white};
 `;
 
 /**
  * Sign In page
  */
-const SignIn = ({ history, location }) => {
-  const [values, setValues] = useState({ emailOrUsername: '', password: '' });
-  const [error, setError] = useState('');
-
-
-
-
-  const { emailOrUsername, password } = values;
-
+const SignIn = (props) => {
   return (
+    <Formik
+      initialValues={{
+        username: "",
+        password: "",
+      }}
+      validationSchema={Yup.object({
+        username: Yup.string()
+          .max(15, "Must be 15 characters or less")
+          .required("Required"),
+        password: Yup.string().required("Required"),
+      })}
+      onSubmit={({ username, password }) => {
+        props.SignInUser(username, password)
+      }}
+    >
+      {({
+        values: { username, password },
+        errors,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+      }) => (
+        <form  onSubmit={handleSubmit}>
+        <Root>
+          <InputContainer>
+            <InputText
+              id="username"
+              type="text"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name="username"
+              value={username}
+              aria-label="username"
+              aria-required="true"
+              autoComplete="new-password"
+              placeholder="username"
+            />
+            {username && errors.username ? (
+              <ErrorMessage>{errors.username}</ErrorMessage>
+            ) : null}
+          </InputContainer>
 
-        <form >
-          <Root>
-            <InputContainer>
-              <InputText
-                autoFocus
-                type="text"
-                name="emailOrUsername"
-                values={emailOrUsername}
-             //   onChange={handleChange}
-                placeholder="Email or Username"
-                borderColor="white"
-              />
-            </InputContainer>
+          <InputContainer left="xs" right="xs">
+            <InputText
+              id="password"
+              placeholder="password"
+              type="password"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name="password"
+              value={password}
+              aria-label="password"
+              aria-required="true"
+              autoComplete="new-password"
+            />
+            {errors.password ? (
+              <ErrorMessage>{errors.password}</ErrorMessage>
+            ) : null}
+          </InputContainer>
 
-            <InputContainer left="xs" right="xs">
-              <InputText
-                type="password"
-                name="password"
-                values={password}
-             //   onChange={handleChange}
-                placeholder="Password"
-                borderColor="white"
-              />
-
-            </InputContainer>
-
-            <Button>Log in</Button>
-          </Root>
+          <Button type="submit">Log in</Button>
+        </Root>
         </form>
+      )}
+    </Formik>
   );
 };
 
-SignIn.propTypes = {
-  history: PropTypes.object.isRequired,
-  //refetch: PropTypes.func.isRequired,
-};
+function mapStatetoProps(state) {
+  return {
+    auth: state.auth,
+  };
+}
 
-export default withRouter(SignIn);
+export default connect(mapStatetoProps, { SignInUser })(withRouter(SignIn));

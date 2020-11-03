@@ -16,6 +16,7 @@ import "firebase/storage";
 import * as Routes from "routes";
 import { generatePath } from "react-router-dom";
 import People from "../../../pages/People";
+import { connect } from "react-redux";
 
 const NavWrapper = styled.div`
   position: sticky;
@@ -122,7 +123,7 @@ const UserName = styled.div`
 /**
  * Header of the App when user is authenticated
  */
-const Header = ({ location, toggleSideBar }) => {
+const Header = (props, { location, toggleSideBar }) => {
   const user = firebase.auth().currentUser;
 
   const [dropdownOpen, setDropdownOpen] = useState(null);
@@ -158,11 +159,11 @@ const Header = ({ location, toggleSideBar }) => {
         <RightSection>
           <UserContainer>
             <UserName>
-              <p>{user.email}</p>
+              <p>{props.auth.email}</p>
             </UserName>
             <Link
               exact
-              to={generatePath(Routes.USER_PROFILE, { username: user.uid })}
+              to={generatePath(Routes.USER_PROFILE, { username: props.auth.uid })}
             >
               <Button>
                 <Avatar image={defaultPic} size={40} />
@@ -178,9 +179,15 @@ const Header = ({ location, toggleSideBar }) => {
   );
 };
 
-Header.propTypes = {
-  location: PropTypes.object.isRequired,
-  toggleSideBar: PropTypes.func.isRequired,
-};
+function mapStatetoProps(state) {
+  return {
+    auth: state.auth,
+  };
+}
 
-export default withRouter(Header);
+export default connect(mapStatetoProps)(withRouter(Header))
+//export default withRouter(Header);
+
+
+
+
