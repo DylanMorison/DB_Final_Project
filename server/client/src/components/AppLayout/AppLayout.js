@@ -30,7 +30,7 @@ import DesignOfWeek from "../../img/DesignOfWeek.png";
 import HeroModelCreator from "./HeroModelCreator";
 import HomeBackground from "../../img/HomeBackground.svg";
 
-import CreatePostTest from "../CreatePost/CreatePostTest";
+import CreatePost from "../CreatePost/CreatePost";
 
 import styles from "./ServiceStyle.module.css";
 //className={styles.container}>
@@ -215,7 +215,7 @@ const AppLayout = ({ location, authUser }) => {
                 <Box pb={12}>
                   {" "}
                   <CreatePostWrapper>
-                <CreatePostTest />
+                <CreatePost />
               </CreatePostWrapper>
                   <SideBar isOpen={isSideBarOpen} sideBarRef={sideBarRef} />
                 </Box>

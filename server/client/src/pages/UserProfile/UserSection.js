@@ -56,6 +56,7 @@ const AvatarWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 const UserSection = (props) => {
