@@ -3,13 +3,43 @@ import styled from "styled-components";
 import PostAvatar from "./PostAvatar";
 import ThumbnailUpload from "./UploadButtons/ThumbnailUpload";
 import FileUpload from "./UploadButtons/FileUpload";
-import { Image } from "cloudinary-react";
 import { storage } from "../../Firebase/Firebase";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 import "firebase/storage";
 import ThumbnailUploadIcon from "../../img/ThumbnailUpload.svg";
+import UploadIcon from "../../img/UploadIcon.svg";
+
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { userAddPost } from "../../actions";
+import { connect } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+
+const useStyles = makeStyles({
+  root: {
+    background: "#149bde",
+    border: "none",
+    borderRadius: "5px",
+    boxShadow: "0 3px 5px 2px rgba(8, 93, 132, .3)",
+    color: "white",
+    height: "45px",
+    width: "100px",
+    cursor: "pointer",
+    textTransform: "none",
+    "&:hover": {
+      backgroundColor: "#02ABFF",
+      color: "#fff"
+      }
+  },
+});
+
+const ErrorMessage = styled.div`
+  padding: 5px;
+  color: red;
+`;
 
 const Popup = styled.div`
   margin: 15% auto; /* 15% from the top and centered */
@@ -23,15 +53,15 @@ const Popup = styled.div`
   grid-template-rows: auto;
   color: black;
   grid-gap: 10px;
-  background: rgba(19, 18, 18, 1);
+  background: rgba(77, 77, 77, .9);
 
   &:before {
     box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5);
     filter: blur(10px);
   }
 
-  @media(max-width: 1600){
-    height: 50vw
+  @media (max-width: 1600) {
+    height: 50vw;
   }
 `;
 
@@ -105,11 +135,6 @@ const StyledInput = styled.input`
   background: ${(prop) => (prop.correct ? "white" : "red")};
 `;
 
-const Submit = styled.form`
-  width: 100%
-  height: 50%;
-  `;
-
 const UploadButtons = styled.div`
   display: flex;
   width: 100%
@@ -127,6 +152,7 @@ const SubmitButton = styled.button`
   color: white;
   background: #149bde;
   border-radius: 54px;
+  cursor: pointer;
 `;
 
 const ButtonWrapper = styled.div`
@@ -134,6 +160,17 @@ const ButtonWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const FileInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Spacing = styled.div`
+  padding-bottom: 15px;
 `;
 
 const UploadInput = styled.input``;
@@ -144,77 +181,166 @@ const PostPopup = (props) => {
   const [imageAsUrl, setImageAsUrl] = useState(allInputs);
   const user = firebase.auth().currentUser;
 
-  const handleImageAsFile = (e, userId) => {
-    const image = e.target.files[0];
-    setImageAsFile((imageFile) => image);
-  };
+  const classes = useStyles();
 
-  const handleFireBaseUpload = (e) => {
-    e.preventDefault();
-    console.log("start of upload");
-    const userId = user.uid;
-    // async magic goes here...
-    if (imageAsFile === "") {
-      console.error(`not an image, the image file is a ${typeof imageAsFile}`);
-    }
-    //ser the file path as the user id and file name
-    const uploadTask = storage
-      .ref(`/${userId}/${imageAsFile.name}`)
-      .put(imageAsFile);
-    //initiates the firebase side uploading
-    uploadTask.on(
-      "state_changed",
-      (snapShot) => {
-        //takes a snap shot of the process as it is happening
-        console.log(snapShot);
-      },
-      (err) => {
-        //catches the errors
-        console.log(err);
-      },
-      () => {
-        // gets the functions from storage refences the image storage in firebase by the children
-        // gets the download url then sets the image from firebase as the value for the imgUrl key:
-        storage
-          .ref("images")
-          .child(imageAsFile.name)
-          .getDownloadURL()
-          .then((fireBaseUrl) => {
-            setImageAsUrl((prevObject) => ({
-              ...prevObject,
-              imgUrl: fireBaseUrl,
-            }));
-          });
-      }
-    );
-  };
+  const SUPPORTED_FORMATS = [
+    "image/JPG",
+    "image/JPEG",
+    "image/gif",
+    "image/PNG",
+  ];
 
   return (
-    <Popup>
-      <LeftWrapper>
-        <PostAvatar buttonClick={props.buttonClick} />
-      </LeftWrapper>
-      <RightWrapper>
-        <Form onSubmit={handleFireBaseUpload}>
-          <TitleWrapper>
-            <Title placeholder=" Title" />
-          </TitleWrapper>
-          <DescriptionWrapper>
-            <Description placeholder=" Post Description" />
-          </DescriptionWrapper>
-          <UploadButtons>
-            <FileUpload />
-            <ButtonWrapper>
-              <ThumbnailUpload />
-            </ButtonWrapper>
-            <SubmitButton type="submit" value="Submit">
-              Submit
-            </SubmitButton>
-          </UploadButtons>
-        </Form>
-      </RightWrapper>
-    </Popup>
+    <Formik
+      initialValues={{
+        title: "",
+        description: "",
+        thumbnail: "",
+        file: "",
+      }}
+      validationSchema={Yup.object({
+        title: Yup.string().required("title required"),
+        description: Yup.string().required("description required"),
+        file: Yup.mixed().required("A file is required"),
+        thumbnail: Yup.mixed().required("A thumbnail is required"),
+      })}
+      onSubmit={({ title, description, file, thumbnail }) => {
+        const postData = {
+          title: title,
+          description: description,
+          file: file,
+          thumbnail: thumbnail,
+          author: props.auth,
+          timestamp: Date.now(),
+        };
+        props.userAddPost(postData);
+      }}
+    >
+      {({
+        values: { title, description, thumbnail, file },
+        errors,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        setFieldValue,
+      }) => (
+        <Popup>
+          <LeftWrapper>
+            <PostAvatar buttonClick={props.buttonClick} />
+          </LeftWrapper>
+          <RightWrapper>
+            <Form onSubmit={handleSubmit}>
+              <TitleWrapper>
+                <Title
+                  id="title"
+                  type="text"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="title"
+                  value={title}
+                  aria-label="title"
+                  aria-required="true"
+                  autoComplete="new-password"
+                  placeholder="title"
+                />
+              </TitleWrapper>
+              {errors.title ? (
+                <ErrorMessage>{errors.title}</ErrorMessage>
+              ) : null}
+              <DescriptionWrapper>
+                <Description
+                  id="description"
+                  type="text"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="description"
+                  value={description}
+                  aria-label="description"
+                  aria-required="true"
+                  autoComplete="new-password"
+                  placeholder="description"
+                />
+              </DescriptionWrapper>
+              {errors.description ? (
+                <ErrorMessage>{errors.description}</ErrorMessage>
+              ) : null}
+              <UploadButtons>
+                <FileInputWrapper>
+                  <Spacing>
+                    <img
+                      style={{ width: "50px", cursor: "pointer" }}
+                      src={UploadIcon}
+                      alt="file upload"
+                    />
+                  </Spacing>
+                  <input
+                    type="file"
+                    id="file"
+                    onChange={(event) => {
+                      setFieldValue(
+                        "file",
+                        window.URL.createObjectURL(event.currentTarget.files[0])
+                      );
+                    }}
+                    name="file"
+                    style={{ color: "white" }}
+                    // style={{ display: "none" }}
+                  />
+                  {errors && errors.file ? (
+                    <ErrorMessage>{errors.file}</ErrorMessage>
+                  ) : null}
+                </FileInputWrapper>
+
+                <ButtonWrapper>
+                  <FileInputWrapper>
+                    <img
+                      style={{ width: "80px", cursor: "pointer" }}
+                      src={ThumbnailUploadIcon}
+                      alt="thumnbail upload"
+                    />
+                    <input
+                      type="file"
+                      id="thumbnail"
+                      onChange={(event) => {
+                        setFieldValue(
+                          "thumbnail",
+                          window.URL.createObjectURL(
+                            event.currentTarget.files[0]
+                          )
+                        );
+                      }}
+                      name="thumbnail"
+                      style={{ color: "white" }}
+                    />
+                    {thumbnail && errors.thumbnail ? (
+                      <ErrorMessage>{errors.thumbnail}</ErrorMessage>
+                    ) : null}
+                  </FileInputWrapper>
+                </ButtonWrapper>
+                <Button type="submit" className={classes.root}>
+                Submit
+                </Button>
+              </UploadButtons>
+            </Form>
+          </RightWrapper>
+        </Popup>
+      )}
+    </Formik>
   );
 };
 
-export default PostPopup;
+function mapStatetoProps(state) {
+  return {
+    posts: state.homePosts,
+    auth: state.auth,
+  };
+}
+
+export default connect(mapStatetoProps, { userAddPost })(PostPopup);
+
+// width: 0.1px;
+// height: 0.1px;
+// opacity: 0;
+// overflow: hidden;
+// position: absolute;
+// z-index: -1;

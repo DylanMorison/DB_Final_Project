@@ -1,31 +1,18 @@
-import { USER_LOGIN, USER_LOGOUT } from "../actions/types";
+import { ADD_POST } from "../actions/types";
 
 const initialState = {
-  username: null,
-  email: null,
-  uid: null,
-  isLoggedIn: false,
+  posts: [],
+  status: "load",
+  location: "home",
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case USER_LOGIN:
+    case ADD_POST:
       return {
         ...state,
-        username: action.payload.username,
-        email: action.payload.email,
-        uid: action.payload.uid,
-        isLoggedIn: action.payload.isLoggedIn,
+        posts: [...state.posts, action.payload],
       };
-    case USER_LOGOUT:
-      return {
-        ...state,
-        username: action.payload.username,
-        email: action.payload.email,
-        uid: action.payload.uid,
-        isLoggedIn: action.payload.isLoggedIn,
-      };
-
     default:
       return state;
   }

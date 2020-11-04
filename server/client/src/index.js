@@ -11,7 +11,7 @@ import axios from "axios";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import { PersistGate } from 'redux-persist/integration/react'
-
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
 import "normalize.css";
 import theme from "theme";
@@ -22,6 +22,7 @@ window.axios = axios;
 const persistConfig = {
   key: 'root',
   storage,
+  stateReconciler: autoMergeLevel2,
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)
@@ -29,7 +30,6 @@ const persistedReducer = persistReducer(persistConfig, reducers)
 
 const store = createStore(
 	persistedReducer,
-	{},
 	composeWithDevTools(applyMiddleware(reduxThunk, logger))
 );
 
