@@ -77,7 +77,7 @@ const CommentSection = () => {
         <CommentButton>Submit</CommentButton>
       </CommentInputWrapper>
       <CommentsWrapper>
-        <Comment username={"david spade"} commentContents={"wow sick design"} />
+        {/* <Comment username={"david spade"} commentContents={"wow sick design"} />
         <Comment
           username={"carl anthony"}
           commentContents={"this is kinda cool"}
@@ -90,7 +90,7 @@ const CommentSection = () => {
         <Comment
           username={"cindy poong"}
           commentContents={"i do like drones"}
-        />
+        /> */}
       </CommentsWrapper>
     </Root>
   );

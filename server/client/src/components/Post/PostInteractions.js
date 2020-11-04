@@ -63,13 +63,15 @@ const PostInteractions = (props) => {
 
   return (
     <InteractionWrapper>
-      <LikeWrapper onClick={handleLike}><Number>{numLikes}</Number> {handleDisplayIcon()}</LikeWrapper>
+      <LikeWrapper onClick={handleLike}><Number>{props.postData.numLikes}</Number> {handleDisplayIcon()}</LikeWrapper>
       <CommentWrapper onClick={handleShowComments}>
-        <Number>{numComments}</Number>
+        <Number>{props.postData.numComments}</Number>
         <CommentIcon />
       </CommentWrapper>
     </InteractionWrapper>
   );
 };
+
+
 
 export default PostInteractions;

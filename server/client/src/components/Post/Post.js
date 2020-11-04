@@ -82,7 +82,7 @@ const Post = (props) => {
             postDescription={props.postDescription}
             postTitle={props.postTitle}
           />
-          <PostInteractions commentsShown={commentsShown} setCommentsShown={setCommentsShown}/>
+          <PostInteractions postData={props.postData} commentsShown={commentsShown} setCommentsShown={setCommentsShown}/>
         </LowerSection>
       </PostContainer>
       {handleCommentSection()}
