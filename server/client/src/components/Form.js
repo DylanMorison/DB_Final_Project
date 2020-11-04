@@ -79,6 +79,10 @@ export const InputText = styled.input`
   &:focus {
     border-color: ${p => p.theme.colors.border.main};
   }
+
+  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgba(255, 255, 255, .75);
+  }
 `;
 
 /**

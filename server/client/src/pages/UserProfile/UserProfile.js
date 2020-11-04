@@ -10,6 +10,7 @@ import Post from "../../components/Post/Post";
 
 import Drone from "../../img/Drone.png";
 import UserHeader from "./UserHeader";
+import { connect } from "react-redux";
 
 const Spacing = styled.div`
   padding: 15px;
@@ -45,17 +46,17 @@ const Root = styled.div`
   background-color: red;
 `;
 
-const UserProfile = () => {
+const UserProfile = (props) => {
   const user = firebase.auth().currentUser;
 
   return (
     <Container maxWidth="sm">
       <Spacing />
-      <UserHeader user={user.email} followers={32} following={43} posts={1}/>
+      <UserHeader user={props.auth.email} followers={32} following={43} posts={1}/>
       <Spacing />
       <Post
         backgroundImage={Drone}
-        postUser={user.email}
+        postUser={props.auth.email}
         postTitle={"Printable Drone"}
         postDescription={
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a velit at vitae potenti consequat. Nec leo, gravida viverra augue ut tincidunt rutrum odio diam."
@@ -66,4 +67,12 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+function mapStatetoProps(state) {
+  return {
+    auth: state.auth,
+  };
+}
+
+
+export default connect(mapStatetoProps)(UserProfile);
+

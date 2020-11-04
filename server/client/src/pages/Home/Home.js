@@ -18,6 +18,8 @@ import * as Routes from "routes";
 import Post from "../../components/Post/Post";
 
 import Drone from "../../img/Drone.png";
+import { connect } from "react-redux";
+import { userAddPost } from "../../actions";
 
 const Empty = styled.div`
   padding: ${(p) => p.theme.spacing.sm};
@@ -47,7 +49,7 @@ const Container = styled.div`
   z-index: ${(p) => p.zIndex && p.theme.zIndex[p.zIndex]};
   background-color: inherit;
   border-radius: ${(p) => p.radius && p.theme.radius[p.radius]};
-  
+
   @media (max-width: 1000px) {
     display: flex;
     flex-direction: column;
@@ -58,49 +60,46 @@ const Container = styled.div`
 /**
  * Home page of the app
  */
-const Home = () => {
+const Home = (props) => {
+
 
   return (
     <Container maxWidth="sm">
       <Spacing />
-      <Post
-        backgroundImage={Drone}
-        postUser={"charlie wilson"}
-        postTitle={"Printable Drone"}
-        postDescription={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a velit at vitae potenti consequat. Nec leo, gravida viverra augue ut tincidunt rutrum odio diam."
-        }
-        timestamp={12}
-      />
-            <Post
-        backgroundImage={Drone}
-        postUser={"charlie wilson"}
-        postTitle={"Printable Drone"}
-        postDescription={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a velit at vitae potenti consequat. Nec leo, gravida viverra augue ut tincidunt rutrum odio diam."
-        }
-        timestamp={12}
-      />
-            <Post
-        backgroundImage={Drone}
-        postUser={"charlie wilson"}
-        postTitle={"Printable Drone"}
-        postDescription={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a velit at vitae potenti consequat. Nec leo, gravida viverra augue ut tincidunt rutrum odio diam."
-        }
-        timestamp={12}
-      />
-            <Post
-        backgroundImage={Drone}
-        postUser={"charlie wilson"}
-        postTitle={"Printable Drone"}
-        postDescription={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a velit at vitae potenti consequat. Nec leo, gravida viverra augue ut tincidunt rutrum odio diam."
-        }
-        timestamp={12}
-      />
+      {props.homePosts.posts.length > 0 ? (
+        props.homePosts.posts.map((postItem) => (
+          <Post
+            postData={postItem}
+            backgroundImage={postItem.thumbnail}
+            postUser={postItem.author.email}
+            postTitle={postItem.title}
+            postDescription={postItem.description}
+            timestamp={12}
+          />
+        ))
+      ) : (
+        <div>no posts</div>
+      )}
     </Container>
   );
 };
 
-export default Home;
+function mapStatetoProps(state) {
+  return {
+    homePosts: state.homePosts,
+  };
+}
+
+export default connect(mapStatetoProps, { userAddPost })(Home);
+
+{
+  /* <Post
+  backgroundImage={Drone}
+  postUser={"charlie wilson"}
+  postTitle={"Printable Drone"}
+  postDescription={
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a velit at vitae potenti consequat. Nec leo, gravida viverra augue ut tincidunt rutrum odio diam."
+  }
+  timestamp={12}
+/>; */
+}

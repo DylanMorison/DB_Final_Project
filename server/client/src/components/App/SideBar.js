@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { Spacing } from "components/Layout";
 import Navigation from "./Navigation";
 import Avatar from "components/Avatar";
-import CreatePostTest from "../CreatePost/CreatePostTest";
 
 import {
   SIDEBAR_DESKTOP_WIDTH,

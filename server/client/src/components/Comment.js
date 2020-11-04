@@ -15,7 +15,6 @@ const Root = styled.div`
   width: 100%;
   background: rgba(142, 142, 142, 0.3);
   height: 75px;
-  overflow-y: scroll;
   border-radius: 10px;
   padding: 25px;
   color: #ffffff;

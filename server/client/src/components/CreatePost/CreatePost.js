@@ -9,7 +9,7 @@ const Root = styled.div`
   height: 100%;
 `;
 
-const CreatePostTest = () => {
+const CreatePost = () => {
   const [isFocused, setFocus] = useState(false);
 
   const handleFocus = () => {
@@ -30,4 +30,4 @@ const CreatePostTest = () => {
   );
 };
 
-export default CreatePostTest;
+export default CreatePost;
