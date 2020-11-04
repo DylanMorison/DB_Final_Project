@@ -212,6 +212,8 @@ const PostPopup = (props) => {
           thumbnail: thumbnail,
           author: props.auth,
           timestamp: Date.now(),
+          numLikes: 0, 
+          numComments: 0
         };
         props.userAddPost(postData);
       }}

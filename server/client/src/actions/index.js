@@ -59,6 +59,5 @@ export const userAddPost = (postData) => async (dispatch) => {
   console.log("add post");
   console.log(postData); 
   //parsing of timestamp should occur in backend 
-  postData.timestamp = 
   dispatch({ type: ADD_POST, payload: postData });
 };
