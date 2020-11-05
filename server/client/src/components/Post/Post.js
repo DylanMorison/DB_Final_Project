@@ -63,6 +63,7 @@ const LowerSection = styled.div`
 
 const Post = (props) => {
   const [commentsShown, setCommentsShown] = useState(false);
+  const [post, setpost] =  useState(props.postData)
 
   const handleCommentSection = () => {
     if (commentsShown) {
@@ -84,7 +85,7 @@ const Post = (props) => {
             postDescription={props.postDescription}
             postTitle={props.postTitle}
           />
-          <PostInteractions postData={props.postData} commentsShown={commentsShown} setCommentsShown={setCommentsShown}/>
+          <PostInteractions post={ post } postData={props.postData} commentsShown={commentsShown} setCommentsShown={setCommentsShown}/>
         </LowerSection>
       </PostContainer>
       {handleCommentSection()}

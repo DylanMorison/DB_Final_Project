@@ -3,6 +3,8 @@ import styled from "styled-components";
 import CommentIcon from "../icons/CommentIcon";
 import FavoritedIcon from "../icons/FavoritedIcon";
 import NonFavoritedIcon from "../icons/NonFavoritedIcon";
+import { userToggleLike } from "../../actions";
+import { connect }  from "react-redux";
 
 const InteractionWrapper = styled.div`
   display: flex;
@@ -33,7 +35,7 @@ const Number = styled.div`
 `;
 
 const PostInteractions = (props) => {
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(props.postData.usersLiked.includes(props.auth.uid));
   const [numLikes, setNumLikes] = useState(0);
   const [numComments, setNumComments] = useState(5);
 
@@ -46,12 +48,16 @@ const PostInteractions = (props) => {
   };
 
   const handleLike = () => {
-    if (liked) {
-      setNumLikes(numLikes - 1)
+    if (props.postData.usersLiked.includes(props.auth.uid)) {
+      props.postData.numLikes -= 1;
+      props.postData.usersLiked =  props.postData.usersLiked.filter(e => e !== props.auth.uid);
+      props.userToggleLike(props.postData, props.auth);
       setLiked(!liked);
     }
     else{
-      setNumLikes(numLikes + 1)
+      props.postData.numLikes += 1;
+      props.postData.usersLiked.push(props.auth.uid);
+      props.userToggleLike(props.postData, props.auth);
       setLiked(!liked);
     }
     
@@ -74,4 +80,11 @@ const PostInteractions = (props) => {
 
 
 
-export default PostInteractions;
+function mapStatetoProps(state) {
+  return {
+    homePosts: state.homePosts,
+    auth: state.auth
+  };
+}
+
+export default connect(mapStatetoProps, { userToggleLike })(PostInteractions);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_USERS, USER_LOGIN, USER_LOGOUT, ADD_POST } from "./types";
+import { FETCH_USERS, USER_LOGIN, USER_LOGOUT, ADD_POST, TOGGLE_LIKE } from "./types";
 
 export const getAllUsers = () => async (dispatch) => {
   const res = await axios.get("/auth/users");
@@ -57,7 +57,14 @@ export const signInUser = (username, password) => async (dispatch) => {
 export const userAddPost = (postData) => async (dispatch) => {
   // const res = await axios.post   # Your DB Call here <---
   console.log("add post");
-  console.log(postData); 
-  //parsing of timestamp should occur in backend 
+  console.log(postData);
+  //parsing of timestamp should occur in backend
   dispatch({ type: ADD_POST, payload: postData });
+};
+
+export const userToggleLike = (userLiked, postData) => (dispatch) => {
+  // const res = await axios.post   # Your DB Call here <---
+  console.log("toggle like");
+  console.log(postData, userLiked);
+  dispatch({type: TOGGLE_LIKE, payload: postData});
 };
