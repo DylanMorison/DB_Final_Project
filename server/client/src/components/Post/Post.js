@@ -33,6 +33,8 @@ const PostContainer = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 10px;
+  box-shadow:inset 0 0 0 375px rgba(18,133,191,.3);
+  
 
   @media (max-width: 1000px) {
     width: 85vw;

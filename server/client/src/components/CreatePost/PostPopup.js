@@ -216,6 +216,7 @@ const PostPopup = (props) => {
           numComments: 0
         };
         props.userAddPost(postData);
+        props.buttonClick()
       }}
     >
       {({

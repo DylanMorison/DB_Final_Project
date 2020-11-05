@@ -54,7 +54,7 @@ const UserProfile = (props) => {
       <Spacing />
       <UserHeader user={props.auth.email} followers={32} following={43} posts={1}/>
       <Spacing />
-      <Post
+      {/* <Post
         backgroundImage={Drone}
         postUser={props.auth.email}
         postTitle={"Printable Drone"}
@@ -62,7 +62,7 @@ const UserProfile = (props) => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a velit at vitae potenti consequat. Nec leo, gravida viverra augue ut tincidunt rutrum odio diam."
         }
         timestamp={12}
-      />
+      /> */}
     </Container>
   );
 };
