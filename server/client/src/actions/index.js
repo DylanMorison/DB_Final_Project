@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_USERS, USER_LOGIN, USER_LOGOUT, ADD_POST, TOGGLE_LIKE } from "./types";
+import { FETCH_USERS, USER_LOGIN, USER_LOGOUT, ADD_POST, TOGGLE_LIKE, ADD_COMMENT } from "./types";
 
 export const getAllUsers = () => async (dispatch) => {
   const res = await axios.get("/auth/users");
@@ -67,4 +67,12 @@ export const userToggleLike = (userLiked, postData) => (dispatch) => {
   console.log("toggle like");
   console.log(postData, userLiked);
   dispatch({type: TOGGLE_LIKE, payload: postData});
+};
+
+
+export const userAddComment = (postData, userCommented) => (dispatch) => {
+  // const res = await axios.post   # Your DB Call here <---
+  console.log("add comment");
+  console.log(postData, userCommented);
+  dispatch({type: ADD_COMMENT, payload: postData});
 };

@@ -13,10 +13,14 @@ export default function (state = initialState, action) {
         ...state,
         posts: [...state.posts, action.payload],
       };
-      case TOGGLE_LIKE:
-        return {
-          ...state,
-        };
+    case TOGGLE_LIKE:
+      return {
+        ...state,
+      };
+    case ADD_COMMENT :
+      return {
+        ...state,
+      };
     default:
       return state;
   }

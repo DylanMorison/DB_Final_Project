@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import Comment from "../Comment";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { connect } from "react-redux";
+import { userAddComment } from "../../actions";
 
 const Root = styled.div`
   display: flex;
@@ -17,7 +21,6 @@ const Root = styled.div`
   @media (max-width: 1000px) {
     width: 85vw;
   }
-  
 `;
 
 const CommentInputWrapper = styled.div`
@@ -69,15 +72,92 @@ const CommentsWrapper = styled.div`
 
 `;
 
-const CommentSection = () => {
+const ErrorMessage = styled.div`
+  position: absolute;
+  top: 1px;
+  color: red;
+`;
+
+const CommentSection = (props) => {
+  const handleCommentSubmit = (commentContents) => {
+    const comment = {
+      author: props.auth,
+      contents: commentContents,
+    };
+    props.postData.comments.push(comment);
+    props.postData.numComments += 1;
+    props.userAddComment(props.postData, props.auth);
+  };
+
   return (
-    <Root>
-      <CommentInputWrapper>
-        <CommentInput placeholder="write a comment" />
-        <CommentButton>Submit</CommentButton>
-      </CommentInputWrapper>
-      <CommentsWrapper>
-        {/* <Comment username={"david spade"} commentContents={"wow sick design"} />
+    <Formik
+      initialValues={{
+        commentContents: "",
+      }}
+      validationSchema={Yup.object({
+        commentContents: Yup.string()
+          .max(50, "Must be 50 characters or less")
+          .required("Required"),
+      })}
+      onSubmit={({ commentContents } , { resetForm }) => {
+        handleCommentSubmit(commentContents);
+        resetForm();
+      }}
+    >
+      {({
+        values: { commentContents },
+        errors,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+      }) => (
+        <form id="commentForm" onSubmit={handleSubmit}>
+          <Root>
+            <CommentInputWrapper>
+              <CommentInput
+                id="commentContents"
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                name="commentContents"
+                value={commentContents}
+                placeholder="write a comment"
+              />
+              <CommentButton type="submit">Submit</CommentButton>
+              {commentContents && errors.commentContents ? (
+                <ErrorMessage>{errors.commentContents}</ErrorMessage>
+              ) : null}
+            </CommentInputWrapper>
+            <CommentsWrapper>
+              {props.postData.comments.length > 0 ? (
+                props.postData.comments.map((comment) => (
+                  <Comment
+                    username={comment.author.username}
+                    commentContents={comment.contents}
+                  />
+                ))
+              ) : (
+                <div>no posts</div>
+              )}
+            </CommentsWrapper>
+          </Root>
+        </form>
+      )}
+    </Formik>
+  );
+};
+
+function mapStatetoProps(state) {
+  return {
+    homePosts: state.homePosts,
+    auth: state.auth,
+  };
+}
+
+export default connect(mapStatetoProps, { userAddComment })(CommentSection);
+
+{
+  /* <Comment username={"david spade"} commentContents={"wow sick design"} />
         <Comment
           username={"carl anthony"}
           commentContents={"this is kinda cool"}
@@ -90,14 +170,5 @@ const CommentSection = () => {
         <Comment
           username={"cindy poong"}
           commentContents={"i do like drones"}
-        /> */}
-      </CommentsWrapper>
-    </Root>
-  );
-};
-
-export default CommentSection;
-
-{
-  //comments above will be queried in the future 
+        /> */
 }
