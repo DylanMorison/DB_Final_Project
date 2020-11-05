@@ -71,7 +71,7 @@ const Home = (props) => {
           <Post
             postData={postItem}
             backgroundImage={postItem.thumbnail}
-            postUser={postItem.author.email}
+            postUser={postItem.author}
             postTitle={postItem.title}
             postDescription={postItem.description}
             timestamp={12}

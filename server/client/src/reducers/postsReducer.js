@@ -1,4 +1,4 @@
-import { ADD_POST } from "../actions/types";
+import { ADD_POST, TOGGLE_LIKE, ADD_COMMENT } from "../actions/types";
 
 const initialState = {
   posts: [],
@@ -13,6 +13,10 @@ export default function (state = initialState, action) {
         ...state,
         posts: [...state.posts, action.payload],
       };
+      case TOGGLE_LIKE:
+        return {
+          ...state,
+        };
     default:
       return state;
   }
