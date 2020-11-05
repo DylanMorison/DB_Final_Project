@@ -64,42 +64,6 @@ const Explore = () => {
   return (
     <Container maxWidth="sm">
       <Spacing />
-      <Post
-        backgroundImage={Drone}
-        postUser={"charlie wilson"}
-        postTitle={"Printable Drone"}
-        postDescription={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a velit at vitae potenti consequat. Nec leo, gravida viverra augue ut tincidunt rutrum odio diam."
-        }
-        timestamp={12}
-      />
-            <Post
-        backgroundImage={Drone}
-        postUser={"charlie wilson"}
-        postTitle={"Printable Drone"}
-        postDescription={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a velit at vitae potenti consequat. Nec leo, gravida viverra augue ut tincidunt rutrum odio diam."
-        }
-        timestamp={12}
-      />
-            <Post
-        backgroundImage={Drone}
-        postUser={"charlie wilson"}
-        postTitle={"Printable Drone"}
-        postDescription={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a velit at vitae potenti consequat. Nec leo, gravida viverra augue ut tincidunt rutrum odio diam."
-        }
-        timestamp={12}
-      />
-            <Post
-        backgroundImage={Drone}
-        postUser={"charlie wilson"}
-        postTitle={"Printable Drone"}
-        postDescription={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a velit at vitae potenti consequat. Nec leo, gravida viverra augue ut tincidunt rutrum odio diam."
-        }
-        timestamp={12}
-      />
     </Container>
   );
 };
