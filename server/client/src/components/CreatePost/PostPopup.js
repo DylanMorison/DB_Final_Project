@@ -214,7 +214,8 @@ const PostPopup = (props) => {
           timestamp: Date.now(),
           numLikes: 0, 
           numComments: 0,
-          usersLiked: []
+          usersLiked: [],
+          comments: [],
         };
         props.userAddPost(postData);
       props.buttonClick()
