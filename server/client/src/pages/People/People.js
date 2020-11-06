@@ -12,8 +12,7 @@ import PeopleCard from "./PeopleCard";
 import { PEOPLE_PAGE_USERS_LIMIT } from "constants/DataLimit";
 
 import { useStore } from "store";
-
- 
+import { connect } from "react-redux";
 
 const Root = styled(Container)`
   margin-top: ${(p) => p.theme.spacing.lg};
@@ -57,63 +56,38 @@ const Person = styled.div`
 /**
  * People page
  */
-const People = () => {
-
+const People = (props) => {
 
   return (
     <Root maxWidth="md">
       <PeopleContainer>
-        <PeopleCard
-          username={"username"}
-          bio={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa augue viverra id laoreet enim in placerat. Eu tellus, purus elementum ac."
-          }
-        />
-        <PeopleCard
-          username={"username"}
-          bio={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa augue viverra id laoreet enim in placerat. Eu tellus, purus elementum ac."
-          }
-        />
-        <PeopleCard
-          username={"username"}
-          bio={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa augue viverra id laoreet enim in placerat. Eu tellus, purus elementum ac."
-          }
-        />
-        <PeopleCard
-          username={"username"}
-          bio={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa augue viverra id laoreet enim in placerat. Eu tellus, purus elementum ac."
-          }
-        />
-        <PeopleCard
-          username={"username"}
-          bio={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa augue viverra id laoreet enim in placerat. Eu tellus, purus elementum ac."
-          }
-        />
-        <PeopleCard
-          username={"username"}
-          bio={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa augue viverra id laoreet enim in placerat. Eu tellus, purus elementum ac."
-          }
-        />
-        <PeopleCard
-          username={"username"}
-          bio={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa augue viverra id laoreet enim in placerat. Eu tellus, purus elementum ac."
-          }
-        />
-        <PeopleCard
-          username={"username"}
-          bio={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa augue viverra id laoreet enim in placerat. Eu tellus, purus elementum ac."
-          }
-        />
+        {props.users.people.length > 0 ? (
+          props.users.people.map((person) => <PeopleCard personData={person} />)
+        ) : (
+          <div> no people </div>
+        )}
       </PeopleContainer>
     </Root>
   );
 };
 
-export default People;
+function mapStatetoProps(state) {
+  return {
+    users: state.users,
+    auth: state.auth,
+  };
+}
+
+export default connect(mapStatetoProps)(People);
+
+//code for filtering people who are not you
+
+  // const filterPeople = (peopleArray) => {
+  //   let newPeopleArray = [];
+  //   peopleArray.forEach((person) => {
+  //     if (person.uid != props.auth.uid) {
+  //       newPeopleArray.push(person);
+  //     }
+  //   });
+  //   return newPeopleArray
+  // };

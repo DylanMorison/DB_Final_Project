@@ -1,9 +1,18 @@
-import { FETCH_USERS } from "../actions/types";
+import { FETCH_USERS, CREATE_USER } from "../actions/types";
 
-export default function (state = [], action) {
+const initialState = {
+  people: [],
+  location: "explore people",
+};
+
+
+export default function (state = initialState, action) {
 	switch (action.type) {
-		case FETCH_USERS:
-			return action.payload;
+		case CREATE_USER:
+			return {
+        ...state,
+        people: [...state.people, action.payload],
+      };
 		default:
 			return state;
 	}

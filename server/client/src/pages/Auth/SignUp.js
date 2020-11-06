@@ -153,6 +153,8 @@ const SignUp = (props) => {
       username: displayName,
       password: password,
       fullName: fullName,
+      followers: 0, 
+      following: 0
     };
     props.createUser(userData);
   };
