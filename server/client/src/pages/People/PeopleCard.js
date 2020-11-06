@@ -9,11 +9,12 @@ import theme from "theme";
 
 import * as Routes from "routes";
 import Avatar from "../../components/Avatar";
-import AddButton from "./AddButton"
+import AddButton from "./AddButton";
+import { withRouter, Link } from "react-router-dom";
 
 const Root = styled.div`
   width: 312px;
-  height: 480px;
+  height: 400px;
   background: #404040;
   border-radius: 8.64545px;
   display: flex;
@@ -31,7 +32,6 @@ const UserName = styled.div`
   padding-top: 15px;
   padding-bottom: 35px;
   text-align: center;
-
 `;
 
 const UserBio = styled.div`
@@ -43,20 +43,25 @@ const UserBio = styled.div`
   padding-bottom: 35px;
 `;
 
-
 const PeopleCard = (props) => {
   const [following, setFollowing] = useState(false);
 
-  const handleFollowing = ( ) => {
+  const handleFollowing = () => {
     setFollowing(!following);
-    
-  }
-  
+  };
+
   return (
     <Root>
-      <Avatar size={70} />
-      <UserName>{props.username}</UserName>
-      <UserBio>{props.bio}</UserBio>
+      <Link
+        exact
+        to={generatePath(Routes.USER_PROFILE, { username: "ssssss" })}
+      >
+          <Avatar size={70} />
+      </Link>
+      <UserName>{props.personData.username}</UserName>
+      <UserBio>
+      {props.personData.following} following <span> &#9679;</span> {props.personData.followers} followers
+      </UserBio>
       <AddButton handleFollowing={handleFollowing} following={following} />
     </Root>
   );

@@ -6,7 +6,7 @@ import { HEADER_HEIGHT } from "constants/Layout";
 import { useClickOutside } from "hooks/useClickOutside";
 import PropTypes from "prop-types";
 import React, { useRef, useState } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link, generatePath } from "react-router-dom";
 import styled from "styled-components";
 import defaultPic from "../../../img/default-pic.png";
 import firebase from "firebase/app";
@@ -14,7 +14,6 @@ import "firebase/firestore";
 import "firebase/auth";
 import "firebase/storage";
 import * as Routes from "routes";
-import { generatePath } from "react-router-dom";
 import People from "../../../pages/People";
 import { connect } from "react-redux";
 
