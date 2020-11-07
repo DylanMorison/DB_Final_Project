@@ -54,13 +54,19 @@ const PeopleCard = (props) => {
     <Root>
       <Link
         exact
-        to={generatePath(Routes.USER_PROFILE, { username: "ssssss" })}
+        to={{
+          pathname: generatePath(Routes.USER_PROFILE, {
+            username: props.personData.uid,
+          }),
+          state: { auth: props.personData },
+        }}
       >
-          <Avatar size={70} />
+        <Avatar size={70} />
       </Link>
       <UserName>{props.personData.username}</UserName>
       <UserBio>
-      {props.personData.following} following <span> &#9679;</span> {props.personData.followers} followers
+        {props.personData.following} following <span> &#9679;</span>{" "}
+        {props.personData.followers} followers
       </UserBio>
       <AddButton handleFollowing={handleFollowing} following={following} />
     </Root>

@@ -4,4 +4,5 @@ export const USER_LOGOUT = 'user_logout';
 export const ADD_POST = 'add_post';
 export const TOGGLE_LIKE = 'toggle_like';
 export const ADD_COMMENT = 'add_comment';
-export const CREATE_USER = "create_user"
+export const CREATE_USER = "create_user";
+export const USER_POST = "user_post";

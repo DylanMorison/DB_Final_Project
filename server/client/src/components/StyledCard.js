@@ -1,7 +1,7 @@
 import { Slide } from 'material-auto-rotating-carousel';
 import React from "react";
-import ChangingTitle from "./App/ChangingCard/ChangingTitle";
-import ChangingSubtitle from "./App/ChangingCard/ChangingSubtitle";
+import ChangingTitle from "./App/Header/ChangingCard/ChangingTitle";
+import ChangingSubtitle from "./App/Header/ChangingCard/ChangingSubtitle";
 
 
 const { red } = require('@material-ui/core/colors');

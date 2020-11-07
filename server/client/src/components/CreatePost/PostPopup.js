@@ -218,7 +218,7 @@ const PostPopup = (props) => {
           comments: [],
         };
         props.userAddPost(postData);
-      props.buttonClick()
+        props.buttonClick()
       }}
     >
       {({
