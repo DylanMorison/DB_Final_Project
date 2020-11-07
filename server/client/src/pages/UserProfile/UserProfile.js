@@ -11,6 +11,7 @@ import Post from "../../components/Post/Post";
 import Drone from "../../img/Drone.png";
 import UserHeader from "./UserHeader";
 import { connect } from "react-redux";
+import { useSelector } from 'react-redux'
 
 const Spacing = styled.div`
   padding: 15px;
@@ -47,14 +48,44 @@ const Root = styled.div`
 `;
 
 const UserProfile = (props) => {
-  const user = firebase.auth().currentUser;
+  //const user = firebase.auth().currentUser;
+  const { auth } = props.location.state; // pulls out the auth from the state passed by <Link/> in react router
+  console.log(auth)
+  const user = useSelector(state => state.users.uid == auth.uid )
 
   return (
     <Container maxWidth="sm">
       <Spacing />
-      <UserHeader user={props.auth.email} followers={32} following={43} posts={1}/>
+      <UserHeader
+        user={auth.email}
+        userData={auth}
+        followers={auth.followers}
+        following={auth.following}
+        posts={auth.userPosts.length}
+      />
       <Spacing />
-      {/* <Post
+      {auth.userPosts.length > 0 ? (
+        auth.userPosts.map((postItem) => (
+          <Post
+          postData={postItem}
+          backgroundImage={postItem.thumbnail}
+          postUser={postItem.author}
+          postTitle={postItem.title}
+          postDescription={postItem.description}
+          timestamp={12}
+          />
+        ))
+      ) : (
+        <div> no posts by this user </div>
+      )}
+    </Container>
+  );
+};
+
+export default UserProfile;
+
+{
+  /* <Post
         backgroundImage={Drone}
         postUser={props.auth.email}
         postTitle={"Printable Drone"}
@@ -62,17 +93,5 @@ const UserProfile = (props) => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a velit at vitae potenti consequat. Nec leo, gravida viverra augue ut tincidunt rutrum odio diam."
         }
         timestamp={12}
-      /> */}
-    </Container>
-  );
-};
-
-function mapStatetoProps(state) {
-  return {
-    auth: state.auth,
-  };
+      /> */
 }
-
-
-export default connect(mapStatetoProps)(UserProfile);
-
