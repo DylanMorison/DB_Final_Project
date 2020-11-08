@@ -137,7 +137,7 @@ const CommentSection = (props) => {
                   />
                 ))
               ) : (
-                <div>no posts</div>
+                <div>no comments</div>
               )}
             </CommentsWrapper>
           </Root>

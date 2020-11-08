@@ -61,21 +61,19 @@ const Container = styled.div`
  * Home page of the app
  */
 const Home = (props) => {
-
-
   return (
     <Container maxWidth="sm">
       <Spacing />
       {props.homePosts.posts.length > 0 ? (
         props.homePosts.posts.map((postItem) => (
-          <Post
-            postData={postItem}
-            backgroundImage={postItem.thumbnail}
-            postUser={postItem.author}
-            postTitle={postItem.title}
-            postDescription={postItem.description}
-            timestamp={12}
-          />
+        <Post
+          postData={postItem}
+          backgroundImage={postItem.thumbnail}
+          postUser={postItem.author.email}
+          postTitle={postItem.title}
+          postDescription={postItem.description}
+          timestamp={12}
+        />
         ))
       ) : (
         <div>no posts</div>

@@ -11,7 +11,7 @@ import Post from "../../components/Post/Post";
 import Drone from "../../img/Drone.png";
 import UserHeader from "./UserHeader";
 import { connect } from "react-redux";
-import { useSelector } from 'react-redux'
+import { useSelector } from "react-redux";
 
 const Spacing = styled.div`
   padding: 15px;
@@ -48,10 +48,13 @@ const Root = styled.div`
 `;
 
 const UserProfile = (props) => {
-  //const user = firebase.auth().currentUser;
   const { auth } = props.location.state; // pulls out the auth from the state passed by <Link/> in react router
-  console.log(auth)
-  const user = useSelector(state => state.users.uid == auth.uid )
+  let thisUserPosts = [];
+  props.homePosts.posts.forEach((postItem) => {
+    if (postItem.author.uid == auth.uid) {
+      thisUserPosts.push(postItem);
+    }
+  });
 
   return (
     <Container maxWidth="sm">
@@ -64,15 +67,15 @@ const UserProfile = (props) => {
         posts={auth.userPosts.length}
       />
       <Spacing />
-      {auth.userPosts.length > 0 ? (
-        auth.userPosts.map((postItem) => (
+      {thisUserPosts.length > 0 ? (
+        thisUserPosts.map((postItem) => (
           <Post
-          postData={postItem}
-          backgroundImage={postItem.thumbnail}
-          postUser={postItem.author}
-          postTitle={postItem.title}
-          postDescription={postItem.description}
-          timestamp={12}
+            postData={postItem}
+            backgroundImage={postItem.thumbnail}
+            postUser={postItem.author}
+            postTitle={postItem.title}
+            postDescription={postItem.description}
+            timestamp={12}
           />
         ))
       ) : (
@@ -82,16 +85,11 @@ const UserProfile = (props) => {
   );
 };
 
-export default UserProfile;
-
-{
-  /* <Post
-        backgroundImage={Drone}
-        postUser={props.auth.email}
-        postTitle={"Printable Drone"}
-        postDescription={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium a velit at vitae potenti consequat. Nec leo, gravida viverra augue ut tincidunt rutrum odio diam."
-        }
-        timestamp={12}
-      /> */
+function mapStatetoProps(state) {
+  return {
+    homePosts: state.homePosts,
+  };
 }
+
+export default connect(mapStatetoProps)(UserProfile);
+

@@ -44,7 +44,6 @@ render(
 		<PersistGate loading={null} persistor={persistor}>
 			<App />
 			</PersistGate>
-
 		</Provider>
 	</ThemeProvider>,
 	document.getElementById("root")
