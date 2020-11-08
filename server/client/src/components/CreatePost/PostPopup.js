@@ -210,7 +210,7 @@ const PostPopup = (props) => {
           description: description,
           file: file,
           thumbnail: thumbnail,
-          author: props.auth.uid,
+          author: props.auth,
           timestamp: Date.now(),
           numLikes: 0, 
           numComments: 0,
