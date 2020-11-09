@@ -81,13 +81,11 @@ const ErrorMessage = styled.div`
 
 const CommentSection = (props) => {
   const handleCommentSubmit = (commentContents) => {
-    const comment = {
-      author: props.auth.userUid,
-      contents: commentContents,
+    const commentData = {
+      commentAuthorUid: props.auth.userUid,
+      commentContents: commentContents,
     };
-    props.postData.comments.push(comment);
-    props.postData.numComments += 1;
-    props.userAddComment(props.postData, props.auth.userUid);
+    props.userAddComment(props.postData.postUid, commentData);
   };
 
   return (
@@ -100,7 +98,7 @@ const CommentSection = (props) => {
           .max(50, "Must be 50 characters or less")
           .required("Required"),
       })}
-      onSubmit={({ commentContents } , { resetForm }) => {
+      onSubmit={({ commentContents }, { resetForm }) => {
         handleCommentSubmit(commentContents);
         resetForm();
       }}
@@ -133,8 +131,8 @@ const CommentSection = (props) => {
               {props.postData.comments.length > 0 ? (
                 props.postData.comments.map((comment) => (
                   <Comment
-                    commentAuthorUid={comment.author}
-                    commentContents={comment.contents}
+                    commentAuthorUid={comment.commentAuthorUid}
+                    commentContents={comment.commentContents}
                   />
                 ))
               ) : (

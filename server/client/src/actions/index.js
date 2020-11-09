@@ -8,6 +8,7 @@ import {
   ADD_COMMENT,
   CREATE_USER,
   TOGGLE_FOLLOW,
+  USER_ADD_POST,
 } from "./types";
 
 export const getAllUsers = () => async (dispatch) => {
@@ -104,6 +105,7 @@ export const userAddPost = (thisPostData) => async (dispatch) => {
   console.log(postData);
   //parsing of timestamp should occur in backend
   dispatch({ type: ADD_POST, payload: postData });
+  //dispatch({ type: USER_ADD_POST, payload: postData });
 };
 
 export const userToggleLike = (userLiked, postData) => (dispatch) => {
@@ -113,11 +115,17 @@ export const userToggleLike = (userLiked, postData) => (dispatch) => {
   dispatch({ type: TOGGLE_LIKE, payload: postData });
 };
 
-export const userAddComment = (postData, userCommented) => (dispatch) => {
+export const userAddComment = (thisPostUid, newCommentData) => (dispatch) => {
   // const res = await axios.post   # Your DB Call here <---
   console.log("add comment");
-  console.log(postData, userCommented);
-  dispatch({ type: ADD_COMMENT, payload: postData });
+  const payload = {
+    commentData: {
+      commentAuthorUid: newCommentData.commentAuthorUid,
+      commentContents: newCommentData.commentContents,
+    },
+    postUid: thisPostUid,
+  };
+  dispatch({ type: ADD_COMMENT, payload: payload });
 };
 
 export const userToggleFollow = (userData, userFollowed) => (dispatch) => {
