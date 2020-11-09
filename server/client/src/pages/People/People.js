@@ -57,12 +57,18 @@ const Person = styled.div`
  * People page
  */
 const People = (props) => {
+  let otherUsers = [];
+  props.users.people.forEach((person) => {
+    if (person.uid != props.auth.uid) {
+      otherUsers.push(person);
+    }
+  });
 
   return (
     <Root maxWidth="md">
       <PeopleContainer>
-        {props.users.people.length > 0 ? (
-          props.users.people.map((person) => <PeopleCard personData={person} />)
+        {otherUsers.length > 0 ? (
+          otherUsers.map((person) => <PeopleCard personData={person} />)
         ) : (
           <div> no people </div>
         )}
