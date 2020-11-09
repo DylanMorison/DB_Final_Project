@@ -44,7 +44,7 @@ const UserSection = (props) => {
       <Avatar image={defaultPic} size={60} />{" "}
       <UserNameWrapper>
         <UserTitle>Creator:</UserTitle>
-        <UserName>{props.postUser}</UserName>
+        <UserName>{props.postUser.username}</UserName>
       </UserNameWrapper>
     </UserWrapper>
   );

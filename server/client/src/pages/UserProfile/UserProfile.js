@@ -55,6 +55,7 @@ const UserProfile = (props) => {
       thisUserPosts.push(postItem);
     }
   });
+  console.log(thisUserPosts)
 
   return (
     <Container maxWidth="sm">
@@ -64,7 +65,7 @@ const UserProfile = (props) => {
         userData={auth}
         followers={auth.followers}
         following={auth.following}
-        posts={auth.userPosts.length}
+        posts={1}
       />
       <Spacing />
       {thisUserPosts.length > 0 ? (
