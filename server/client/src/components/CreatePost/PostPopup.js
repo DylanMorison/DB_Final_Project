@@ -349,3 +349,4 @@ export default connect(mapStatetoProps, { userAddPost })(PostPopup);
 // overflow: hidden;
 // position: absolute;
 // z-index: -1;
+ 
