@@ -20,6 +20,7 @@ import Post from "../../components/Post/Post";
 import Drone from "../../img/Drone.png";
 import { connect } from "react-redux";
 import { userAddPost } from "../../actions";
+import { useSelector } from "react-redux";
 
 const Empty = styled.div`
   padding: ${(p) => p.theme.spacing.sm};
@@ -64,15 +65,10 @@ const Home = (props) => {
   return (
     <Container maxWidth="sm">
       <Spacing />
-      {props.homePosts.posts.length > 0 ? (
-        props.homePosts.posts.map((postItem) => (
+      {props.posts.allPostUids.length > 0 ? (
+        props.posts.allPostUids.map((postUid) => (
         <Post
-          postData={postItem}
-          backgroundImage={postItem.thumbnail}
-          postUser={postItem.author.email}
-          postTitle={postItem.title}
-          postDescription={postItem.description}
-          timestamp={12}
+        postUid={postUid}
         />
         ))
       ) : (
@@ -84,7 +80,7 @@ const Home = (props) => {
 
 function mapStatetoProps(state) {
   return {
-    homePosts: state.homePosts,
+    posts: state.posts,
   };
 }
 

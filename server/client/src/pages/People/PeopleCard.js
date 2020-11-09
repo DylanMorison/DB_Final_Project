@@ -11,6 +11,9 @@ import * as Routes from "routes";
 import Avatar from "../../components/Avatar";
 import AddButton from "./AddButton";
 import { withRouter, Link } from "react-router-dom";
+import { connect, useSelector } from "react-redux";
+import { userToggleFollow } from "../../actions";
+import { auth } from "firebase";
 
 const Root = styled.div`
   width: 312px;
@@ -45,32 +48,53 @@ const UserBio = styled.div`
 
 const PeopleCard = (props) => {
   const [following, setFollowing] = useState(false);
+  const thisUser = useSelector((state) => state.users.usersByUid[props.userUid]);
 
   const handleFollowing = () => {
+    // if (following) {
+    //   let newFollowing = [];
+    //   props.auth.userFollowing.forEach((person) => {
+    //     if (person.uid != props.personData.uid) {
+    //       newFollowing.push(person);
+    //     }
+    //   });
+    //   props.auth.userFollowing = newFollowing;
+
+    // }
+    // else{
+
+    // }
     setFollowing(!following);
   };
-
+  // userUid
   return (
     <Root>
       <Link
         exact
         to={{
           pathname: generatePath(Routes.USER_PROFILE, {
-            username: props.personData.uid,
+            username: props.userUid,
           }),
-          state: { auth: props.personData },
+          state: { auth: props.userUid },
         }}
       >
         <Avatar size={70} />
       </Link>
-      <UserName>{props.personData.username}</UserName>
+      <UserName>{thisUser.username}</UserName>
       <UserBio>
-        {props.personData.following} following <span> &#9679;</span>{" "}
-        {props.personData.followers} followers
+        {thisUser.following} following <span> &#9679;</span>{" "}
+        {thisUser.followers} followers
       </UserBio>
       <AddButton handleFollowing={handleFollowing} following={following} />
     </Root>
   );
 };
 
-export default PeopleCard;
+function mapStatetoProps(state) {
+  return {
+    users: state.users,
+    auth: state.auth,
+  };
+}
+
+export default connect(mapStatetoProps, { userToggleFollow })(PeopleCard);

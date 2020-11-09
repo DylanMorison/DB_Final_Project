@@ -57,18 +57,18 @@ const Person = styled.div`
  * People page
  */
 const People = (props) => {
-  let otherUsers = [];
-  props.users.people.forEach((person) => {
-    if (person.uid != props.auth.uid) {
-      otherUsers.push(person);
-    }
-  });
+  // let otherUsers = [];
+  // props.users.people.forEach((person) => {
+  //   if (person.uid != props.auth.uid) {
+  //     otherUsers.push(person);
+  //   }
+  // });
 
   return (
     <Root maxWidth="md">
       <PeopleContainer>
-        {otherUsers.length > 0 ? (
-          otherUsers.map((person) => <PeopleCard personData={person} />)
+        {props.users.allUserUids.length > 0 ? (
+          props.users.allUserUids.map((userUid) => <PeopleCard userUid={userUid} />)
         ) : (
           <div> no people </div>
         )}
@@ -85,15 +85,3 @@ function mapStatetoProps(state) {
 }
 
 export default connect(mapStatetoProps)(People);
-
-//code for filtering people who are not you
-
-  // const filterPeople = (peopleArray) => {
-  //   let newPeopleArray = [];
-  //   peopleArray.forEach((person) => {
-  //     if (person.uid != props.auth.uid) {
-  //       newPeopleArray.push(person);
-  //     }
-  //   });
-  //   return newPeopleArray
-  // };

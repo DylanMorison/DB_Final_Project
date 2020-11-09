@@ -49,34 +49,32 @@ const Root = styled.div`
 
 const UserProfile = (props) => {
   const { auth } = props.location.state; // pulls out the auth from the state passed by <Link/> in react router
-  let thisUserPosts = [];
-  props.homePosts.posts.forEach((postItem) => {
-    if (postItem.author.uid == auth.uid) {
-      thisUserPosts.push(postItem);
-    }
-  });
-  console.log(thisUserPosts)
+  const thisUser = useSelector(state => state.users.usersByUid[auth])
+  const thisUserPosts = useSelector(state => state.posts.postsByUids, postsByUids => postsByUids.filter(post => post.authorUid == auth))
+  let userPostLength = Object.keys(thisUserPosts).length;
+  let Posts = [];
+  for (const post in thisUserPosts) {
+      Posts.push(post)
+  }
+
+  console.log(Posts)
+
 
   return (
     <Container maxWidth="sm">
       <Spacing />
       <UserHeader
-        user={auth.email}
-        userData={auth}
-        followers={auth.followers}
-        following={auth.following}
+        user={thisUser.email}
+        userData={thisUser}
+        followers={thisUser.followers}
+        following={thisUser.following}
         posts={1}
       />
       <Spacing />
-      {thisUserPosts.length > 0 ? (
-        thisUserPosts.map((postItem) => (
+      {12 > 0 ? (
+        Posts.map((postUid) => (
           <Post
-            postData={postItem}
-            backgroundImage={postItem.thumbnail}
-            postUser={postItem.author}
-            postTitle={postItem.title}
-            postDescription={postItem.description}
-            timestamp={12}
+          postUid={postUid}
           />
         ))
       ) : (
@@ -88,7 +86,8 @@ const UserProfile = (props) => {
 
 function mapStatetoProps(state) {
   return {
-    homePosts: state.homePosts,
+    posts: state.posts,
+    users: state.users,
   };
 }
 

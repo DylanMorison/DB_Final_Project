@@ -210,7 +210,7 @@ const PostPopup = (props) => {
           description: description,
           file: file,
           thumbnail: thumbnail,
-          author: props.auth,
+          authorUid: props.auth.userUid,
           timestamp: Date.now(),
           numLikes: 0, 
           numComments: 0,
@@ -336,7 +336,7 @@ const PostPopup = (props) => {
 
 function mapStatetoProps(state) {
   return {
-    posts: state.homePosts,
+    posts: state.posts,
     auth: state.auth,
   };
 }

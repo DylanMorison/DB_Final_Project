@@ -35,7 +35,7 @@ const Number = styled.div`
 `;
 
 const PostInteractions = (props) => {
-  const [liked, setLiked] = useState(props.postData.usersLiked.includes(props.auth.uid));
+  const [liked, setLiked] = useState(props.postData.usersLiked.includes(props.auth.userUid));
   const [numLikes, setNumLikes] = useState(0);
   const [numComments, setNumComments] = useState(5);
 
@@ -48,17 +48,17 @@ const PostInteractions = (props) => {
   };
 
   const handleLike = () => {
-    if (props.postData.usersLiked.includes(props.auth.uid)) {
+    if (props.postData.usersLiked.includes(props.auth.userUid)) {
       props.postData.numLikes -= 1;
-      props.postData.usersLiked =  props.postData.usersLiked.filter(user => user != props.auth.uid);
+      props.postData.usersLiked =  props.postData.usersLiked.filter(user => user != props.auth.userUid);
       // props.postData.usersLiked = newLikes
-      props.userToggleLike(props.postData, props.auth);
+      props.userToggleLike(props.postData, props.auth.userUid);
       setLiked(!liked);
     }
     else{
       props.postData.numLikes += 1;
-      props.postData.usersLiked.push(props.auth.uid);
-      props.userToggleLike(props.postData, props.auth);
+      props.postData.usersLiked.push(props.auth.userUid);
+      props.userToggleLike(props.postData, props.auth.userUid);
       setLiked(!liked);
     }
     
@@ -83,7 +83,7 @@ const PostInteractions = (props) => {
 
 function mapStatetoProps(state) {
   return {
-    homePosts: state.homePosts,
+    posts: state.posts,
     auth: state.auth
   };
 }

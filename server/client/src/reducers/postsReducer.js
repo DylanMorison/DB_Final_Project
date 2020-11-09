@@ -1,17 +1,20 @@
 import { ADD_POST, TOGGLE_LIKE, ADD_COMMENT } from "../actions/types";
 
+
 const initialState = {
-  posts: [],
-  status: "load",
-  location: "home",
+  postsByUids: {},
+  allPostUids: [],
 };
+
+
 
 export default function (state = initialState, action) {
   switch (action.type) {
     case ADD_POST:
       return {
         ...state,
-        posts: [...state.posts, action.payload],
+				postsByUids: {...state.postsByUids, [action.payload.postUid] :{...action.payload.postData}},
+				allPostUids: [...state.allPostUids, action.payload.postUid],
       };
     case TOGGLE_LIKE:
       return {

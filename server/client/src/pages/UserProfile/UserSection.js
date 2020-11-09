@@ -79,7 +79,7 @@ const UserSection = (props) => {
         </AvatarWrapper>
         <UserNameWrapper>
           <UserTitle>Creator:</UserTitle>
-          <UserName>{"props.postUser"}</UserName>
+          <UserName>{props.userData.username}</UserName>
         </UserNameWrapper>
       </UserWrapper>
     </>

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Avatar from "./Avatar";
+import { useSelector } from "react-redux";
 
 const CommentSpacing = styled.div`
   padding-bottom: 10px;
@@ -10,8 +11,8 @@ const CommentSpacing = styled.div`
 const Root = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content:  flex-start;
-  align-items:  center;
+  justify-content: flex-start;
+  align-items: center;
   width: 100%;
   background: rgba(142, 142, 142, 0.3);
   height: 75px;
@@ -47,17 +48,18 @@ const UserInfoWrapper = styled.div`
 `;
 
 const Comment = (props) => {
+  const commentAuthor = useSelector((state) => state.users.usersByUid[props.commentAuthorUid]);
   return (
     <CommentSpacing>
-    <Root>
-      <AvatarWrapper>
-        <Avatar size={50} />
-      </AvatarWrapper>
-      <UserInfoWrapper>
-        <Username>{props.username} </Username>
-        <CommentContents>{props.commentContents}</CommentContents>
-      </UserInfoWrapper>
-    </Root>
+      <Root>
+        <AvatarWrapper>
+          <Avatar size={50} />
+        </AvatarWrapper>
+        <UserInfoWrapper>
+          <Username>{commentAuthor.username} </Username>
+          <CommentContents>{props.commentContents}</CommentContents>
+        </UserInfoWrapper>
+      </Root>
     </CommentSpacing>
   );
 };
