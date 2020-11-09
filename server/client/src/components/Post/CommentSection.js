@@ -5,6 +5,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { connect } from "react-redux";
 import { userAddComment } from "../../actions";
+import { useSelector } from "react-redux";
 
 const Root = styled.div`
   display: flex;
@@ -81,12 +82,12 @@ const ErrorMessage = styled.div`
 const CommentSection = (props) => {
   const handleCommentSubmit = (commentContents) => {
     const comment = {
-      author: props.auth,
+      author: props.auth.userUid,
       contents: commentContents,
     };
     props.postData.comments.push(comment);
     props.postData.numComments += 1;
-    props.userAddComment(props.postData, props.auth);
+    props.userAddComment(props.postData, props.auth.userUid);
   };
 
   return (
@@ -132,7 +133,7 @@ const CommentSection = (props) => {
               {props.postData.comments.length > 0 ? (
                 props.postData.comments.map((comment) => (
                   <Comment
-                    username={comment.author.username}
+                    commentAuthorUid={comment.author}
                     commentContents={comment.contents}
                   />
                 ))
@@ -149,7 +150,7 @@ const CommentSection = (props) => {
 
 function mapStatetoProps(state) {
   return {
-    homePosts: state.homePosts,
+    posts: state.posts,
     auth: state.auth,
   };
 }

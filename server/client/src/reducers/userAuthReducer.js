@@ -1,17 +1,7 @@
-import { USER_LOGIN, USER_LOGOUT, } from "../actions/types";
+import { USER_LOGIN, USER_LOGOUT, TOGGLE_FOLLOW } from "../actions/types";
 
 const initialState = {
-  username: null,
-  email: null,
-  uid: null,
-  username: null,
-  email: null,
-  uid: null,
-  Fullname: null,
-  following: null,
-  followers: null,
-  isLoggedIn: null,
-  isLoggedIn: false,
+  userUid: null,
 };
 
 export default function (state = initialState, action) {
@@ -19,26 +9,19 @@ export default function (state = initialState, action) {
     case USER_LOGIN:
       return {
         ...state,
-        username: action.payload.username,
-        email: action.payload.email,
-        uid: action.payload.uid,
-        Fullname: action.payload.Fullname,
-        following: action.payload.following,
-        followers: action.payload.followers,
-        isLoggedIn: action.payload.isLoggedIn,
+        userUid: action.payload.userUid,
       };
     case USER_LOGOUT:
       return {
         ...state,
-        username: action.payload.username,
-        email: action.payload.email,
-        uid: action.payload.uid,
-        Fullname: action.payload.Fullname,
-        following: action.payload.following,
-        followers: action.payload.followers,
-        isLoggedIn: action.payload.isLoggedIn,
+        userUid: action.payload.userUid,
       };
-
+      case TOGGLE_FOLLOW:
+        return {
+          ...state,
+          userFollowers: action.payload.userFollowers, 
+          userFollowing: action.payload.userFollowing,
+        };
     default:
       return state;
   }

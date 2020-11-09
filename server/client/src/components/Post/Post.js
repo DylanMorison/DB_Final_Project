@@ -8,6 +8,7 @@ import Timestamp from "./Timestamp";
 import PostInfo from "./PostInfo";
 import PostInteractions from "./PostInteractions";
 import CommentSection from "./CommentSection";
+import { useSelector } from "react-redux";
 
 const Root = styled.div`
   display: flex;
@@ -63,28 +64,33 @@ const LowerSection = styled.div`
 
 const Post = (props) => {
   const [commentsShown, setCommentsShown] = useState(false);
+  const thisPost = useSelector(state => state.posts.postsByUids[props.postUid])
+  const postAuthor = useSelector(state => state.users.usersByUid[thisPost.authorUid])
+
+  
+
 
   const handleCommentSection = () => {
     if (commentsShown) {
-      return <CommentSection postData={props.postData}  />;
+      return <CommentSection postData={thisPost}  />;
     }
   };
 
   return (
     <Root>
       <PostContainer
-        style={{ backgroundImage: `url(${props.backgroundImage})` }}
+        style={{ backgroundImage: `url(${thisPost.thumbnail})` }}
       >
         <UpperSection>
-          <UserSection postUser={props.postUser} />
-          <Timestamp timestamp={props.timestamp} />
+          <UserSection postAuthor={postAuthor} />
+          <Timestamp timestamp={thisPost.timestamp} />
         </UpperSection>
         <LowerSection>
           <PostInfo
-            postDescription={props.postDescription}
-            postTitle={props.postTitle}
+            postDescription={thisPost.postDescription}
+            postTitle={thisPost.postTitle}
           />
-          <PostInteractions postData={props.postData} commentsShown={commentsShown} setCommentsShown={setCommentsShown}/>
+          <PostInteractions postData={thisPost} commentsShown={commentsShown} setCommentsShown={setCommentsShown}/>
         </LowerSection>
       </PostContainer>
       {handleCommentSection()}

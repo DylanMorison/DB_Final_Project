@@ -1,19 +1,23 @@
-import { FETCH_USERS, CREATE_USER } from "../actions/types";
+import { FETCH_USERS, CREATE_USER, TOGGLE_FOLLOW } from "../actions/types";
 
 const initialState = {
-  people: [],
-  location: "explore people",
+    usersByUid: {},
+    allUserUids: [],
 };
 
-
 export default function (state = initialState, action) {
-	switch (action.type) {
-		case CREATE_USER:
-			return {
+  switch (action.type) {
+    case CREATE_USER:
+      return {
         ...state,
-        people: [...state.people, action.payload],
+				usersByUid: {...state.usersByUid, [action.payload.userUid] :{...action.payload.userData}},
+				allUserUids: [...state.allUserUids, action.payload.userUid],
       };
-		default:
-			return state;
-	}
+    case TOGGLE_FOLLOW:
+      return {
+        ...state,
+      };
+    default:
+      return state;
+  }
 }

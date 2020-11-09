@@ -22,10 +22,10 @@ const App = (props) => {
 
       <ScrollToTop>
         <Switch>
-          {props.auth.isLoggedIn  ? (
+          {props.auth.userUid ? (
             <Route
               exact
-              render={() => <AppLayout authUser={currentUser} />}
+              render={() => <AppLayout />}
             />
           ) : (
             <Route exact render={() => <AuthLayout />} />

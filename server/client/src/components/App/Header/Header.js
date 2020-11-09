@@ -162,7 +162,7 @@ const Header = (props, { location, toggleSideBar }) => {
             </UserName>
             <Link
               exact
-              to={{pathname: generatePath(Routes.USER_PROFILE, { username: props.auth.uid }), state: {auth: props.auth}}}
+              to={{pathname: generatePath(Routes.USER_PROFILE, { username: props.auth.userUid }), state: {auth: props.auth.userUid}}}
             >
               <Button>
                 <Avatar image={defaultPic} size={40} />

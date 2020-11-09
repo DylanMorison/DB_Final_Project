@@ -64,7 +64,7 @@ const UserHeader = (props) => {
   return (
     <HeaderWrapper>
       <UserSectionWrapper>
-        <UserSection postUser={props.user} />
+        <UserSection userData={props.userData} />
       </UserSectionWrapper>
       <Line />
       <StatsWrapper>
