@@ -1,4 +1,4 @@
-import { USER_LOGIN, USER_LOGOUT, USER_POST } from "../actions/types";
+import { USER_LOGIN, USER_LOGOUT, } from "../actions/types";
 
 const initialState = {
   username: null,
@@ -10,7 +10,6 @@ const initialState = {
   Fullname: null,
   following: null,
   followers: null,
-  userPosts: null,
   isLoggedIn: null,
   isLoggedIn: false,
 };
@@ -26,7 +25,6 @@ export default function (state = initialState, action) {
         Fullname: action.payload.Fullname,
         following: action.payload.following,
         followers: action.payload.followers,
-        userPosts: action.payload.userPosts,
         isLoggedIn: action.payload.isLoggedIn,
       };
     case USER_LOGOUT:
@@ -38,14 +36,8 @@ export default function (state = initialState, action) {
         Fullname: action.payload.Fullname,
         following: action.payload.following,
         followers: action.payload.followers,
-        userPosts: action.payload.userPosts,
         isLoggedIn: action.payload.isLoggedIn,
       };
-      case USER_POST:
-        return {
-          ...state,
-          userPosts: [...state.userPosts, action.payload],
-        };
 
     default:
       return state;

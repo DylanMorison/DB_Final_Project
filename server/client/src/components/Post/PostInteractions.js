@@ -50,7 +50,8 @@ const PostInteractions = (props) => {
   const handleLike = () => {
     if (props.postData.usersLiked.includes(props.auth.uid)) {
       props.postData.numLikes -= 1;
-      props.postData.usersLiked =  props.postData.usersLiked.filter(user => user.uid !== props.auth.uid);
+      props.postData.usersLiked =  props.postData.usersLiked.filter(user => user != props.auth.uid);
+      // props.postData.usersLiked = newLikes
       props.userToggleLike(props.postData, props.auth);
       setLiked(!liked);
     }

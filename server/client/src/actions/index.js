@@ -7,7 +7,6 @@ import {
   TOGGLE_LIKE,
   ADD_COMMENT,
   CREATE_USER,
-  USER_POST
 } from "./types";
 
 export const getAllUsers = () => async (dispatch) => {
@@ -29,7 +28,6 @@ export const createUser = (userData) => async (dispatch) => {
     Fullname: userData.Fullname,
     following: 0, 
     followers: 0, 
-    userPosts: [],
     isLoggedIn: true,
   };
 
@@ -71,7 +69,6 @@ export const signInUser = (username, password) => async (dispatch) => {
     Fullname: "userData.Fullname",
     following: 0, 
     followers: 0, 
-    userPosts: [],
     isLoggedIn: true,
   };
   dispatch({ type: USER_LOGIN, payload: userState });
@@ -83,7 +80,6 @@ export const userAddPost = (postData) => async (dispatch) => {
   console.log(postData);
   //parsing of timestamp should occur in backend
   dispatch({ type: ADD_POST, payload: postData });
-  dispatch({ type: USER_POST, payload: postData });
 };
 
 export const userToggleLike = (userLiked, postData) => (dispatch) => {
