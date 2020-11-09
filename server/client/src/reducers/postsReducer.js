@@ -6,6 +6,23 @@ const initialState = {
   allPostUids: [],
 };
 
+// 	▼ POSTS	STATE LOOKS LIKE THIS ▼
+// const postData = {
+//   postData: {
+//     title: thisPostData.title,
+//     postUid: newPostUid,
+//     description: thisPostData.description,
+//     file: thisPostData.file,
+//     thumbnail: thisPostData.thumbnail,
+//     authorUid: thisPostData.authorUid,
+//     timestamp: thisPostData.timestamp,
+//     numLikes: thisPostData.numLikes,
+//     numComments: thisPostData.numComments,
+//     usersLiked: thisPostData.usersLiked,
+//     comments: thisPostData.comments,
+//   },
+//   postUid: newPostUid,
+// };
 
 
 export default function (state = initialState, action) {
@@ -23,6 +40,13 @@ export default function (state = initialState, action) {
     case ADD_COMMENT :
       return {
         ...state,
+        postsByUids: {
+          ...state.postsByUids,
+          [action.payload.postUid]:{
+            ...state.postsByUids[action.payload.postUid],
+            comments: [...state.postsByUids[action.payload.postUid].comments, action.payload.commentData]
+          }
+        }
       };
     default:
       return state;
