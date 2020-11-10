@@ -40,25 +40,42 @@ class DbService {
 		}
 	}
 
-	async registerUser(email, password, username) {
+	async registerUser(email, password, username, fullName) {
 		try {
-			debugger;
 			const insertId = await new Promise((resolve, reject) => {
 				const query =
-					"INSERT INTO users (email, password, username) VALUES (?,?,?); ";
+					"INSERT INTO users (user_id, username, email, user_password, fullName) VALUES (?,?,?,?,?); ";
 
-				connection.query(query, [email, password, username], (err, result) => {
+				connection.query(
+					query,
+					[null, username, email, password, fullName],
+					(err, result) => {
+						if (err) {
+							console.log(err.message);
+							reject(new Error(err.message));
+						}
+						resolve(result.insertId);
+					}
+				);
+			});
+
+			return { insertId, username, email, fullName };
+		} catch (err) {
+			console.log(err);
+		}
+	}
+	async signIn(username) {
+		try {
+			const response = await new Promise((resolve, reject) => {
+				const query = "SELECT * FROM users WHERE username=?";
+				connection.query(query, [username], (err, results) => {
 					if (err) reject(new Error(err.message));
-					resolve(result);
+					resolve(results);
 				});
 			});
 
-			console.log(insertId);
-			return {
-				email,
-				password,
-				username
-			};
+			console.log(response);
+			return response;
 		} catch (err) {
 			console.log(err);
 		}
