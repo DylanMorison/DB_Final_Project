@@ -137,6 +137,8 @@ export const addLike = (userLiked, postUid) => (dispatch) => {
   };
   dispatch({ type: ADD_LIKE, payload: likeObject });
 
+}
+
 
 export const userAddComment = (thisPostUid, newCommentData) => (dispatch) => {
 	// const res = await axios.post   # Your DB Call here <---
