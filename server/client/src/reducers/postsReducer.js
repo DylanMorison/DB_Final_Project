@@ -1,5 +1,4 @@
-import { ADD_POST, TOGGLE_LIKE, ADD_COMMENT } from "../actions/types";
-
+import { ADD_POST, DELETE_LIKE, ADD_COMMENT, ADD_LIKE } from "../actions/types";
 
 const initialState = {
   postsByUids: {},
@@ -24,29 +23,57 @@ const initialState = {
 //   postUid: newPostUid,
 // };
 
-
 export default function (state = initialState, action) {
   switch (action.type) {
     case ADD_POST:
       return {
         ...state,
-				postsByUids: {...state.postsByUids, [action.payload.postUid] :{...action.payload.postData}},
-				allPostUids: [...state.allPostUids, action.payload.postUid],
+        postsByUids: {
+          ...state.postsByUids,
+          [action.payload.postUid]: { ...action.payload.postData },
+        },
+        allPostUids: [...state.allPostUids, action.payload.postUid],
       };
-    case TOGGLE_LIKE:
-      return {
-        ...state,
-      };
-    case ADD_COMMENT :
+    case DELETE_LIKE:
       return {
         ...state,
         postsByUids: {
           ...state.postsByUids,
-          [action.payload.postUid]:{
+          [action.payload.postUid]: {
             ...state.postsByUids[action.payload.postUid],
-            comments: [...state.postsByUids[action.payload.postUid].comments, action.payload.commentData]
-          }
-        }
+            usersLiked: [
+              ...state.postsByUids[action.payload.postUid].usersLiked.filter(user => user != action.payload.userLiked)
+            ],
+          },
+        },
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        postsByUids: {
+          ...state.postsByUids,
+          [action.payload.postUid]: {
+            ...state.postsByUids[action.payload.postUid],
+            comments: [
+              ...state.postsByUids[action.payload.postUid].comments,
+              action.payload.commentData,
+            ],
+          },
+        },
+      };
+    case ADD_LIKE:
+      return {
+        ...state,
+        postsByUids: {
+          ...state.postsByUids,
+          [action.payload.postUid]: {
+            ...state.postsByUids[action.payload.postUid],
+            usersLiked: [
+              ...state.postsByUids[action.payload.postUid].usersLiked,
+              action.payload.userLiked,
+            ],
+          },
+        },
       };
     default:
       return state;

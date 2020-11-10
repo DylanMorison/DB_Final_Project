@@ -1,14 +1,15 @@
 import axios from "axios";
 import {
-	FETCH_USERS,
-	USER_LOGIN,
-	USER_LOGOUT,
-	ADD_POST,
-	TOGGLE_LIKE,
-	ADD_COMMENT,
-	CREATE_USER,
-	TOGGLE_FOLLOW,
-	USER_ADD_POST
+  FETCH_USERS,
+  USER_LOGIN,
+  USER_LOGOUT,
+  ADD_POST,
+  DELETE_LIKE,
+  ADD_COMMENT,
+  CREATE_USER,
+  TOGGLE_FOLLOW,
+  USER_ADD_POST,
+  ADD_LIKE,
 } from "./types";
 
 export const getAllUsers = () => async (dispatch) => {
@@ -117,12 +118,25 @@ export const userAddPost = (thisPostData) => async (dispatch) => {
 	//dispatch({ type: USER_ADD_POST, payload: postData });
 };
 
-export const userToggleLike = (userLiked, postData) => (dispatch) => {
-	// const res = await axios.post   # Your DB Call here <---
-	console.log("toggle like");
-	console.log(postData, userLiked);
-	dispatch({ type: TOGGLE_LIKE, payload: postData });
+export const deleteLike = (userLiked, postUid) => (dispatch) => {
+  // const res = await axios.post   # Your DB Call here <---
+  console.log("delete like");
+  const deletedLikeObject = {
+    userLiked: userLiked,
+    postUid: postUid,
+  };
+  dispatch({ type: DELETE_LIKE, payload: deletedLikeObject });
 };
+
+export const addLike = (userLiked, postUid) => (dispatch) => {
+  // const res = await axios.post   # Your DB Call here <---
+  console.log("add like");
+  const likeObject = {
+    userLiked: userLiked,
+    postUid: postUid,
+  };
+  dispatch({ type: ADD_LIKE, payload: likeObject });
+
 
 export const userAddComment = (thisPostUid, newCommentData) => (dispatch) => {
 	// const res = await axios.post   # Your DB Call here <---

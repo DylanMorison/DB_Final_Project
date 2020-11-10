@@ -48,36 +48,39 @@ const Root = styled.div`
 `;
 
 const UserProfile = (props) => {
-	const { auth } = props.location.state; // pulls out the auth from the state passed by <Link/> in react router
-	const thisUser = useSelector((state) => state.users.usersByUid[auth]);
-	const thisUserPosts = useSelector(
-		(state) => state.posts.postsByUids,
-		(postsByUids) => postsByUids.filter((post) => post.authorUid == auth)
-	);
-	let userPostLength = Object.keys(thisUserPosts).length;
-	let Posts = [];
-	for (const post in thisUserPosts) {
-		Post.push(post);
-	}
+  const { auth } = props.location.state; // pulls out the auth from the state passed by <Link/> in react router
+  const thisUser = useSelector(state => state.users.usersByUid[auth])
+  const thisUserPosts = useSelector(state => state.posts.postsByUids, postsByUids => postsByUids.filter(post => post.authorUid == auth))
+  let userPostLength = Object.keys(thisUserPosts).length;
+  let Posts = [];
+  for (const post in thisUserPosts) {
+      Posts.push(post)
+  }
 
-	return (
-		<Container maxWidth="sm">
-			<Spacing />
-			<UserHeader
-				user={thisUser.email}
-				userData={thisUser}
-				followers={thisUser.followers}
-				following={thisUser.following}
-				posts={1}
-			/>
-			<Spacing />
-			{userPostLength > 0 ? (
-				thisUserPosts.map((postUid) => <Post postUid={postUid} />)
-			) : (
-				<div> no posts by this user </div>
-			)}
-		</Container>
-	);
+
+
+  return (
+    <Container maxWidth="sm">
+      <Spacing />
+      <UserHeader
+        user={thisUser.email}
+        userData={thisUser}
+        followers={thisUser.followers}
+        following={thisUser.following}
+        posts={1}
+      />
+      <Spacing />
+      {userPostLength > 0 ? (
+        Posts.map((postUid) => (
+          <Post
+          postUid={postUid}
+          />
+        ))
+      ) : (
+        <div> no posts by this user </div>
+      )}
+    </Container>
+  );
 };
 
 function mapStatetoProps(state) {
