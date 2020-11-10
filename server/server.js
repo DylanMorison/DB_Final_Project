@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-require('./routes/auth')(app);
+require('./routes/authRoutes')(app);
 
 app.listen(5000, () => {
 	console.log('server started on port 5000');
