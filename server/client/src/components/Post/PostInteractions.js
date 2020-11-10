@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CommentIcon from "../icons/CommentIcon";
 import FavoritedIcon from "../icons/FavoritedIcon";
 import NonFavoritedIcon from "../icons/NonFavoritedIcon";
-import { userToggleLike } from "../../actions";
+import { deleteLike, addLike } from "../../actions";
 import { connect }  from "react-redux";
 
 const InteractionWrapper = styled.div`
@@ -49,16 +49,11 @@ const PostInteractions = (props) => {
 
   const handleLike = () => {
     if (props.postData.usersLiked.includes(props.auth.userUid)) {
-      props.postData.numLikes -= 1;
-      props.postData.usersLiked =  props.postData.usersLiked.filter(user => user != props.auth.userUid);
-      // props.postData.usersLiked = newLikes
-      props.userToggleLike(props.postData, props.auth.userUid);
+      props.deleteLike(props.auth.userUid, props.postData.postUid);
       setLiked(!liked);
     }
     else{
-      props.postData.numLikes += 1;
-      props.postData.usersLiked.push(props.auth.userUid);
-      props.userToggleLike(props.postData, props.auth.userUid);
+     props.addLike(props.auth.userUid, props.postData.postUid)
       setLiked(!liked);
     }
     
@@ -70,9 +65,9 @@ const PostInteractions = (props) => {
 
   return (
     <InteractionWrapper>
-      <LikeWrapper onClick={handleLike}><Number>{props.postData.numLikes}</Number> {handleDisplayIcon()}</LikeWrapper>
+      <LikeWrapper onClick={handleLike}><Number>{props.postData.usersLiked.length}</Number> {handleDisplayIcon()}</LikeWrapper>
       <CommentWrapper onClick={handleShowComments}>
-        <Number>{props.postData.numComments}</Number>
+        <Number>{props.postData.comments.length}</Number>
         <CommentIcon />
       </CommentWrapper>
     </InteractionWrapper>
@@ -88,4 +83,4 @@ function mapStatetoProps(state) {
   };
 }
 
-export default connect(mapStatetoProps, { userToggleLike })(PostInteractions);
+export default connect(mapStatetoProps, { deleteLike, addLike })(PostInteractions);

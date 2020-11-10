@@ -54,7 +54,7 @@ const UserProfile = (props) => {
   let userPostLength = Object.keys(thisUserPosts).length;
   let Posts = [];
   for (const post in thisUserPosts) {
-      Post.push(post)
+      Posts.push(post)
   }
 
 
@@ -71,7 +71,7 @@ const UserProfile = (props) => {
       />
       <Spacing />
       {userPostLength > 0 ? (
-        thisUserPosts.map((postUid) => (
+        Posts.map((postUid) => (
           <Post
           postUid={postUid}
           />
