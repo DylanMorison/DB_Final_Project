@@ -29,12 +29,19 @@ module.exports = (app) => {
 		const { username, password } = req.body;
 		try {
 			const db = dbService.getDbServiceInstance();
-			const result = await db.signIn(username);
+			const userResult = await db.signIn(username);
 
-			if (result) {
-				const { user_id, username, email, fullName } = result[0];
+			// this gets a user
+			if (userResult) {
+				const { user_id, username, email, fullName } = userResult[0];
 				const user = { user_id, username, email, fullName };
-				res.send(user);
+
+				const userPostResult = await db.getUserPosts(user_id);
+
+				if (userPostResult.length !== 0){
+					res.send({...user, userPosts: userPostResult});
+				}
+				res.send({...user, userPosts: []});
 			}
 		} catch (err) {
 			res.status(401).send("No username match");
