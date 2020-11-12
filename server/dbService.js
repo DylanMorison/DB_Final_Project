@@ -119,7 +119,6 @@ class DbService {
 				);
 			});
 			console.log();
-			debugger;
 			return {
 				insertId,
 				title,
@@ -131,6 +130,23 @@ class DbService {
 				numLikes,
 				numComments
 			};
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
+	async getUserPosts(user_id) {
+		try {
+			const response = await new Promise((resolve, reject) => {
+				const query = "SELECT * FROM posts WHERE user_id=?";
+				connection.query(query, [user_id], (err, results) => {
+					if (err) reject(new Error(err.message));
+					resolve(results);
+				});
+			});
+
+			console.log(response);
+			return response;
 		} catch (err) {
 			console.log(err);
 		}
