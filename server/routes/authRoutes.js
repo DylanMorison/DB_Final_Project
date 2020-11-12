@@ -11,6 +11,7 @@ module.exports = (app) => {
 	});
 
 	app.post("/auth/register", async (req, res) => {
+		console.log("test")
 		const { email, password, username, fullName } = req.body;
 		try {
 			const db = dbService.getDbServiceInstance();

@@ -80,6 +80,61 @@ class DbService {
 			console.log(err);
 		}
 	}
+	async createPost(
+		title,
+		description,
+		authorUid,
+		file,
+		thumbnail,
+		timestamp,
+		numLikes,
+		numComments
+	) {
+		try {
+			const insertId = await new Promise((resolve, reject) => {
+				const query =
+					"INSERT INTO posts (postUid, user_id, title, timestamp, description, numLikes, numComments, thumbnail, post_file ) VALUES (?,?,?,?,?,?,?,?,?); ";
+
+				connection.query(
+					query,
+					[
+						null,
+						authorUid,
+						title,
+						timestamp,
+						description,
+						numLikes,
+						numComments,
+						thumbnail,
+						file
+					],
+					(err, result) => {
+						if (err) {
+							console.log(err.message);
+							reject(new Error(err.message));
+						}
+						console.log(result);
+						resolve(result.insertId);
+					}
+				);
+			});
+			console.log();
+			debugger;
+			return {
+				insertId,
+				title,
+				description,
+				authorUid,
+				file,
+				thumbnail,
+				timestamp,
+				numLikes,
+				numComments
+			};
+		} catch (err) {
+			console.log(err);
+		}
+	}
 }
 
 module.exports = DbService;
