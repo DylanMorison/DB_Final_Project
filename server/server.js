@@ -12,8 +12,8 @@ app.use(express.urlencoded({ extended: false }));
 require("./routes/authRoutes")(app);
 require("./routes/postRoutes")(app);
 
-var port = 5001;
+var port = 5000;
 
 app.listen(port, () => {
-	console.log('server started on port 5001');
+	console.log('server started on port 5000');
 });

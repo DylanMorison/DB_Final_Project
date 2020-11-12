@@ -151,6 +151,43 @@ class DbService {
 			console.log(err);
 		}
 	}
+
+	async getComments(post_id) {
+		try {
+			const response = await new Promise((resolve, reject) => {
+				const query =
+					"SELECT content, user_id, timestamp FROM comments WHERE postUid=? ";
+				connection.query(query, [post_id], (err, results) => {
+					if (err) {
+						console.log(err.message);
+					}
+					resolve(results);
+				});
+			});
+
+			console.log(response);
+			return response;
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
+	async getPostLikes(post_id) {
+		try {
+			const response = await new Promise((resolve, reject) => {
+				const query = "SELECT user_id FROM likes WHERE postUid=?";
+				connection.query(query, [post_id], (err, results) => {
+					if (err) reject(new Error(err.message));
+					resolve(results);
+				});
+			});
+
+			console.log(response);
+			return response;
+		} catch (err) {
+			console.log(err);
+		}
+	}
 }
 
 module.exports = DbService;

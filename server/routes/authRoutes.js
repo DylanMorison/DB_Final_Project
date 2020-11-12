@@ -11,7 +11,7 @@ module.exports = (app) => {
 	});
 
 	app.post("/auth/register", async (req, res) => {
-		console.log("test")
+		console.log("test");
 		const { email, password, username, fullName } = req.body;
 		try {
 			const db = dbService.getDbServiceInstance();
@@ -26,25 +26,51 @@ module.exports = (app) => {
 	});
 
 	app.post("/auth/login", async (req, res) => {
+		debugger;
 		const { username, password } = req.body;
 		try {
 			const db = dbService.getDbServiceInstance();
 			const userResult = await db.signIn(username);
-
 			// this gets a user
 			if (userResult) {
 				const { user_id, username, email, fullName } = userResult[0];
 				const user = { user_id, username, email, fullName };
 
 				const userPostResult = await db.getUserPosts(user_id);
+				let userPostsUids = [];
+				let postDataArray = [];
+				if (userPostResult.length !== 0) {
+					userPostResult.map(async (post) => {
+						userPostsUids.push(post.postUid);
+						// const comments = await db.getComments(post.postUid);
+						// const usersLiked = await db.getPostLikes(post.postUid);
+						console.log(usersLiked);
 
-				if (userPostResult.length !== 0){
-					res.send({...user, userPosts: userPostResult});
+						const postData = {
+							postData: {
+								title: post.title,
+								postUid: post.postUid,
+								description: post.description,
+								file: post.post_file,
+								thumbnail: post.thumbnail,
+								authorUid: post.user_id,
+								timestamp: post.timestamp,
+								numLikes: post.numLikes,
+								numComments: post.numComments,
+								usersLiked: [],
+								comments: []
+							},
+							postUid: post.postUid
+						};
+						postDataArray.push(postData);
+					});
 				}
-				res.send({...user, userPosts: []});
+				res.send({ ...user, userPostsUids, postDataArray });
 			}
 		} catch (err) {
-			res.status(401).send("No username match");
+			res.status(401).send(
+				"No username match / or eror with comments, posts or likes"
+			);
 		}
 	});
 };

@@ -11,7 +11,6 @@ module.exports = (app) => {
 			file,
 			thumbnail,
 		} = req.body;
-		debugger;
 
 		const dateTime = new Date();
 		const years = dateTime.getFullYear();
