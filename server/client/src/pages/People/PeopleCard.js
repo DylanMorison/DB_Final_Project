@@ -12,8 +12,6 @@ import Avatar from "../../components/Avatar";
 import AddButton from "./AddButton";
 import { withRouter, Link } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
-import { userToggleFollow } from "../../actions";
-import { auth } from "firebase";
 
 const Root = styled.div`
   width: 312px;
@@ -97,4 +95,4 @@ function mapStatetoProps(state) {
   };
 }
 
-export default connect(mapStatetoProps, { userToggleFollow })(PeopleCard);
+export default connect(mapStatetoProps)(PeopleCard);

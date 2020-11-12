@@ -57,8 +57,8 @@ module.exports = (app) => {
 								timestamp: post.timestamp,
 								numLikes: post.numLikes,
 								numComments: post.numComments,
-								usersLiked,
-								comments: comments[0]
+								usersLiked: usersLiked,
+								comments: comments
 							},
 							postUid: post.postUid
 						};
