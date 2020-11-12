@@ -37,16 +37,16 @@ module.exports = (app) => {
 				const user = { user_id, username, email, fullName };
 
 				const userPostResult = await db.getUserPosts(user_id);
-				let userPostsUids = [];
-				let postDataArray = [];
-				if (userPostResult.length !== 0) {
-					userPostResult.map(async (post) => {
-						userPostsUids.push(post.postUid);
-						// const comments = await db.getComments(post.postUid);
-						// const usersLiked = await db.getPostLikes(post.postUid);
-						console.log(usersLiked);
 
-						const postData = {
+				if (userPostResult.length !== 0) {
+					let userPostsUids = [];
+					let postDataArray = [];
+					await Promise.all(userPostResult.map(async (post) => {
+						userPostsUids.push(post.postUid);
+						const comments = await db.getComments(post.postUid);
+						const usersLiked = await db.getPostLikes(post.postUid);
+
+						let data = {
 							postData: {
 								title: post.title,
 								postUid: post.postUid,
@@ -57,15 +57,17 @@ module.exports = (app) => {
 								timestamp: post.timestamp,
 								numLikes: post.numLikes,
 								numComments: post.numComments,
-								usersLiked: [],
-								comments: []
+								usersLiked,
+								comments: comments[0]
 							},
 							postUid: post.postUid
 						};
-						postDataArray.push(postData);
-					});
+						postDataArray.push(data);
+					}));
+					res.send({ ...user, userPostsUids, postDataArray });
+				} else {
+					res.send(user);
 				}
-				res.send({ ...user, userPostsUids, postDataArray });
 			}
 		} catch (err) {
 			res.status(401).send(

@@ -156,7 +156,7 @@ class DbService {
 		try {
 			const response = await new Promise((resolve, reject) => {
 				const query =
-					"SELECT content, user_id, timestamp FROM comments WHERE postUid=? ";
+					"SELECT content, user_id, timestamp  FROM comments WHERE postUid=(?) ";
 				connection.query(query, [post_id], (err, results) => {
 					if (err) {
 						console.log(err.message);
@@ -165,7 +165,7 @@ class DbService {
 				});
 			});
 
-			console.log(response);
+			console.log("getComments",response);
 			return response;
 		} catch (err) {
 			console.log(err);
@@ -175,14 +175,14 @@ class DbService {
 	async getPostLikes(post_id) {
 		try {
 			const response = await new Promise((resolve, reject) => {
-				const query = "SELECT user_id FROM likes WHERE postUid=?";
+				const query = "SELECT user_id FROM likes WHERE postUid=(?)";
 				connection.query(query, [post_id], (err, results) => {
 					if (err) reject(new Error(err.message));
 					resolve(results);
 				});
 			});
 
-			console.log(response);
+			console.log("getPostLikes",response);
 			return response;
 		} catch (err) {
 			console.log(err);
