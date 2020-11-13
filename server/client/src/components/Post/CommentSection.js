@@ -131,8 +131,8 @@ const CommentSection = (props) => {
               {props.postData.comments.length > 0 ? (
                 props.postData.comments.map((comment) => (
                   <Comment
-                    commentAuthorUid={comment.user_id}
-                    commentContents={comment.content}
+                    commentAuthorUid={comment.commentAuthorUid}
+                    commentContents={comment.commentContents}
                   />
                 ))
               ) : (
