@@ -214,6 +214,57 @@ class DbService {
     } catch (err) {
       console.log(err);
     }
+	}
+	
+
+	async addLike(user_id, postUid ) {
+    try {
+      const response = await new Promise((resolve, reject) => {
+        const query =
+          "INSERT INTO likes (postUid, user_id) VALUES (?,?); ";
+        connection.query(
+          query,
+          [postUid, user_id],
+          (err, results) => {
+            if (err) reject(new Error(err.message));
+            resolve(results);
+          }
+        );
+      });
+
+      console.log("addLike", response);
+      return {
+        postUid,
+        user_id,
+      };
+    } catch (err) {
+      console.log(err);
+    }
+	}
+	
+	async deleteLike(user_id, postUid ) {
+    try {
+      const response = await new Promise((resolve, reject) => {
+        const query =
+          "DELETE FROM likes WHERE postUid=(?) AND user_id=(?); ";
+        connection.query(
+          query,
+          [postUid, user_id],
+          (err, results) => {
+            if (err) reject(new Error(err.message));
+            resolve(results);
+          }
+        );
+      });
+
+      console.log("delete like", response);
+      return {
+        postUid,
+        user_id,
+      };
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 
