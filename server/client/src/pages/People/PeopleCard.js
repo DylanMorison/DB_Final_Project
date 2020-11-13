@@ -12,6 +12,7 @@ import Avatar from "../../components/Avatar";
 import AddButton from "./AddButton";
 import { withRouter, Link } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
+import { followUser, unfollowUser} from "../../actions"
 
 const Root = styled.div`
   width: 312px;
@@ -45,24 +46,20 @@ const UserBio = styled.div`
 `;
 
 const PeopleCard = (props) => {
-  const [following, setFollowing] = useState(false);
+
+  const loggedInUser = useSelector((state) => state.users.usersByUid[props.auth.userUid]);
   const thisUser = useSelector((state) => state.users.usersByUid[props.userUid]);
+  const [following, setFollowing] = useState(loggedInUser.following.includes(thisUser.userUid));
 
   const handleFollowing = () => {
-    // if (following) {
-    //   let newFollowing = [];
-    //   props.auth.userFollowing.forEach((person) => {
-    //     if (person.uid != props.personData.uid) {
-    //       newFollowing.push(person);
-    //     }
-    //   });
-    //   props.auth.userFollowing = newFollowing;
-
-    // }
-    // else{
-
-    // }
-    setFollowing(!following);
+    if (following) {
+      props.unfollowUser(props.auth.userUid, thisUser.userUid)
+      setFollowing(!following);
+    }
+    else{
+      props.followUser(props.auth.userUid, thisUser.userUid)
+      setFollowing(!following);
+    }
   };
   // userUid
   return (
@@ -80,7 +77,7 @@ const PeopleCard = (props) => {
       </Link>
       <UserName>{thisUser.username}</UserName>
       <UserBio>
-        {thisUser.following} following <span> &#9679;</span>{" "}
+        {thisUser.following} following <span> &#9679;</span>
         {thisUser.followers} followers
       </UserBio>
       <AddButton handleFollowing={handleFollowing} following={following} />
@@ -95,4 +92,4 @@ function mapStatetoProps(state) {
   };
 }
 
-export default connect(mapStatetoProps)(PeopleCard);
+export default connect(mapStatetoProps, {followUser, unfollowUser})(PeopleCard);
