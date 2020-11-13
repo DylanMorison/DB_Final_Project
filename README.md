@@ -27,11 +27,12 @@ Now that the project is installed with dependencies, Download your preferred sol
 1. Start your solution stack, and navigate to localhost/phpmyadmin and log in 
 2. Create a table with the included DB_Creator SQL file. 
 3. Create .ENV file in the project’s root directory
-    - Env file should contain:
-      i. DATABASE = (name of database in phpmyadmin)
-     ii. DATABASE_HOST = (should be localhost if running on local machine)
-    iii. DATABASE_USER = (username for sql server)
-     iv. DATABASE_PASSWORD = (password for sql server)
+
+Env file should contain:
+i. DATABASE = (name of database in phpmyadmin)
+ii. DATABASE_HOST = (should be localhost if running on local machine)
+iii. DATABASE_USER = (username for sql server)
+iv. DATABASE_PASSWORD = (password for sql server)
     
 ## Running the Project 
 1. inside of /server run command npm run dev 
