@@ -82,7 +82,6 @@ export const signInUser = (username, password) => async (dispatch) => {
 	};
 	dispatch({ type: CREATE_USER, payload: userState }); //this will be when the user is created and added to redux store
 	dispatch({ type: USER_LOGIN, payload: userAuth });
-	debugger;
 	res.data.postDataArray.map((postData) => {
 		console.log(postData)
 		dispatch({ type: ADD_POST, payload: postData });
@@ -117,23 +116,32 @@ export const userAddPost = (thisPostData) => async (dispatch) => {
 
 // get all posts done by one user
 
-export const deleteLike = (userLiked, postUid) => (dispatch) => {
-	// const res = await axios.post   # Your DB Call here <---
+export const deleteLike = (userLiked, postUid) => async (dispatch) => {
+	const likeData = {
+		user_id: userLiked,
+		postUid: postUid
+	}; 
+	const res = await axios.post("/api/posts/deletelike", likeData);
 	console.log("delete like");
 	const deletedLikeObject = {
-		userLiked: userLiked,
-		postUid: postUid
+		userLiked: res.data.user_id,
+		postUid: res.data.postUid
 	};
 	dispatch({ type: DELETE_LIKE, payload: deletedLikeObject });
 };
 
-export const addLike = (userLiked, postUid) => (dispatch) => {
-	// const res = await axios.post   # Your DB Call here <---
-	console.log("add like");
-	const likeObject = {
-		userLiked: userLiked,
+export const addLike = (userLiked, postUid) => async (dispatch) => {
+	const likeData = {
+		user_id: userLiked,
 		postUid: postUid
+	}; 
+	const res = await axios.post("/api/posts/addlike", likeData);
+	const likeObject = {
+		userLiked: res.data.user_id,
+		postUid: res.data.postUid
 	};
+	console.log("likeObject", likeObject);
+
 	dispatch({ type: ADD_LIKE, payload: likeObject });
 };
 
@@ -144,8 +152,7 @@ export const userAddComment = (thisPostUid, newCommentData) => async (dispatch) 
 		postUid: thisPostUid
 	}; 
 	const res = await axios.post("/api/posts/addcomment", commentData);
-	debugger;
-	console.log("add comment");
+	console.log(commentData);
 
 	const payload = {
 		commentData: {
