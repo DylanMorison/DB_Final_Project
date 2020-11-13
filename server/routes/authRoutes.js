@@ -26,7 +26,6 @@ module.exports = (app) => {
 	});
 
 	app.post("/auth/login", async (req, res) => {
-		debugger;
 		const { username, password } = req.body;
 		try {
 			const db = dbService.getDbServiceInstance();
@@ -41,30 +40,119 @@ module.exports = (app) => {
 				if (userPostResult.length !== 0) {
 					let userPostsUids = [];
 					let postDataArray = [];
-					await Promise.all(userPostResult.map(async (post) => {
-						userPostsUids.push(post.postUid);
-						const comments = await db.getComments(post.postUid);
-						const usersLiked = await db.getPostLikes(post.postUid);
+					await Promise.all(
+						userPostResult.map(async (post) => {
+							userPostsUids.push(post.postUid);
+							const comments = await db.getComments(post.postUid);
+							const usersLiked = await db.getPostLikes(post.postUid);
 
-						let data = {
-							postData: {
-								title: post.title,
-								postUid: post.postUid,
-								description: post.description,
-								file: post.post_file,
-								thumbnail: post.thumbnail,
-								authorUid: post.user_id,
-								timestamp: post.timestamp,
-								numLikes: post.numLikes,
-								numComments: post.numComments,
-								usersLiked: usersLiked,
-								comments: comments
-							},
-							postUid: post.postUid
-						};
-						postDataArray.push(data);
-					}));
-					res.send({ ...user, userPostsUids, postDataArray });
+							let data = {
+								postData: {
+									title: post.title,
+									postUid: post.postUid,
+									description: post.description,
+									file: post.post_file,
+									thumbnail: post.thumbnail,
+									authorUid: post.user_id,
+									timestamp: post.timestamp,
+									numLikes: post.numLikes,
+									numComments: post.numComments,
+									usersLiked: usersLiked,
+									comments: comments
+								},
+								postUid: post.postUid
+							};
+							postDataArray.push(data);
+						})
+					);
+					const nonFollowers = await db.getNonFollowers(user_id);
+					let followerIDs = [];
+					let exploreQuery = `SELECT * FROM posts AS p WHERE`;
+					let increment = 0;
+					let tempString;
+					nonFollowers.map((nonFollower) => {
+						switch (increment) {
+							case 0:
+								tempString = ` NOT user_id=${nonFollower.followee_id}`;
+								exploreQuery = exploreQuery.concat(tempString);
+								followerIDs.push(nonFollower.followee_id);
+								increment = 1;
+								break;
+							case 1:
+								tempString = ` AND NOT user_id=${nonFollower.followee_id}`;
+								exploreQuery = exploreQuery.concat(tempString);
+								followerIDs.push(nonFollower.followee_id);
+						}
+					});
+					const explorePosts = await db.getUserExplorePosts(
+						followerIDs,
+						exploreQuery
+					);
+
+					let userExplorePostsUids = [];
+					let explorePostArray = [];
+
+					await Promise.all(
+						explorePosts.map(async (post) => {
+							userExplorePostsUids.push(post.postUid);
+							const comments = await db.getComments(post.postUid);
+							const usersLiked = await db.getPostLikes(post.postUid);
+
+							let data = {
+								postData: {
+									title: post.title,
+									postUid: post.postUid,
+									description: post.description,
+									file: post.post_file,
+									thumbnail: post.thumbnail,
+									authorUid: post.user_id,
+									timestamp: post.timestamp,
+									numLikes: post.numLikes,
+									numComments: post.numComments,
+									usersLiked: usersLiked,
+									comments: comments
+								},
+								postUid: post.postUid
+							};
+							explorePostArray.push(data);
+						})
+					);
+					debugger;
+					const users = await db.getAllUsers();
+
+					let userData = [];
+					let userUids = [];
+					await Promise.all(
+						users.map(async (tempUser) => {
+							if (tempUser.user_id === user.user_id) {
+								return;
+							}
+							userUids.push(tempUser.user_id);
+							const data = {
+								userData: {
+									username: tempUser.username,
+									email: tempUser.email,
+									userUid: tempUser.user_id,
+									fullName: tempUser.fullName,
+									followers: [],
+									following: [],
+									posts: []
+								},
+								userUid: tempUser.user_id
+							};
+							userData.push(data);
+						})
+					);
+					console.log("hjk");
+					res.send({
+						...user,
+						userPostsUids,
+						postDataArray,
+						userExplorePostsUids,
+						explorePostArray,
+						userData,
+						userUids
+					});
 				} else {
 					res.send(user);
 				}

@@ -1,4 +1,4 @@
-import { USER_ADD_POST, CREATE_USER, TOGGLE_FOLLOW } from "../actions/types";
+import { USER_ADD_POST, CREATE_USER, TOGGLE_FOLLOW,  } from "../actions/types";
 
 const initialState = {
     usersByUid: {},
@@ -27,7 +27,7 @@ export default function (state = initialState, action) {
         ...state,
 				usersByUid: {...state.usersByUid, [action.payload.userUid] :{...action.payload.userData}},
 				allUserUids: [...state.allUserUids, action.payload.userUid],
-			};
+      };
     case TOGGLE_FOLLOW:
       return {
         ...state,

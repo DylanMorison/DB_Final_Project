@@ -36,6 +36,7 @@ module.exports = (app) => {
       res.status(401).send("DB error");
     }
   });
+
   app.post("/api/posts/addcomment", async (req, res) => {
     const dateTime = new Date();
     const years = dateTime.getFullYear();
