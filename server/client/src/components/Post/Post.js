@@ -66,7 +66,6 @@ const Post = (props) => {
   const [commentsShown, setCommentsShown] = useState(false);
   const thisPost = useSelector(state => state.posts.postsByUids[props.postUid])
   const postAuthor = useSelector(state => state.users.usersByUid[thisPost.authorUid])
-  console.log(thisPost, postAuthor)
 
   
 

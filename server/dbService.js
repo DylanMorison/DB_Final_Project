@@ -245,7 +245,7 @@ class DbService {
 	 * explore posts
 	 *
 	 * @param followerIDs: array of followerIDs to run with query
-	 * 
+	 *
 	 *
 	 * @param exploreQuery: the query to be run in our DB
 	 */
