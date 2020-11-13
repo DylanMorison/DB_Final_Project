@@ -1,5 +1,6 @@
 import { USER_ADD_POST, CREATE_USER, FOLLOW_USER, UNFOLLOW_USER } from "../actions/types";
 
+
 const initialState = {
     usersByUid: {},
     allUserUids: [],
