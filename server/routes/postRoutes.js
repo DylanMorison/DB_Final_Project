@@ -11,7 +11,6 @@ module.exports = (app) => {
     const months = dateTime.getMonth();
     const days = dateTime.getDay();
 		const timestamp = `${years}-${months}-${days}`;
-		debugger;
 
     try {
       const db = dbService.getDbServiceInstance();
@@ -62,7 +61,8 @@ module.exports = (app) => {
     }
 	});
 	app.post("/api/posts/addlike", async (req, res) => {
-    const { user_id, postUid } = req.body;
+		const { user_id, postUid } = req.body;
+		debugger;
     try {
       const db = dbService.getDbServiceInstance();
       const response = await db.addLike(

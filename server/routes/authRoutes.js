@@ -26,7 +26,6 @@ module.exports = (app) => {
 	});
 
 	app.post("/auth/login", async (req, res) => {
-		debugger;
 		const { username, password } = req.body;
 		try {
 			const db = dbService.getDbServiceInstance();

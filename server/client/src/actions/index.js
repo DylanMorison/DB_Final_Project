@@ -152,7 +152,6 @@ export const userAddComment = (thisPostUid, newCommentData) => async (dispatch) 
 		postUid: thisPostUid
 	}; 
 	const res = await axios.post("/api/posts/addcomment", commentData);
-	console.log(commentData);
 
 	const payload = {
 		commentData: {
@@ -163,4 +162,19 @@ export const userAddComment = (thisPostUid, newCommentData) => async (dispatch) 
 	};
 
 	dispatch({ type: ADD_COMMENT, payload: payload });
+};
+
+export const followUser = (currentUser, userFollowed, ) => async (dispatch) => {
+	// const likeData = {
+	// 	user_id: userLiked,
+	// 	postUid: postUid
+	// }; 
+	// const res = await axios.post("/api/posts/addlike", likeData);
+	// const likeObject = {
+	// 	userLiked: res.data.user_id,
+	// 	postUid: res.data.postUid
+	// };
+	console.log("likeObject");
+
+	// dispatch({ type: ADD_LIKE, payload: likeObject });
 };
