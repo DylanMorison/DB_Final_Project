@@ -265,7 +265,60 @@ class DbService {
     } catch (err) {
       console.log(err);
     }
+	}
+	
+	async followUser(follower_id, followee_id ) {
+    try {
+      const response = await new Promise((resolve, reject) => {
+        const query =
+				"INSERT INTO following (follower_id, followee_id) VALUES (?,?); ";
+        connection.query(
+          query,
+          [follower_id, followee_id],
+          (err, results) => {
+            if (err) reject(new Error(err.message));
+            resolve(results);
+          }
+        );
+      });
+
+      console.log("follow user", response);
+      return {
+        follower_id,
+        followee_id,
+      };
+    } catch (err) {
+      console.log(err);
+    }
+	}
+	
+	async unfollowUser(follower_id, followee_id ) {
+    try {
+      const response = await new Promise((resolve, reject) => {
+        const query =
+				"DELETE FROM following WHERE follower_id=(?) AND followee_id=(?); ";
+        connection.query(
+          query,
+          [follower_id, followee_id],
+          (err, results) => {
+            if (err) reject(new Error(err.message));
+            resolve(results);
+          }
+        );
+      });
+
+      console.log("unfollow user", response);
+      return {
+        follower_id,
+        followee_id,
+      };
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
+
+
+
 
 module.exports = DbService;

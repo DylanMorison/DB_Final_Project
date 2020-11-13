@@ -9,3 +9,4 @@ export const TOGGLE_FOLLOW = "toggle_follow";
 export const USER_ADD_POST = "user_add_post"
 export const ADD_LIKE = "add_like";
 export const FOLLOW_USER = "follow_user"
+export const UNFOLLOW_USER = "unfollow_user"

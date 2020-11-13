@@ -9,7 +9,9 @@ import {
 	CREATE_USER,
 	TOGGLE_FOLLOW,
 	USER_ADD_POST,
-	ADD_LIKE
+	ADD_LIKE,
+	FOLLOW_USER, 
+	UNFOLLOW_USER
 } from "./types";
 
 export const getAllUsers = () => async (dispatch) => {
@@ -165,16 +167,33 @@ export const userAddComment = (thisPostUid, newCommentData) => async (dispatch) 
 };
 
 export const followUser = (currentUser, userFollowed, ) => async (dispatch) => {
-	// const likeData = {
-	// 	user_id: userLiked,
-	// 	postUid: postUid
-	// }; 
-	// const res = await axios.post("/api/posts/addlike", likeData);
-	// const likeObject = {
-	// 	userLiked: res.data.user_id,
-	// 	postUid: res.data.postUid
-	// };
-	console.log("likeObject");
+	const followData = {
+		follower_id: currentUser,
+		followee_id: userFollowed,
+		}; 
+	const res = await axios.post("/api/posts/followuser", followData);
 
-	// dispatch({ type: ADD_LIKE, payload: likeObject });
+	const payload = {
+		userUid: res.data.follower_id,
+		followedUser: res.data.followee_id
+	};
+
+	dispatch({ type: FOLLOW_USER, payload: payload });
+
+};
+
+export const unfollowUser = (currentUser, userFollowed, ) => async (dispatch) => {
+	const followData = {
+		follower_id: currentUser,
+		followee_id: userFollowed,
+		}; 
+	const res = await axios.post("/api/posts/unfollowuser", followData);
+
+	const payload = {
+		userUid: res.data.follower_id,
+		followedUser: res.data.followee_id
+	};
+
+	dispatch({ type: UNFOLLOW_USER, payload: payload });
+
 };

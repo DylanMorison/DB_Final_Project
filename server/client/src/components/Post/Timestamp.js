@@ -33,7 +33,7 @@ const TimeWrapper = styled.div`
 const Timestamp = (props) => {
   return (
     <Wrapper>
-      <TimeWrapper>{props.timestamp}hrs ago</TimeWrapper>
+      <TimeWrapper>{props.timestamp}</TimeWrapper>
       <DownloadIcon />
     </Wrapper>
   );

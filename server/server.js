@@ -11,6 +11,8 @@ app.use(express.urlencoded({ extended: false }));
 
 require("./routes/authRoutes")(app);
 require("./routes/postRoutes")(app);
+require("./routes/followRoutes")(app);
+
 
 var port = 5000;
 
