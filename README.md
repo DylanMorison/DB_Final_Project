@@ -22,7 +22,7 @@ Discover other 3D print designers, follow them, and use their designs!
 3. Cd into client folder and npm install
 4. Cd back into server
 
-##Getting Started
+## Getting Started
 Now that the project is installed with dependencies, Download your preferred solution stack for hosting Sql Servers (MAMP, WAMP, XAMPP).
 1. Start your solution stack, and navigate to localhost/phpmyadmin and log in 
 2. Create a table with the included DB_Creator SQL file. 
@@ -33,7 +33,7 @@ Now that the project is installed with dependencies, Download your preferred sol
     iii. DATABASE_USER = (username for sql server)
      iv. DATABASE_PASSWORD = (password for sql server)
     
-##Running the Project 
+## Running the Project 
 1. inside of /server run command npm run dev 
 2. frontend will start on localhost:3000 and Backend will start on localhost:5000
      
