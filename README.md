@@ -38,4 +38,4 @@ Env file should contain:
 1. inside of /server run command npm run dev 
 2. frontend will start on localhost:3000 and Backend will start on localhost:5000
      
-     
+## NOTE: All DB connection related things are inside DbService.js
