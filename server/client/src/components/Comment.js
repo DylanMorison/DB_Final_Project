@@ -48,7 +48,6 @@ const UserInfoWrapper = styled.div`
 `;
 
 const Comment = (props) => {
-  console.log("user id", props.commentAuthorUid)
   const commentAuthor = useSelector((state) => state.users.usersByUid[props.commentAuthorUid]);
   return (
     <CommentSpacing>
