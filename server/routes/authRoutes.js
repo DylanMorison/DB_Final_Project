@@ -128,15 +128,38 @@ module.exports = (app) => {
 								return;
 							}
 							userUids.push(tempUser.user_id);
+							//db call here for followers, following, and posts
+							let following = []
+							let followers = []
+							let posts = []
+							const usersFollowing = await db.getUsersFollowing(tempUser.user_id);
+							if (usersFollowing.length > 0) {
+								usersFollowing.forEach(user => {
+									following.push(user.followee_id)
+								});
+							}
+							const usersFollowers = await db.getUsersFollowers(tempUser.user_id);
+							if (usersFollowers.length > 0) {
+								usersFollowers.forEach(user => {
+									followers.push(user.follower_id)
+								});
+							}
+							const userPosts = await db.getUserPostIds(tempUser.user_id);
+							if (userPosts.length > 0) {
+								userPosts.forEach(post => {
+									posts.push(post.postUid)
+								});
+							}
+							// const userPosts = await db.getUserPostIds();
 							const data = {
 								userData: {
 									username: tempUser.username,
 									email: tempUser.email,
 									userUid: tempUser.user_id,
 									fullName: tempUser.fullName,
-									followers: [],
-									following: [],
-									posts: []
+									followers: followers,	//right here populate w users followers
+									following: following,	//right here populate w users fololwing
+									posts: posts 			//right here populate w users posts
 								},
 								userUid: tempUser.user_id
 							};

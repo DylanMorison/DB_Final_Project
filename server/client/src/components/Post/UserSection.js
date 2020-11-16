@@ -39,7 +39,6 @@ const UserName = styled.div`
 `;
 
 const UserSection = (props) => {
-  debugger
   return (
     <UserWrapper>
       <Avatar image={defaultPic} size={60} />{" "}

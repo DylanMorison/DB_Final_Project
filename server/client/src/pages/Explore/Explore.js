@@ -1,23 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { generatePath } from "react-router-dom";
 
 import { A } from "components/Text";
 
-import { Loading } from "components/Loading";
-import InfiniteScroll from "components/InfiniteScroll";
-import Skeleton from "components/Skeleton";
-import Head from "components/Head";
 
-import { useStore } from "store";
-
-import { HOME_PAGE_POSTS_LIMIT } from "constants/DataLimit";
-
-import * as Routes from "routes";
-
-import Post from "../../components/Post/Post";
-
-import Drone from "../../img/Drone.png";
+import { connect } from "react-redux";
+import Post from "../../components/Post/Post"
 
 const Empty = styled.div`
   padding: ${(p) => p.theme.spacing.sm};
@@ -59,13 +47,30 @@ const Container = styled.div`
 /**
  * Explore page
  */
-const Explore = () => {
+const Explore = (props) => {
 
   return (
     <Container maxWidth="sm">
       <Spacing />
+      {props.explorePosts.allPostUids.length > 0 ? (
+        props.explorePosts.allPostUids.map((postUid) => (
+        <Post
+        postUid={postUid}
+        />
+        ))
+      ) : (
+        <div>no posts</div>
+      )}
     </Container>
   );
 };
 
-export default Explore;
+function mapStatetoProps(state) {
+  return {
+    posts: state.posts,
+    explorePosts: state.explorePosts
+  };
+}
+
+export default connect(mapStatetoProps)(Explore);
+

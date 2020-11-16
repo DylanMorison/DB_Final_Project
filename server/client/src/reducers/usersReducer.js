@@ -1,4 +1,5 @@
-import { USER_ADD_POST, CREATE_USER, TOGGLE_FOLLOW,  } from "../actions/types";
+import { USER_ADD_POST, CREATE_USER, FOLLOW_USER, UNFOLLOW_USER, ADD_FOLLOWER, UNADD_FOLLOWER} from "../actions/types";
+
 
 const initialState = {
     usersByUid: {},
@@ -27,12 +28,65 @@ export default function (state = initialState, action) {
         ...state,
 				usersByUid: {...state.usersByUid, [action.payload.userUid] :{...action.payload.userData}},
 				allUserUids: [...state.allUserUids, action.payload.userUid],
-      };
-    case TOGGLE_FOLLOW:
+			};
+    case UNFOLLOW_USER:
       return {
         ...state,
+        usersByUid: {
+          ...state.usersByUid,
+          [action.payload.userUid]: {
+            ...state.usersByUid[action.payload.userUid],
+            following: [
+              ...state.usersByUid[action.payload.userUid].following.filter(user => user != action.payload.followedUser),
+            ],
+          },
+        },
       };
+      case FOLLOW_USER:
+        return {
+          ...state,
+          usersByUid: {
+            ...state.usersByUid,
+            [action.payload.userUid]: {
+              ...state.usersByUid[action.payload.userUid],
+              following: [
+                ...state.usersByUid[action.payload.userUid].following,
+                action.payload.followedUser,
+              ],
+            },
+          },
+        };
+        case ADD_FOLLOWER:
+          return {
+            ...state,
+            usersByUid: {
+              ...state.usersByUid,
+              [action.payload.userUid]: {
+                ...state.usersByUid[action.payload.userUid],
+                followers: [
+                  ...state.usersByUid[action.payload.userUid].followers,
+                  action.payload.newFollower,
+                ],
+              },
+            },
+          };
+          case UNADD_FOLLOWER:
+            return {
+              ...state,
+              usersByUid: {
+                ...state.usersByUid,
+                [action.payload.userUid]: {
+                  ...state.usersByUid[action.payload.userUid],
+                  followers: [
+                    ...state.usersByUid[action.payload.userUid].followers.filter(user => user != action.payload.unFollower),
+                  ],
+                },
+              },
+            };
     default:
       return state;
   }
 }
+
+
+
