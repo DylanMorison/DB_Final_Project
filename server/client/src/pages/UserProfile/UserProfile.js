@@ -50,12 +50,13 @@ const Root = styled.div`
 const UserProfile = (props) => {
   const { auth } = props.location.state; // pulls out the auth from the state passed by <Link/> in react router
   const thisUser = useSelector(state => state.users.usersByUid[auth])
-  const thisUserPosts = useSelector(state => state.posts.postsByUids, postsByUids => postsByUids.filter(post => post.authorUid == auth))
-  let userPostLength = Object.keys(thisUserPosts).length;
-  let Posts = [];
-  for (const post in thisUserPosts) {
-      Posts.push(post)
-  }
+
+  // const thisUserPosts = useSelector(state => state.posts.postsByUids, postsByUids => postsByUids.filter(post => post.authorUid == auth))
+  // let userPostLength = Object.keys(thisUserPosts).length;
+  // let Posts = [];
+  // for (const post in thisUserPosts) {
+  //     Posts.push(post)
+  // }
 
 
 
@@ -70,8 +71,8 @@ const UserProfile = (props) => {
         posts={1}
       />
       <Spacing />
-      {userPostLength > 0 ? (
-        Posts.map((postUid) => (
+      {thisUser.posts.length > 0 ? (
+        thisUser.posts.map((postUid) => (
           <Post
           postUid={postUid}
           />
