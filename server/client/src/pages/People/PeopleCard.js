@@ -63,6 +63,7 @@ const PeopleCard = (props) => {
   };
   // userUid
   return (
+    (thisUser.userUid != props.auth.userUid ? 
     <Root>
       <Link
         exact
@@ -82,6 +83,9 @@ const PeopleCard = (props) => {
       </UserBio>
       <AddButton handleFollowing={handleFollowing} following={following} />
     </Root>
+    :
+    null
+    )
   );
 };
 
@@ -93,3 +97,5 @@ function mapStatetoProps(state) {
 }
 
 export default connect(mapStatetoProps, {followUser, unfollowUser})(PeopleCard);
+
+

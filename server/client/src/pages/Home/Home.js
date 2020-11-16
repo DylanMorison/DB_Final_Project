@@ -63,6 +63,7 @@ const Container = styled.div`
  */
 const Home = (props) => {
   return (
+    //create function to fetch posts here 
     <Container maxWidth="sm">
       <Spacing />
       {props.posts.allPostUids.length > 0 ? (

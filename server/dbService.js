@@ -371,9 +371,25 @@ class DbService {
       console.log(err);
     }
   }
+
+  async getUserPostIds(user_id) {
+    try {
+      const response = await new Promise((resolve, reject) => {
+        const query = "SELECT postUid FROM posts WHERE user_id = (?)";
+        connection.query(query, [user_id], (err, results) => {
+          if (err) reject(new Error(err.message));
+          resolve(results);
+        });
+      });
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
 
 module.exports = DbService;
 
 
 
+							// const userPosts = await db.getUserPostsIds();
