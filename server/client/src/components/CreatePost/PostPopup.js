@@ -10,6 +10,8 @@ import "firebase/auth";
 import "firebase/storage";
 import ThumbnailUploadIcon from "../../img/ThumbnailUpload.svg";
 import UploadIcon from "../../img/UploadIcon.svg";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -31,8 +33,12 @@ const useStyles = makeStyles({
     textTransform: "none",
     "&:hover": {
       backgroundColor: "#02ABFF",
-      color: "#fff"
-      }
+      color: "#fff",
+    },
+  },
+  backdrop: {
+    zIndex: 2000,
+    color: '#fff',
   },
 });
 
@@ -53,7 +59,7 @@ const Popup = styled.div`
   grid-template-rows: auto;
   color: black;
   grid-gap: 10px;
-  background: rgba(77, 77, 77, .9);
+  background: rgba(77, 77, 77, 0.9);
 
   &:before {
     box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5);
@@ -180,8 +186,10 @@ const PostPopup = (props) => {
   const [imageAsFile, setImageAsFile] = useState("");
   const [imageAsUrl, setImageAsUrl] = useState(allInputs);
   const user = firebase.auth().currentUser;
+  const [isOpen, setOpen] = useState(false)
 
   const classes = useStyles();
+
 
   const SUPPORTED_FORMATS = [
     "image/JPG",
@@ -189,6 +197,77 @@ const PostPopup = (props) => {
     "image/gif",
     "image/PNG",
   ];
+
+  const handleOpen = ( ) => {
+    setOpen(!isOpen)
+  }
+  
+
+  let handleFireBaseUpload = (inputFile) => {
+    return new Promise((resolve, reject) => {
+      //e.preventDefault()
+      console.log("start of upload");
+      // async magic goes here...
+      if (inputFile === "") {
+        console.error(`not a file`);
+      }
+      const uploadTask = storage
+        .ref(`/images/${inputFile.name}`)
+        .put(inputFile);
+      //initiates the firebase side uploading
+      uploadTask.on(
+        "state_changed",
+        (snapShot) => {
+          //takes a snap shot of the process as it is happening
+          console.log(snapShot);
+        },
+        (err) => {
+          //catches the errors
+          console.log(err);
+          reject("failure");
+        },
+        () => {
+          // gets the functions from storage refences the image storage in firebase by the children
+          // gets the download url then sets the image from firebase as the value for the imgUrl key:
+          storage
+            .ref("images")
+            .child(inputFile.name)
+            .getDownloadURL()
+            .then((fireBaseUrl) => {
+              setImageAsUrl((prevObject) => ({
+                ...prevObject,
+                imgUrl: fireBaseUrl,
+              }));
+              console.log(fireBaseUrl);
+              resolve(fireBaseUrl);
+            });
+        }
+      );
+    });
+  };
+
+  const handleUpload = async (title, description, file, thumbnail) => {
+    handleOpen()
+    const uploadedFile = await handleFireBaseUpload(file);
+    const uploadedThumbnail = await handleFireBaseUpload(thumbnail);
+    handleOpen()
+    console.log(uploadedFile, uploadedThumbnail);
+
+    const postData = {
+      title: title,
+      description: description,
+      file: uploadedFile,
+      thumbnail: uploadedThumbnail,
+      authorUid: props.auth.userUid,
+      timestamp: Date.now(),
+      numLikes: 0,
+      numComments: 0,
+      usersLiked: [],
+      comments: [],
+    };
+    props.userAddPost(postData);
+    props.buttonClick();
+  };
 
   return (
     <Formik
@@ -205,20 +284,7 @@ const PostPopup = (props) => {
         thumbnail: Yup.mixed().required("A thumbnail is required"),
       })}
       onSubmit={({ title, description, file, thumbnail }) => {
-        const postData = {
-          title: title,
-          description: description,
-          file: file,
-          thumbnail: thumbnail,
-          authorUid: props.auth.userUid,
-          timestamp: Date.now(),
-          numLikes: 0, 
-          numComments: 0,
-          usersLiked: [],
-          comments: [],
-        };
-        props.userAddPost(postData);
-        props.buttonClick()
+        handleUpload(title, description, file, thumbnail);
       }}
     >
       {({
@@ -282,10 +348,7 @@ const PostPopup = (props) => {
                     type="file"
                     id="file"
                     onChange={(event) => {
-                      setFieldValue(
-                        "file",
-                        window.URL.createObjectURL(event.currentTarget.files[0])
-                      );
+                      setFieldValue("file", event.currentTarget.files[0]);
                     }}
                     name="file"
                     style={{ color: "white" }}
@@ -309,9 +372,7 @@ const PostPopup = (props) => {
                       onChange={(event) => {
                         setFieldValue(
                           "thumbnail",
-                          window.URL.createObjectURL(
-                            event.currentTarget.files[0]
-                          )
+                          event.currentTarget.files[0]
                         );
                       }}
                       name="thumbnail"
@@ -323,11 +384,14 @@ const PostPopup = (props) => {
                   </FileInputWrapper>
                 </ButtonWrapper>
                 <Button type="submit" className={classes.root}>
-                Submit
+                  Submit
                 </Button>
               </UploadButtons>
             </Form>
           </RightWrapper>
+          <Backdrop className={classes.backdrop} open={isOpen}>
+            <CircularProgress color="white" />
+          </Backdrop>
         </Popup>
       )}
     </Formik>
@@ -349,4 +413,3 @@ export default connect(mapStatetoProps, { userAddPost })(PostPopup);
 // overflow: hidden;
 // position: absolute;
 // z-index: -1;
- 

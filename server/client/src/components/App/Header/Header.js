@@ -15,7 +15,7 @@ import "firebase/auth";
 import "firebase/storage";
 import * as Routes from "routes";
 import People from "../../../pages/People";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 
 const NavWrapper = styled.div`
   position: sticky;
@@ -124,6 +124,8 @@ const UserName = styled.div`
  */
 const Header = (props, { location, toggleSideBar }) => {
   const user = firebase.auth().currentUser;
+  const thisUser = useSelector((state) => state.users.usersByUid[props.auth.userUid]);
+
 
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const [dropdownData, setDropdownData] = useState([]);
@@ -158,7 +160,7 @@ const Header = (props, { location, toggleSideBar }) => {
         <RightSection>
           <UserContainer>
             <UserName>
-              <p>{props.auth.email}</p>
+              <p>{thisUser.username}</p>
             </UserName>
             <Link
               exact
@@ -181,6 +183,7 @@ const Header = (props, { location, toggleSideBar }) => {
 function mapStatetoProps(state) {
   return {
     auth: state.auth,
+    users: state.users
   };
 }
 

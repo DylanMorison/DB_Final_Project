@@ -5,6 +5,7 @@ import { A } from "components/Text";
 
 
 import { connect } from "react-redux";
+import Post from "../../components/Post/Post"
 
 const Empty = styled.div`
   padding: ${(p) => p.theme.spacing.sm};
@@ -46,11 +47,20 @@ const Container = styled.div`
 /**
  * Explore page
  */
-const Explore = () => {
+const Explore = (props) => {
 
   return (
     <Container maxWidth="sm">
       <Spacing />
+      {props.explorePosts.allPostUids.length > 0 ? (
+        props.explorePosts.allPostUids.map((postUid) => (
+        <Post
+        postUid={postUid}
+        />
+        ))
+      ) : (
+        <div>no posts</div>
+      )}
     </Container>
   );
 };
@@ -58,6 +68,7 @@ const Explore = () => {
 function mapStatetoProps(state) {
   return {
     posts: state.posts,
+    explorePosts: state.explorePosts
   };
 }
 

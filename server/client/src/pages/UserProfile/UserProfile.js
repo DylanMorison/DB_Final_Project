@@ -66,8 +66,8 @@ const UserProfile = (props) => {
       <UserHeader
         user={thisUser.email}
         userData={thisUser}
-        followers={thisUser.followers}
-        following={thisUser.following}
+        followers={thisUser.followers.length}
+        following={thisUser.following.length}
         posts={1}
       />
       <Spacing />
