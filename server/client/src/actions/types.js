@@ -6,7 +6,6 @@ export const DELETE_LIKE = "delete_like";
 export const ADD_COMMENT = "add_comment";
 export const CREATE_USER = "create_user";
 export const TOGGLE_FOLLOW = "toggle_follow";
-export const ADD_LIKE = "add_like";
 export const ADD_EXPLORE_POST = "add_explore_post";
 export const GET_ALL_USERS = "get_all_users";
 export const USER_ADD_POST = "user_add_post"
