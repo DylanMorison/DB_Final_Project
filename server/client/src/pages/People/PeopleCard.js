@@ -77,8 +77,8 @@ const PeopleCard = (props) => {
       </Link>
       <UserName>{thisUser.username}</UserName>
       <UserBio>
-        {thisUser.following} following <span> &#9679;</span>
-        {thisUser.followers} followers
+        {thisUser.following.length} following <span> &#9679; </span> 
+         {thisUser.followers.length} followers
       </UserBio>
       <AddButton handleFollowing={handleFollowing} following={following} />
     </Root>

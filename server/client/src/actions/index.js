@@ -12,7 +12,9 @@ import {
 	ADD_LIKE,
 	FOLLOW_USER, 
 	UNFOLLOW_USER,
-	ADD_EXPLORE_POST
+	ADD_EXPLORE_POST, 
+	ADD_FOLLOWER, 
+	UNADD_FOLLOWER
 } from "./types";
 
 export const getAllUsers = () => async (dispatch) => {
@@ -182,12 +184,20 @@ export const followUser = (currentUser, userFollowed, ) => async (dispatch) => {
 		}; 
 	const res = await axios.post("/api/posts/followuser", followData);
 
-	const payload = {
+	const userPayload = {
 		userUid: res.data.follower_id,
 		followedUser: res.data.followee_id
 	};
 
-	dispatch({ type: FOLLOW_USER, payload: payload });
+
+	const followedUserPayload = {
+		userUid: res.data.followee_id,
+		newFollower: res.data.follower_id
+	};
+
+	dispatch({ type: FOLLOW_USER, payload: userPayload });
+	dispatch({ type: ADD_FOLLOWER, payload: followedUserPayload });
+
 
 };
 
@@ -198,11 +208,20 @@ export const unfollowUser = (currentUser, userFollowed, ) => async (dispatch) =>
 		}; 
 	const res = await axios.post("/api/posts/unfollowuser", followData);
 
-	const payload = {
+	const userPayload = {
 		userUid: res.data.follower_id,
 		followedUser: res.data.followee_id
 	};
 
-	dispatch({ type: UNFOLLOW_USER, payload: payload });
+
+	const unfollowedUserPayload = {
+		userUid: res.data.followee_id,
+		unFollower: res.data.follower_id
+	};
+
+	dispatch({ type: UNFOLLOW_USER, payload: userPayload });
+	dispatch({ type: UNADD_FOLLOWER, payload: unfollowedUserPayload });
+
 
 };
+

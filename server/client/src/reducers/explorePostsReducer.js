@@ -1,7 +1,6 @@
 import { ADD_EXPLORE_POST } from "../actions/types";
 
 const initialState = {
-  postsByUids: {},
   allPostUids: [],
 };
 
@@ -10,10 +9,6 @@ export default function (state = initialState, action) {
     case ADD_EXPLORE_POST:
       return {
         ...state,
-        postsByUids: {
-          ...state.postsByUids,
-          [action.payload.postUid]: { ...action.payload.postData },
-        },
         allPostUids: [...state.allPostUids, action.payload.postUid],
       };
     default:

@@ -145,7 +145,6 @@ class DbService {
         });
       });
 
-      console.log(response);
       return response;
     } catch (err) {
       console.log(err);
@@ -341,6 +340,40 @@ class DbService {
       console.log(err);
     }
   }
+
+  async getUsersFollowing(follower_id) {
+    try {
+      const response = await new Promise((resolve, reject) => {
+        const query = "SELECT * FROM following WHERE follower_id = (?)";
+        connection.query(query, [follower_id], (err, results) => {
+          if (err) reject(new Error(err.message));
+          resolve(results);
+        });
+      });
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+  async getUsersFollowers(followee_id) {
+    try {
+      const response = await new Promise((resolve, reject) => {
+        const query = "SELECT * FROM following WHERE followee_id = (?)";
+        connection.query(query, [followee_id], (err, results) => {
+          if (err) reject(new Error(err.message));
+          resolve(results);
+        });
+      });
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
 
 module.exports = DbService;
+
+
+

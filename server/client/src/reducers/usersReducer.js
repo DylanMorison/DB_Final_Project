@@ -1,4 +1,4 @@
-import { USER_ADD_POST, CREATE_USER, FOLLOW_USER, UNFOLLOW_USER } from "../actions/types";
+import { USER_ADD_POST, CREATE_USER, FOLLOW_USER, UNFOLLOW_USER, ADD_FOLLOWER, UNADD_FOLLOWER} from "../actions/types";
 
 
 const initialState = {
@@ -56,6 +56,33 @@ export default function (state = initialState, action) {
             },
           },
         };
+        case ADD_FOLLOWER:
+          return {
+            ...state,
+            usersByUid: {
+              ...state.usersByUid,
+              [action.payload.userUid]: {
+                ...state.usersByUid[action.payload.userUid],
+                followers: [
+                  ...state.usersByUid[action.payload.userUid].followers,
+                  action.payload.newFollower,
+                ],
+              },
+            },
+          };
+          case UNADD_FOLLOWER:
+            return {
+              ...state,
+              usersByUid: {
+                ...state.usersByUid,
+                [action.payload.userUid]: {
+                  ...state.usersByUid[action.payload.userUid],
+                  followers: [
+                    ...state.usersByUid[action.payload.userUid].followers.filter(user => user != action.payload.unFollower),
+                  ],
+                },
+              },
+            };
     default:
       return state;
   }
