@@ -61,24 +61,18 @@ module.exports = (app) => {
 
 				if (homeFollowers.length !== 0) {
 					let followerIDs = [];
-					let homeQuery = `SELECT * FROM posts AS p WHERE`;
+					let homeQuery = `SELECT * FROM posts AS p WHERE user_id=${user_id}`;
 					let increment = 0;
 					let tempString;
 					homeFollowers.map((follower) => {
 						homeFollowerCheck.push(follower.followee_id);
-						switch (increment) {
-							case 0:
-								tempString = ` user_id=${follower.followee_id}`;
-								homeQuery = homeQuery.concat(tempString);
-								followerIDs.push(follower.followee_id);
-								increment = 1;
-								break;
-							case 1:
 								tempString = ` OR user_id=${follower.followee_id}`;
 								homeQuery = homeQuery.concat(tempString);
 								followerIDs.push(follower.followee_id);
-						}
+
 					});
+					orderString = ` ORDER BY timestamp`;
+					homeQuery = homeQuery.concat(orderString); 
 					homePosts = await db.getUserHomePosts(followerIDs, homeQuery);
 
 					await Promise.all(
