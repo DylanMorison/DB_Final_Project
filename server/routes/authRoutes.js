@@ -28,14 +28,22 @@ module.exports = (app) => {
 	app.post("/auth/login", async (req, res) => {
 		const { username, password } = req.body;
 		try {
+			debugger;
 			const db = dbService.getDbServiceInstance();
 			const userResult = await db.signIn(username);
 			// this gets a user
 			if (userResult) {
 				const { user_id, username, email, fullName } = userResult[0];
-				const userFollowers = await db.getUsersFollowers(user_id);
-				const userFollowing = await db.getUsersFollowing(user_id);
-
+				const userFollowersQuery = await db.getUsersFollowers(user_id);
+				const userFollowingQuery = await db.getUsersFollowing(user_id);
+				let userFollowers = [];
+				userFollowersQuery.map((follower) => {
+					userFollowers.push(follower.followee_id);
+				});
+				let userFollowing = [];
+				userFollowingQuery.map((follower) => {
+					userFollowing.push(follower.followee_id);
+				});
 				const user = {
 					user_id,
 					username,
