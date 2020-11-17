@@ -184,7 +184,8 @@ module.exports = (app) => {
 						userExplorePostsUids,
 						explorePostArray,
 						userData,
-						userUids
+						userUids,
+						userPostResult
 					});
 				} else {
 					res.send(user);
