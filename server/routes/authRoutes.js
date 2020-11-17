@@ -51,7 +51,6 @@ module.exports = (app) => {
 					userFollowers,
 					userFollowing
 				};
-				debugger
 				const userPostResult = await db.getUserPosts(user_id);
 				const allPosts = await db.getAllPosts();
 				const homeFollowers = await db.getUsersFollowing(user_id);
@@ -84,7 +83,6 @@ module.exports = (app) => {
 
 					await Promise.all(
 						homePosts.map(async (post) => {
-							if (post.user_id === user_id) return;
 							userHomePostsUids.push(post.postUid);
 							const comments = await db.getComments(post.postUid);
 							const usersLiked = await db.getPostLikes(post.postUid);
