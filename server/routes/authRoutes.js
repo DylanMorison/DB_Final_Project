@@ -37,6 +37,10 @@ module.exports = (app) => {
 
 				const userPostResult = await db.getUserPosts(user_id);
 				const allPosts = await db.getAllPosts();
+				const homeFollowers = await db.getUsersFollowing(user_id);
+
+				if (homeFollowers.length !== 0) {
+				}
 
 				if (allPosts.length !== 0) {
 					let userPostsUids = [];
@@ -95,6 +99,7 @@ module.exports = (app) => {
 
 					await Promise.all(
 						explorePosts.map(async (post) => {
+							if (post.user_id === user_id) return;
 							userExplorePostsUids.push(post.postUid);
 							const comments = await db.getComments(post.postUid);
 							const usersLiked = await db.getPostLikes(post.postUid);
@@ -130,25 +135,29 @@ module.exports = (app) => {
 							}
 							userUids.push(tempUser.user_id);
 							//db call here for followers, following, and posts
-							let following = []
-							let followers = []
-							let posts = []
-							const usersFollowing = await db.getUsersFollowing(tempUser.user_id);
+							let following = [];
+							let followers = [];
+							let posts = [];
+							const usersFollowing = await db.getUsersFollowing(
+								tempUser.user_id
+							);
 							if (usersFollowing.length > 0) {
-								usersFollowing.forEach(user => {
-									following.push(user.followee_id)
+								usersFollowing.forEach((user) => {
+									following.push(user.followee_id);
 								});
 							}
-							const usersFollowers = await db.getUsersFollowers(tempUser.user_id);
+							const usersFollowers = await db.getUsersFollowers(
+								tempUser.user_id
+							);
 							if (usersFollowers.length > 0) {
-								usersFollowers.forEach(user => {
-									followers.push(user.follower_id)
+								usersFollowers.forEach((user) => {
+									followers.push(user.follower_id);
 								});
 							}
 							const userPosts = await db.getUserPostIds(tempUser.user_id);
 							if (userPosts.length > 0) {
-								userPosts.forEach(post => {
-									posts.push(post.postUid)
+								userPosts.forEach((post) => {
+									posts.push(post.postUid);
 								});
 							}
 							// const userPosts = await db.getUserPostIds();
@@ -158,16 +167,16 @@ module.exports = (app) => {
 									email: tempUser.email,
 									userUid: tempUser.user_id,
 									fullName: tempUser.fullName,
-									followers: followers,	//right here populate w users followers
-									following: following,	//right here populate w users fololwing
-									posts: posts 			//right here populate w users posts
+									followers: followers, //right here populate w users followers
+									following: following, //right here populate w users fololwing
+									posts: posts //right here populate w users posts
 								},
 								userUid: tempUser.user_id
 							};
 							userData.push(data);
 						})
 					);
-					console.log("hjk");
+
 					res.send({
 						...user,
 						userPostsUids,
