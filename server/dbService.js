@@ -390,7 +390,7 @@ class DbService {
 	async getUsersFollowers(followee_id) {
 		try {
 			const response = await new Promise((resolve, reject) => {
-				const query = "SELECT followee_id FROM following WHERE follower_id = (?)";
+				const query = "SELECT * FROM following WHERE followee_id = (?)";
 				connection.query(query, [followee_id], (err, results) => {
 					if (err) reject(new Error(err.message));
 					resolve(results);
