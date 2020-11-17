@@ -83,6 +83,20 @@ export default function (state = initialState, action) {
                 },
               },
             };
+            case USER_ADD_POST:
+              return {
+                ...state,
+                usersByUid: {
+                  ...state.usersByUid,
+                  [action.payload.userUid]: {
+                    ...state.usersByUid[action.payload.userUid],
+                    posts: [
+                      ...state.usersByUid[action.payload.userUid].posts,
+                      action.payload.postUid,
+                    ],
+                  },
+                },
+              };
     default:
       return state;
   }
