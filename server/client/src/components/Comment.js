@@ -48,7 +48,7 @@ const UserInfoWrapper = styled.div`
 `;
 
 const Comment = (props) => {
-  const commentAuthor = useSelector((state) => state.users.usersByUid[props.commentAuthorUid]);
+  const commentAuthor = useSelector((state) => state.users.usersByUid[props.user_id]);
   return (
     <CommentSpacing>
       <Root>
@@ -57,7 +57,7 @@ const Comment = (props) => {
         </AvatarWrapper>
         <UserInfoWrapper>
           <Username>{commentAuthor.username} </Username>
-          <CommentContents>{props.commentContents}</CommentContents>
+          <CommentContents>{props.content}</CommentContents>
         </UserInfoWrapper>
       </Root>
     </CommentSpacing>

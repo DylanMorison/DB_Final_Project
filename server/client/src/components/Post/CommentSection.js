@@ -80,10 +80,10 @@ const ErrorMessage = styled.div`
 `;
 
 const CommentSection = (props) => {
-  const handleCommentSubmit = (commentContents) => {
+  const handleCommentSubmit = (content) => {
     const commentData = {
-      commentAuthorUid: props.auth.userUid,
-      commentContents: commentContents,
+      user_id: props.auth.userUid,
+      content: content,
     };
     props.userAddComment(props.postData.postUid, commentData);
   };
@@ -91,20 +91,20 @@ const CommentSection = (props) => {
   return (
     <Formik
       initialValues={{
-        commentContents: "",
+        content: "",
       }}
       validationSchema={Yup.object({
-        commentContents: Yup.string()
+        content: Yup.string()
           .max(50, "Must be 50 characters or less")
           .required("Required"),
       })}
-      onSubmit={({ commentContents }, { resetForm }) => {
-        handleCommentSubmit(commentContents);
+      onSubmit={({ content }, { resetForm }) => {
+        handleCommentSubmit(content);
         resetForm();
       }}
     >
       {({
-        values: { commentContents },
+        values: { content },
         errors,
         handleChange,
         handleBlur,
@@ -114,25 +114,25 @@ const CommentSection = (props) => {
           <Root>
             <CommentInputWrapper>
               <CommentInput
-                id="commentContents"
+                id="content"
                 type="text"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                name="commentContents"
-                value={commentContents}
+                name="content"
+                value={content}
                 placeholder="write a comment"
               />
               <CommentButton type="submit">Submit</CommentButton>
-              {commentContents && errors.commentContents ? (
-                <ErrorMessage>{errors.commentContents}</ErrorMessage>
+              {content && errors.content ? (
+                <ErrorMessage>{errors.content}</ErrorMessage>
               ) : null}
             </CommentInputWrapper>
             <CommentsWrapper>
               {props.postData.comments.length > 0 ? (
                 props.postData.comments.map((comment) => (
                   <Comment
-                    commentAuthorUid={comment.commentAuthorUid}
-                    commentContents={comment.commentContents}
+                    user_id={comment.user_id}
+                    content={comment.content}
                   />
                 ))
               ) : (
@@ -155,19 +155,3 @@ function mapStatetoProps(state) {
 
 export default connect(mapStatetoProps, { userAddComment })(CommentSection);
 
-{
-  /* <Comment username={"david spade"} commentContents={"wow sick design"} />
-        <Comment
-          username={"carl anthony"}
-          commentContents={"this is kinda cool"}
-        />
-        <Comment username={"suzie weathers"} commentContents={"yieks"} />
-        <Comment
-          username={"linda hosain"}
-          commentContents={"i dont like drones"}
-        />
-        <Comment
-          username={"cindy poong"}
-          commentContents={"i do like drones"}
-        /> */
-}

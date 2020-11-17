@@ -196,16 +196,16 @@ export const addLike = (userLiked, postUid) => async (dispatch) => {
 
 export const userAddComment = (thisPostUid, newCommentData) => async (dispatch) => {
 	const commentData = {
-		user_id: newCommentData.commentAuthorUid,
-		content: newCommentData.commentContents,
+		user_id: newCommentData.user_id,
+		content: newCommentData.content,
 		postUid: thisPostUid
 	};
 	const res = await axios.post("/api/posts/addcomment", commentData);
 
 	const payload = {
 		commentData: {
-			commentAuthorUid: res.data.user_id,
-			commentContents: res.data.content
+			user_id: res.data.user_id,
+			content: res.data.content
 		},
 		postUid: res.data.postUid
 	};
