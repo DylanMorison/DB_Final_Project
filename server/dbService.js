@@ -76,7 +76,7 @@ class DbService {
 				);
 			});
 
-			return { insertId, username, email, fullName };
+			return { insertId, username, email, fullName, password };
 		} catch (err) {
 			console.log(err);
 		}
