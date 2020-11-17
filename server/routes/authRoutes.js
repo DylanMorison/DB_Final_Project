@@ -238,7 +238,8 @@ module.exports = (app) => {
 						userHomePostsUids,
 						homePostArray,
 						userData,
-						userUids
+						userUids,
+						userPostResult
 					});
 				} else {
 					res.send(user);

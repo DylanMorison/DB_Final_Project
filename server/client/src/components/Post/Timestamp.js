@@ -34,7 +34,7 @@ const Timestamp = (props) => {
   return (
     <Wrapper>
       <TimeWrapper>{props.timestamp}</TimeWrapper>
-      <DownloadIcon />
+      <a href={`${props.postData.file}`} target="_blank" download><DownloadIcon /></a>
     </Wrapper>
   );
 };
