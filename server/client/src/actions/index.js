@@ -64,6 +64,7 @@ export const logOut = () => async (dispatch) => {
 };
 
 export const signInUser = (username, password) => async (dispatch) => {
+
 		const res = await axios.post("/auth/login", { username, password });
 		console.log("Sign IN");
 		console.log(username, " ", password);
@@ -103,66 +104,35 @@ export const signInUser = (username, password) => async (dispatch) => {
 		res.data.explorePostArray.map((postData) => {
 			dispatch({ type: ADD_EXPLORE_POST, payload: postData });
 		});
-	
-	debugger;
-	const userState = {
-		userData: {
-			username: res.data.username,
-			email: res.data.email,
-			userUid: res.data.user_id,
-			fullName: res.data.fullName,
-			followers: [],
-			following: [],
-			posts: res.data.userPostsUids
-		},
-		userUid: res.data.user_id
-	};
-	dispatch({ type: CREATE_USER, payload: userState }); //this will be when the user is created and added to redux store\\
 
-	res.data.userData.map((user) => {
-		dispatch({ type: CREATE_USER, payload: user });
-	});
-
-	dispatch({ type: USER_LOGIN, payload: userAuth });
-	res.data.postDataArray.map((postData) => {
-		dispatch({ type: ADD_POST, payload: postData });
-	});
-	res.data.explorePostArray.map((postData) => {
-		dispatch({ type: ADD_EXPLORE_POST, payload: postData });
-	});
-
-	res.data.homePostArray.map((postData) => {
-		dispatch({ type: ADD_HOME_POSTS, payload: postData });
-	});
-};
 
 export const userAddPost = (thisPostData) => async (dispatch) => {
 	const res = await axios.post("/api/posts/create", thisPostData);
 
-	const postData = {
-		postData: {
-			title: res.data.title,
-			postUid: res.data.insertId,
-			description: res.data.description,
-			file: res.data.file,
-			thumbnail: res.data.thumbnail,
-			authorUid: res.data.authorUid,
-			timestamp: res.data.timestamp,
-			numLikes: res.data.numLikes,
-			numComments: res.data.numComments,
-			usersLiked: res.data.usersLiked,
-			comments: res.data.comments
-		},
-		postUid: res.data.insertId
-	};
+  const postData = {
+    postData: {
+      title: res.data.title,
+      postUid: res.data.insertId,
+      description: res.data.description,
+      file: res.data.file,
+      thumbnail: res.data.thumbnail,
+      authorUid: res.data.authorUid,
+      timestamp: res.data.timestamp,
+      numLikes: res.data.numLikes,
+      numComments: res.data.numComments,
+      usersLiked: res.data.usersLiked,
+      comments: res.data.comments,
+    },
+    postUid: res.data.insertId,
+  };
 
-	const userPost = {
-		postUid: res.data.insertId,
-		userUid: res.data.authorUid
-	};
+  const userPost = {
+    postUid: res.data.insertId,
+    userUid: res.data.authorUid,
+  };
 
-	dispatch({ type: ADD_POST, payload: postData });
-	dispatch({ type: USER_ADD_POST, payload: userPost });
+  dispatch({ type: ADD_POST, payload: postData });
+  dispatch({ type: USER_ADD_POST, payload: userPost });
 };
 
 // get all posts done by one user
