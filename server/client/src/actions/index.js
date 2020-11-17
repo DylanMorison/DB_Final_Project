@@ -96,7 +96,6 @@ export const signInUser = (username, password) => async (dispatch) => {
 		dispatch({ type: ADD_POST, payload: postData });
 	});
 	res.data.explorePostArray.map((postData) => {
-		dispatch({ type: ADD_POST, payload: postData });
 		dispatch({ type: ADD_EXPLORE_POST, payload: postData });
 	});
 };

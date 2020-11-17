@@ -36,12 +36,13 @@ module.exports = (app) => {
 				const user = { user_id, username, email, fullName };
 
 				const userPostResult = await db.getUserPosts(user_id);
+				const allPosts = await db.getAllPosts();
 
-				if (userPostResult.length !== 0) {
+				if (allPosts.length !== 0) {
 					let userPostsUids = [];
 					let postDataArray = [];
 					await Promise.all(
-						userPostResult.map(async (post) => {
+						allPosts.map(async (post) => {
 							userPostsUids.push(post.postUid);
 							const comments = await db.getComments(post.postUid);
 							const usersLiked = await db.getPostLikes(post.postUid);

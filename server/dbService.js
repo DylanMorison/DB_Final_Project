@@ -40,6 +40,23 @@ class DbService {
     }
   }
 
+  async getAllPosts() {
+    try {
+      const response = await new Promise((resolve, reject) => {
+        const query = "SELECT * FROM posts";
+        connection.query(query, (err, results) => {
+          if (err) reject(new Error(err.message));
+          resolve(results);
+        });
+      });
+
+      console.log(response);
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async registerUser(email, password, username, fullName) {
     try {
       const insertId = await new Promise((resolve, reject) => {
