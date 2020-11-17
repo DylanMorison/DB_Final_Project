@@ -85,8 +85,8 @@ export const signInUser = (username, password) => async (dispatch) => {
 				email: res.data.email,
 				userUid: res.data.user_id,
 				fullName: res.data.fullName,
-				followers: [],
-				following: [],
+				followers: [], // do a query in db to find this for logged in user 
+				following: [],  // do a query in db to find this for logged in user 
 				posts: userPosts
 			},
 			userUid: res.data.user_id
