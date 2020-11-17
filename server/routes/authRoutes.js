@@ -28,7 +28,6 @@ module.exports = (app) => {
 	app.post("/auth/login", async (req, res) => {
 		const { username, password } = req.body;
 		try {
-			debugger;
 			const db = dbService.getDbServiceInstance();
 			const userResult = await db.signIn(username);
 			// this gets a user
@@ -52,7 +51,7 @@ module.exports = (app) => {
 					userFollowers,
 					userFollowing
 				};
-
+				debugger
 				const userPostResult = await db.getUserPosts(user_id);
 				const allPosts = await db.getAllPosts();
 				const homeFollowers = await db.getUsersFollowing(user_id);

@@ -103,6 +103,9 @@ export const signInUser = (username, password) => async (dispatch) => {
 	res.data.explorePostArray.map((postData) => {
 		dispatch({ type: ADD_EXPLORE_POST, payload: postData });
 	});
+	res.data.homePostArray.map((postData) => {
+		dispatch({ type: ADD_HOME_POSTS, payload: postData });
+	});
 };
 
 export const userAddPost = (thisPostData) => async (dispatch) => {
