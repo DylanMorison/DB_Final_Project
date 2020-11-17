@@ -33,7 +33,17 @@ module.exports = (app) => {
 			// this gets a user
 			if (userResult) {
 				const { user_id, username, email, fullName } = userResult[0];
-				const user = { user_id, username, email, fullName };
+				const userFollowers = await db.getUsersFollowers(user_id);
+				const userFollowing = await db.getUsersFollowing(user_id);
+
+				const user = {
+					user_id,
+					username,
+					email,
+					fullName,
+					userFollowers,
+					userFollowing
+				};
 
 				const userPostResult = await db.getUserPosts(user_id);
 				const allPosts = await db.getAllPosts();
