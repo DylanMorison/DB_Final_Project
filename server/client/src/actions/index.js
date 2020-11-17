@@ -16,7 +16,8 @@ import {
 	ADD_EXPLORE_POST,
 	ADD_FOLLOWER,
 	UNADD_FOLLOWER,
-	ADD_HOME_POSTS
+	ADD_HOME_POSTS,
+	USER_ADD_HOME_POST
 } from "./types";
 
 export const getAllUsers = () => async (dispatch) => {
@@ -133,8 +134,14 @@ export const userAddPost = (thisPostData) => async (dispatch) => {
 		userUid: res.data.authorUid
 	};
 
+	const homePost = {
+		postUid: res.data.insertId,
+	};
+
 	dispatch({ type: ADD_POST, payload: postData });
 	dispatch({ type: USER_ADD_POST, payload: userPost });
+	dispatch({ type: ADD_HOME_POSTS, payload: homePost });
+
 };
 
 // get all posts done by one user

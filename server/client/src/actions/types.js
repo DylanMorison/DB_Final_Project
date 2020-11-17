@@ -15,3 +15,4 @@ export const ADD_FOLLOWER = "add_follower";
 export const UNADD_FOLLOWER = "unadd_follower";
 export const ADD_LIKE = "add_like";
 export const ADD_HOME_POSTS = "home_page";
+export const USER_ADD_HOME_POST = "user_add_home_post";
