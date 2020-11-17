@@ -66,8 +66,8 @@ const Home = (props) => {
     //create function to fetch posts here 
     <Container maxWidth="sm">
       <Spacing />
-      {props.posts.allPostUids.length > 0 ? (
-        props.posts.allPostUids.map((postUid) => (
+      {props.homePosts.allPostUids.length > 0 ? (
+        props.homePosts.allPostUids.map((postUid) => (
         <Post
         postUid={postUid}
         />
@@ -82,6 +82,7 @@ const Home = (props) => {
 function mapStatetoProps(state) {
   return {
     posts: state.posts,
+    homePosts: state.homePosts
   };
 }
 
