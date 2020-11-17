@@ -83,7 +83,7 @@ const Post = (props) => {
       >
         <UpperSection>
           <UserSection postAuthor={postAuthor} />
-          <Timestamp timestamp={thisPost.timestamp} />
+          <Timestamp postData={thisPost} timestamp={thisPost.timestamp} />
         </UpperSection>
         <LowerSection>
           <PostInfo
