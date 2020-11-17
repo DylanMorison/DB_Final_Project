@@ -105,6 +105,8 @@ export const signInUser = (username, password) => async (dispatch) => {
 			dispatch({ type: ADD_EXPLORE_POST, payload: postData });
 		});
 
+	}
+
 
 export const userAddPost = (thisPostData) => async (dispatch) => {
 	const res = await axios.post("/api/posts/create", thisPostData);
