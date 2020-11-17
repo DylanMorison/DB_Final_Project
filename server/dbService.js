@@ -358,6 +358,20 @@ class DbService {
 		}
 	}
 
+	async getUserHomePosts(follower_id, homeQuery) {
+		try {
+			const response = await new Promise((resolve, reject) => {
+				connection.query(homeQuery, [follower_id], (err, results) => {
+					if (err) reject(new Error(err.message));
+					resolve(results);
+				});
+			});
+			return response;
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
 	async getUsersFollowing(follower_id) {
 		try {
 			const response = await new Promise((resolve, reject) => {
@@ -376,7 +390,7 @@ class DbService {
 	async getUsersFollowers(followee_id) {
 		try {
 			const response = await new Promise((resolve, reject) => {
-				const query = "SELECT * FROM following WHERE followee_id = (?)";
+				const query = "SELECT followee_id FROM following WHERE follower_id = (?)";
 				connection.query(query, [followee_id], (err, results) => {
 					if (err) reject(new Error(err.message));
 					resolve(results);
@@ -401,8 +415,7 @@ class DbService {
 		} catch (err) {
 			console.log(err);
 		}
-  }
-  
+	}
 }
 
 module.exports = DbService;

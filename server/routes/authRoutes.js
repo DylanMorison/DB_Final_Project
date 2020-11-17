@@ -38,8 +38,59 @@ module.exports = (app) => {
 				const userPostResult = await db.getUserPosts(user_id);
 				const allPosts = await db.getAllPosts();
 				const homeFollowers = await db.getUsersFollowing(user_id);
+				let homeFollowerCheck = [];
+				let homePosts;
+				let userHomePostsUids = [];
+				let homePostArray = [];
 
 				if (homeFollowers.length !== 0) {
+					let followerIDs = [];
+					let homeQuery = `SELECT * FROM posts AS p WHERE`;
+					let increment = 0;
+					let tempString;
+					homeFollowers.map((follower) => {
+						homeFollowerCheck.push(follower.followee_id);
+						switch (increment) {
+							case 0:
+								tempString = ` user_id=${follower.followee_id}`;
+								homeQuery = homeQuery.concat(tempString);
+								followerIDs.push(follower.followee_id);
+								increment = 1;
+								break;
+							case 1:
+								tempString = ` OR user_id=${follower.followee_id}`;
+								homeQuery = homeQuery.concat(tempString);
+								followerIDs.push(follower.followee_id);
+						}
+					});
+					homePosts = await db.getUserHomePosts(followerIDs, homeQuery);
+
+					await Promise.all(
+						homePosts.map(async (post) => {
+							if (post.user_id === user_id) return;
+							userHomePostsUids.push(post.postUid);
+							const comments = await db.getComments(post.postUid);
+							const usersLiked = await db.getPostLikes(post.postUid);
+
+							let data = {
+								postData: {
+									title: post.title,
+									postUid: post.postUid,
+									description: post.description,
+									file: post.post_file,
+									thumbnail: post.thumbnail,
+									authorUid: post.user_id,
+									timestamp: post.timestamp,
+									numLikes: post.numLikes,
+									numComments: post.numComments,
+									usersLiked: usersLiked,
+									comments: comments
+								},
+								postUid: post.postUid
+							};
+							homePostArray.push(data);
+						})
+					);
 				}
 
 				if (allPosts.length !== 0) {
@@ -78,13 +129,13 @@ module.exports = (app) => {
 					nonFollowers.map((nonFollower) => {
 						switch (increment) {
 							case 0:
-								tempString = ` NOT user_id=${nonFollower.followee_id}`;
+								tempString = ` user_id=${nonFollower.followee_id}`;
 								exploreQuery = exploreQuery.concat(tempString);
 								followerIDs.push(nonFollower.followee_id);
 								increment = 1;
 								break;
 							case 1:
-								tempString = ` AND NOT user_id=${nonFollower.followee_id}`;
+								tempString = ` OR user_id=${nonFollower.followee_id}`;
 								exploreQuery = exploreQuery.concat(tempString);
 								followerIDs.push(nonFollower.followee_id);
 						}
@@ -100,6 +151,7 @@ module.exports = (app) => {
 					await Promise.all(
 						explorePosts.map(async (post) => {
 							if (post.user_id === user_id) return;
+							if (homeFollowerCheck.includes(post.user_id)) return;
 							userExplorePostsUids.push(post.postUid);
 							const comments = await db.getComments(post.postUid);
 							const usersLiked = await db.getPostLikes(post.postUid);
@@ -123,7 +175,7 @@ module.exports = (app) => {
 							explorePostArray.push(data);
 						})
 					);
-					debugger;
+
 					const users = await db.getAllUsers();
 
 					let userData = [];
@@ -183,6 +235,8 @@ module.exports = (app) => {
 						postDataArray,
 						userExplorePostsUids,
 						explorePostArray,
+						userHomePostsUids,
+						homePostArray,
 						userData,
 						userUids
 					});

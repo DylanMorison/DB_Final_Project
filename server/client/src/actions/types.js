@@ -12,7 +12,6 @@ export const USER_ADD_POST = "user_add_post";
 export const FOLLOW_USER = "follow_user";
 export const UNFOLLOW_USER = "unfollow_user";
 export const ADD_FOLLOWER = "add_follower";
-export const UNADD_FOLLOWER = "unadd_follower"
-export const ADD_LIKE = "add_like"
-
-
+export const UNADD_FOLLOWER = "unadd_follower";
+export const ADD_LIKE = "add_like";
+export const ADD_HOME_POSTS = "home_page";
