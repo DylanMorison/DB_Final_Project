@@ -110,6 +110,10 @@ module.exports = (app) => {
 							userPostsUids.push(post.postUid);
 							const comments = await db.getComments(post.postUid);
 							const usersLiked = await db.getPostLikes(post.postUid);
+							let usersLikedArray = []
+							usersLiked.map((user) => {
+								usersLikedArray.push(user.user_id)
+							})
 
 							let data = {
 								postData: {
@@ -122,7 +126,7 @@ module.exports = (app) => {
 									timestamp: post.timestamp,
 									numLikes: post.numLikes,
 									numComments: post.numComments,
-									usersLiked: usersLiked,
+									usersLiked: usersLikedArray,
 									comments: comments
 								},
 								postUid: post.postUid
