@@ -1,4 +1,4 @@
-import { ADD_HOME_POSTS } from "../actions/types";
+import { ADD_HOME_POSTS, CLEAR_HOME } from "../actions/types";
 
 const initialState = {
   allPostUids: [],
@@ -11,6 +11,10 @@ export default function (state = initialState, action) {
         ...state,
         allPostUids: [...state.allPostUids, action.payload.postUid],
       };
+      case CLEAR_HOME:
+        return {
+          ...state = undefined
+        };
     default:
       return state;
   }

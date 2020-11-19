@@ -1,4 +1,4 @@
-import { USER_ADD_POST, CREATE_USER, FOLLOW_USER, UNFOLLOW_USER, ADD_FOLLOWER, UNADD_FOLLOWER} from "../actions/types";
+import { USER_ADD_POST, CREATE_USER, FOLLOW_USER, UNFOLLOW_USER, ADD_FOLLOWER, UNADD_FOLLOWER, CLEAR_USERS} from "../actions/types";
 
 
 const initialState = {
@@ -97,6 +97,10 @@ export default function (state = initialState, action) {
                   },
                 },
               };
+              case CLEAR_USERS:
+                return {
+                  ...state = undefined
+                };
     default:
       return state;
   }

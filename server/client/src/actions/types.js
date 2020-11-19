@@ -16,3 +16,8 @@ export const UNADD_FOLLOWER = "unadd_follower";
 export const ADD_LIKE = "add_like";
 export const ADD_HOME_POSTS = "home_page";
 export const USER_ADD_HOME_POST = "user_add_home_post";
+export const CLEAR_POSTS = "clear_posts";
+export const CLEAR_HOME = "clear_home";
+export const CLEAR_USERS = "clear_users";
+export const CLEAR_EXPLORE = "clear_explore";
+

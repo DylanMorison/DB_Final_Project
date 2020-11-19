@@ -3,7 +3,8 @@ import {
 	DELETE_LIKE,
 	ADD_COMMENT,
 	ADD_LIKE,
-	ADD_EXPLORE_POST
+	ADD_EXPLORE_POST, 
+	CLEAR_POSTS
 } from "../actions/types";
 
 const initialState = {
@@ -86,6 +87,10 @@ export default function (state = initialState, action) {
 					}
 				}
 			};
+			case CLEAR_POSTS:
+				return {
+					...state = undefined
+				};
 		default:
 			return state;
 	}

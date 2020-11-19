@@ -13,8 +13,7 @@ export default function (state = initialState, action) {
       };
     case USER_LOGOUT:
       return {
-        ...state,
-        userUid: action.payload.userUid,
+        ...state = undefined
       };
     default:
       return state;
