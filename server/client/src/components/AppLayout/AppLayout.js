@@ -23,6 +23,7 @@ import theme from "theme";
 
 import { useStore } from "store";
 import { SET_AUTH_USER } from "store/auth";
+import { connect, useSelector } from "react-redux";
 
 import Box from "@material-ui/core/Box";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -33,6 +34,7 @@ import HomeBackground from "../../img/HomeBackground.svg";
 import CreatePost from "../CreatePost/CreatePost";
 
 import styles from "./ServiceStyle.module.css";
+import { updateData } from "../../actions"
 //className={styles.container}>
 
 const Root = styled.div`
@@ -131,7 +133,7 @@ const CreatePostWrapper = styled.div`
 /**
  * Main layout of the app, when user is authenticated
  */
-const AppLayout = ({ location, authUser }) => {
+const AppLayout = (props) => {
   const windowSize = useWindowSize();
   const isDesktop = windowSize.width >= parseInt(theme.screen.md, 10);
   const [isSideBarOpen, setIsSidebarOpen] = useState(isDesktop);
@@ -140,26 +142,28 @@ const AppLayout = ({ location, authUser }) => {
 
   const screenLarge = useMediaQuery("(min-width: 971px)");
   const screenSmall = useMediaQuery("(max-width: 971px)");
+  const thisUser = useSelector((state) => state.users.usersByUid[props.auth.userUid]);
 
-  useClickOutside(sideBarRef, () => {
-    if (!isDesktop && isSideBarOpen) {
-      setIsSidebarOpen(false);
-    }
-  });
 
-  useEffect(() => {
-    setIsSidebarOpen(isDesktop);
-  }, [isDesktop]);
+  // useClickOutside(sideBarRef, () => {
+  //   if (!isDesktop && isSideBarOpen) {
+  //     setIsSidebarOpen(false);
+  //   }
+  // });
 
-  useEffect(() => {
-    return () => {
-      if (!isDesktop) {
-        setIsSidebarOpen(false);
-      }
-    };
-  }, [location.pathname, isDesktop]);
+  useEffect(()=>{
+    
+    console.log("update data")
+    const interval = setInterval(() => {
+      console.log('This will run every 10 seconds!');
+      props.updateData(thisUser.username, props.users.allUserUids, props.posts.allPostUids,  props.homePosts.allPostUids, props.explorePosts.allPostUids, props.posts.postsByUids)
+    }, 10000);
+    return () => clearInterval(interval);
+    //(username, users, posts, home, explore) 
 
-  // if (!auth.user) return null;
+
+})  // includes empty dependency array
+
 
   const GetSidebarMarginSize = () => {
     if (screenLarge) {
@@ -221,7 +225,7 @@ const AppLayout = ({ location, authUser }) => {
                 </Box>
                 <Box>
                   {" "}
-                  <UserSuggestions pathname={location.pathname} />
+                  <UserSuggestions />
                 </Box>
               </Box>
             </Box>
@@ -254,4 +258,17 @@ AppLayout.propTypes = {
   authUser: PropTypes.object.isRequired,
 };
 
-export default withRouter(AppLayout);
+
+function mapStatetoProps(state) {
+  return {
+    auth: state.auth,
+    homePosts: state.homePosts,
+    explorePosts: state.explorePosts, 
+    users: state.users,
+    posts: state.posts
+  };
+}
+export default connect(mapStatetoProps, { updateData })(withRouter(AppLayout));
+
+
+//updateData

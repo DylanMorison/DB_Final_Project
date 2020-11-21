@@ -1,5 +1,5 @@
 import axios from "axios";
-import { map } from "lodash";
+import { map, mapKeys } from "lodash";
 import {
   FETCH_USERS,
   USER_LOGIN,
@@ -267,4 +267,134 @@ export const unfollowUser = (currentUser, userFollowed) => async (dispatch) => {
 
   dispatch({ type: UNFOLLOW_USER, payload: userPayload });
   dispatch({ type: UNADD_FOLLOWER, payload: unfollowedUserPayload });
+};
+
+export const updateData = (
+  username,
+  users,
+  posts,
+  home,
+  explore,
+  postsInfo
+) => async (dispatch) => {
+  // let password = "dummyPa$$word1!"
+  const currentData = {
+    username: username,
+    postUids: posts,
+    homeUids: home,
+    exploreUids: explore,
+  };
+  const res = await axios.post("/api/posts/updatedata", currentData);
+  let userDifference = res.data.userUids.filter(
+    (userId) => !users.includes(userId)
+  );
+  let postDifference = res.data.userPostsUids.filter(
+    (postUid) => !posts.includes(postUid)
+  );
+  let homeDifference = res.data.userHomePostsUids.filter(
+    (postUid) => !home.includes(postUid)
+  );
+  let exploreDifference = res.data.userExplorePostsUids.filter(
+    (postUid) => !explore.includes(postUid)
+  );
+  console.log("res.data.userHomePostsUids", res.data.userHomePostsUids);
+  console.log("res.data.userExplorePostsUids", res.data.userExplorePostsUids);
+
+  if (userDifference.length > 0) {
+    console.log("user update");
+
+    res.data.userData.map((user) => {
+      if (!users.includes(user.userData.userUid)) {
+        console.log("check", user.userData.userUid);
+        console.log(userDifference);
+        dispatch({ type: CREATE_USER, payload: user });
+      }
+    });
+  }
+  res.data.postDataArray.map((post) => {
+    if (!posts.includes(post.postData.postUid)) {
+      console.log("check", post.postData.postUid);
+      console.log(res.data.userPostsUids, "res.data.userPostsUids")
+      console.log(postDifference);
+      dispatch({ type: ADD_POST, payload: post });
+      const userPost = {
+        postUid: post.postData.postUid,
+        userUid: post.postData.authorUid,
+      };
+      console.log("check", userPost);
+
+      dispatch({ type: USER_ADD_POST, payload: userPost });
+      //here add user post into array
+    } else {
+      let likeDifference = post.postData.usersLiked.filter(
+        (userUid) =>
+          !postsInfo[post.postData.postUid].usersLiked.includes(userUid)
+      );
+      let likeDelete = postsInfo[post.postData.postUid].usersLiked.filter(
+        (userUid) =>
+          !post.postData.usersLiked.includes(userUid) &&
+          !likeDifference.includes(userUid) 
+      );
+
+      //  UPDATE LIKES
+      likeDifference.map((likeId) => {
+        const likeObject = {
+          userLiked: likeId,
+          postUid: post.postData.postUid,
+        };
+        dispatch({ type: ADD_LIKE, payload: likeObject });
+      });
+      likeDelete.map((likeId) => {
+        const deletedLikeObject = {
+          userLiked: likeId,
+          postUid: post.postData.postUid,
+        };
+        dispatch({ type: DELETE_LIKE, payload: deletedLikeObject });
+      });
+
+      //  UPDATE COMMENTS
+      let commentDifference =
+        post.postData.comments.length -
+        postsInfo[post.postData.postUid].comments.length;
+      let currentNumComments = postsInfo[post.postData.postUid].comments.length;
+
+      for (
+        let index = currentNumComments;
+        index < currentNumComments + commentDifference;
+        index++
+      ) {
+        const commentData = post.postData.comments[index];
+        const payload = {
+          commentData: {
+            user_id: commentData.user_id,
+            content: commentData.content,
+          },
+          postUid: post.postData.postUid,
+        };
+
+        dispatch({ type: ADD_COMMENT, payload: payload });
+      }
+    }
+  });
+
+  if (homeDifference.length > 0) {
+    console.log("home update0", homeDifference);
+  }
+  if (exploreDifference.length > 0) {
+    console.log("explore update0", exploreDifference);
+  }
+
+  console.log(res.data);
+  // console.log("userdata", res.data.userData)
+
+  // ...user,
+  // userPostsUids,
+  // postDataArray,
+  // userExplorePostsUids,
+  // explorePostArray,
+  // userHomePostsUids,
+  // homePostArray,
+  // userData,
+  // userUids,
+  // userPostResult
 };
