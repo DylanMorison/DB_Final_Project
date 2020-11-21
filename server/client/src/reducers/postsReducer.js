@@ -89,7 +89,8 @@ export default function (state = initialState, action) {
 			};
 			case CLEAR_POSTS:
 				return {
-					...state = undefined
+					...state = undefined,
+					
 				};
 		default:
 			return state;
