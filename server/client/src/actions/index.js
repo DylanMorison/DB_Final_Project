@@ -22,6 +22,7 @@ import {
   CLEAR_POSTS,
   CLEAR_HOME,
   CLEAR_USERS,
+  DESTROY_SESSION
 } from "./types";
 
 export const getAllUsers = () => async (dispatch) => {
@@ -92,6 +93,7 @@ export const logOut = () => async (dispatch) => {
   dispatch({ type: CLEAR_POSTS });
   dispatch({ type: CLEAR_HOME });
   dispatch({ type: CLEAR_USERS });
+  dispatch({type: DESTROY_SESSION})
 };
 
 export const signInUser = (username, password) => async (dispatch) => {
