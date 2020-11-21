@@ -3,7 +3,7 @@ import { render } from "react-dom";
 import { ThemeProvider } from "styled-components";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import reducers from "./reducers";
+import rootReducer from "./reducers";
 import reduxThunk from "redux-thunk";
 import logger from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -25,7 +25,7 @@ const persistConfig = {
   stateReconciler: autoMergeLevel2,
 }
 
-const persistedReducer = persistReducer(persistConfig, reducers)
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 
 const store = createStore(
