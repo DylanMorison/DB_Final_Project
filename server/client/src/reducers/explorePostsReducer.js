@@ -1,4 +1,4 @@
-import { ADD_EXPLORE_POST, CLEAR_EXPLORE } from "../actions/types";
+import { ADD_EXPLORE_POST, CLEAR_EXPLORE , DELETE_EXPLORE_POST} from "../actions/types";
 
 const initialState = {
   allPostUids: [],
@@ -11,6 +11,11 @@ export default function (state = initialState, action) {
         ...state,
         allPostUids: [...state.allPostUids, action.payload.postUid],
       };
+      case DELETE_EXPLORE_POST:
+        return {
+          ...state,
+          allPostUids: [...state.allPostUids.filter(postUid => postUid != action.payload.postUid)]
+        };
       case CLEAR_EXPLORE:
         return {
           ...state = undefined
