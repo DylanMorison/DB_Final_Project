@@ -22,7 +22,9 @@ import {
   CLEAR_POSTS,
   CLEAR_HOME,
   CLEAR_USERS,
-  DESTROY_SESSION
+  DESTROY_SESSION,
+  DELETE_HOME_POST,
+  DELETE_EXPLORE_POST,
 } from "./types";
 
 export const getAllUsers = () => async (dispatch) => {
@@ -93,7 +95,7 @@ export const logOut = () => async (dispatch) => {
   dispatch({ type: CLEAR_POSTS });
   dispatch({ type: CLEAR_HOME });
   dispatch({ type: CLEAR_USERS });
-  dispatch({type: DESTROY_SESSION})
+  dispatch({ type: DESTROY_SESSION });
 };
 
 export const signInUser = (username, password) => async (dispatch) => {
@@ -290,44 +292,29 @@ export const updateData = (
   let userDifference = res.data.userUids.filter(
     (userId) => !users.includes(userId)
   );
-  let postDifference = res.data.userPostsUids.filter(
-    (postUid) => !posts.includes(postUid)
-  );
-  let homeDifference = res.data.userHomePostsUids.filter(
-    (postUid) => !home.includes(postUid)
-  );
-  let exploreDifference = res.data.userExplorePostsUids.filter(
-    (postUid) => !explore.includes(postUid)
-  );
-  console.log("res.data.userHomePostsUids", res.data.userHomePostsUids);
-  console.log("res.data.userExplorePostsUids", res.data.userExplorePostsUids);
-
   if (userDifference.length > 0) {
     console.log("user update");
 
     res.data.userData.map((user) => {
       if (!users.includes(user.userData.userUid)) {
-        console.log("check", user.userData.userUid);
-        console.log(userDifference);
+        //if user doesn't exist add to store
         dispatch({ type: CREATE_USER, payload: user });
       }
     });
   }
+  //  UPDATE ALL POSTS
   res.data.postDataArray.map((post) => {
     if (!posts.includes(post.postData.postUid)) {
-      console.log("check", post.postData.postUid);
-      console.log(res.data.userPostsUids, "res.data.userPostsUids")
-      console.log(postDifference);
+      //if post doesn't exist add to store
       dispatch({ type: ADD_POST, payload: post });
       const userPost = {
         postUid: post.postData.postUid,
         userUid: post.postData.authorUid,
       };
-      console.log("check", userPost);
 
       dispatch({ type: USER_ADD_POST, payload: userPost });
-      //here add user post into array
     } else {
+      //if posts exists udpate comments and likes
       let likeDifference = post.postData.usersLiked.filter(
         (userUid) =>
           !postsInfo[post.postData.postUid].usersLiked.includes(userUid)
@@ -335,7 +322,7 @@ export const updateData = (
       let likeDelete = postsInfo[post.postData.postUid].usersLiked.filter(
         (userUid) =>
           !post.postData.usersLiked.includes(userUid) &&
-          !likeDifference.includes(userUid) 
+          !likeDifference.includes(userUid)
       );
 
       //  UPDATE LIKES
@@ -379,24 +366,62 @@ export const updateData = (
     }
   });
 
+  //  UPDATE HOME POSTS
+  let homeDifference = res.data.userHomePostsUids.filter(
+    (postUid) => !home.includes(postUid)
+  );
+  let homeDeletes = home.filter(
+    (userUid) =>
+      !res.data.userHomePostsUids.includes(userUid) &&
+      !homeDifference.includes(userUid)
+  );
+
   if (homeDifference.length > 0) {
-    console.log("home update0", homeDifference);
+    homeDifference.map((postUid) => {
+      const homePost = {
+        postUid: postUid,
+      };
+      dispatch({ type: ADD_HOME_POSTS, payload: homePost });
+    });
   }
+  if (homeDeletes.length > 0) {
+    homeDeletes.map((postUid) => {
+      const homePost = {
+        postUid: postUid,
+      };
+      dispatch({ type: DELETE_HOME_POST, payload: homePost });
+    });
+  }
+
+  //  UPDATE EXPLORE POSTS
+  let exploreDifference = res.data.userExplorePostsUids.filter(
+    (postUid) => !explore.includes(postUid)
+  );
+  let exploreDeletes = explore.filter(
+    (userUid) =>
+      !res.data.userExplorePostsUids.includes(userUid) &&
+      !exploreDifference.includes(userUid)
+  );
+
   if (exploreDifference.length > 0) {
-    console.log("explore update0", exploreDifference);
+    console.log("exploreDifference", exploreDifference);
+    exploreDifference.map((postUid) => {
+      const explorePost = {
+        postUid: postUid,
+      };
+      dispatch({ type: ADD_EXPLORE_POST, payload: explorePost });
+    });
+  }
+  if (exploreDeletes.length > 0) {
+    console.log("exploreDeletes", exploreDeletes);
+    exploreDeletes.map((postUid) => {
+      const explorePost = {
+        postUid: postUid,
+      };
+      dispatch({ type: DELETE_EXPLORE_POST, payload: explorePost });
+    });
   }
 
   console.log(res.data);
-  // console.log("userdata", res.data.userData)
 
-  // ...user,
-  // userPostsUids,
-  // postDataArray,
-  // userExplorePostsUids,
-  // explorePostArray,
-  // userHomePostsUids,
-  // homePostArray,
-  // userData,
-  // userUids,
-  // userPostResult
 };

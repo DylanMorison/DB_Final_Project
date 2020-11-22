@@ -1,4 +1,4 @@
-import { ADD_HOME_POSTS, CLEAR_HOME } from "../actions/types";
+import { ADD_HOME_POSTS, CLEAR_HOME, DELETE_HOME_POST } from "../actions/types";
 
 const initialState = {
   allPostUids: [],
@@ -11,6 +11,11 @@ export default function (state = initialState, action) {
         ...state,
         allPostUids: [...state.allPostUids, action.payload.postUid],
       };
+      case DELETE_HOME_POST:
+        return {
+          ...state,
+          allPostUids: [...state.allPostUids.filter(postUid => postUid != action.payload.postUid)]
+        };
       case CLEAR_HOME:
         return {
           ...state = undefined
@@ -19,3 +24,4 @@ export default function (state = initialState, action) {
       return state;
   }
 }
+
