@@ -156,7 +156,7 @@ const AppLayout = (props) => {
     console.log("update data")
     const interval = setInterval(() => {
       console.log('This will run every 10 seconds!');
-      props.updateData(thisUser.username, props.users.allUserUids, props.posts.allPostUids,  props.homePosts.allPostUids, props.explorePosts.allPostUids, props.posts.postsByUids)
+      props.updateData(thisUser.username, props.users.allUserUids, props.posts.allPostUids,  props.homePosts.allPostUids, props.explorePosts.allPostUids, props.posts.postsByUids, props.users.usersByUid)
     }, 10000);
     return () => clearInterval(interval);
     //(username, users, posts, home, explore) 
