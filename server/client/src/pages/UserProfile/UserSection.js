@@ -104,7 +104,7 @@ const UserSection = (props) => {
           <UserTitle>Creator:</UserTitle>
           <UserName>{props.userData.username}</UserName>
           <Spacing/>
-          <AddButton handleFollowing={handleFollowing} following={following} />
+          {loggedInUser.userUid === thisUser.userUid ? null : <AddButton handleFollowing={handleFollowing} following={following} />}
         </UserNameWrapper>
       </UserWrapper>
     </>
