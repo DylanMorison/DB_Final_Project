@@ -177,9 +177,6 @@ module.exports = (app) => {
 					let userUids = [];
 					await Promise.all(
 						users.map(async (tempUser) => {
-							if (tempUser.user_id === user.user_id) {
-								return;
-							}
 							userUids.push(tempUser.user_id);
 							//db call here for followers, following, and posts
 							let following = [];

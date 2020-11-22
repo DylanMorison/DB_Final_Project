@@ -279,7 +279,8 @@ export const updateData = (
   posts,
   home,
   explore,
-  postsInfo
+  postsInfo,
+  userInfo
 ) => async (dispatch) => {
   // let password = "dummyPa$$word1!"
   const currentData = {
@@ -292,16 +293,89 @@ export const updateData = (
   let userDifference = res.data.userUids.filter(
     (userId) => !users.includes(userId)
   );
-  if (userDifference.length > 0) {
-    console.log("user update");
+  // if (userDifference.length > 0) {
+  console.log("user update");
 
-    res.data.userData.map((user) => {
-      if (!users.includes(user.userData.userUid)) {
-        //if user doesn't exist add to store
-        dispatch({ type: CREATE_USER, payload: user });
+  //UPDATE USERS
+  res.data.userData.map((user) => {
+    //if user doesn't exist add to store
+    if (!users.includes(user.userData.userUid)) {
+      dispatch({ type: CREATE_USER, payload: user });
+    } else {
+      //user exists, update info
+
+      //  UPDATE FOLLOWING
+      let followingDifference = user.userData.following.filter(
+        (userUid) =>
+          !userInfo[user.userData.userUid].following.includes(userUid)
+      );
+      let followingDelete = userInfo[user.userData.userUid].following.filter(
+        (userUid) =>
+          !user.userData.following.includes(userUid) &&
+          !followingDifference.includes(userUid)
+      );
+      if (followingDifference.length > 0) {
+        console.log(
+          "follwing diff",
+          user.userData.userUid,
+          followingDifference
+        );
+        followingDifference.map((follow) => {
+          const userPayload = {
+            userUid: user.userData.userUid,
+            followedUser: follow,
+          };
+          dispatch({ type: FOLLOW_USER, payload: userPayload });
+        });
       }
-    });
-  }
+      if (followingDelete.length > 0) {
+        console.log("followingDelete", user.userData.userUid, followingDelete);
+        followingDelete.map((follow) => {
+          const userPayload = {
+            userUid: user.userData.userUid,
+            followedUser: follow,
+          };
+          dispatch({ type: UNFOLLOW_USER, payload: userPayload });
+        });
+      }
+      //  UPDATE FOLLOWERS
+      let followersDifference = user.userData.followers.filter(
+        (userUid) =>
+          !userInfo[user.userData.userUid].followers.includes(userUid)
+      );
+      let followersDelete = userInfo[user.userData.userUid].followers.filter(
+        (userUid) =>
+          !user.userData.followers.includes(userUid) &&
+          !followersDifference.includes(userUid)
+      );
+      if (followersDifference.length > 0) {
+        console.log(
+          "followers diff",
+          user.userData.userUid,
+          followersDifference
+        );
+        followersDifference.map((follwer) => {
+          const followedUserPayload = {
+            userUid: user.userData.userUid,
+            newFollower: follwer,
+          };
+          dispatch({ type: ADD_FOLLOWER, payload: followedUserPayload });
+        });
+      }
+      if (followersDelete.length > 0) {
+        console.log("followersDelete", user.userData.userUid, followersDelete);
+        followersDelete.map((follwer) => {
+          const unfollowedUserPayload = {
+            userUid: user.userData.userUid,
+            unFollower: follwer,
+          };
+
+          dispatch({ type: UNADD_FOLLOWER, payload: unfollowedUserPayload });
+        });
+      }
+    }
+  });
+  // }
   //  UPDATE ALL POSTS
   res.data.postDataArray.map((post) => {
     if (!posts.includes(post.postData.postUid)) {
@@ -423,5 +497,4 @@ export const updateData = (
   }
 
   console.log(res.data);
-
 };
