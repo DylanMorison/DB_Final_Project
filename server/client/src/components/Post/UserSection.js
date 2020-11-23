@@ -53,7 +53,7 @@ const UserSection = (props) => {
           state: { auth: props.postAuthor.userUid },
         }}
       >
-        <Avatar image={defaultPic} size={60} />{" "}
+        <Avatar image={props.postAuthor.avatar} size={60} />{" "}
       </Link>
       <UserNameWrapper>
         <UserTitle>Creator:</UserTitle>

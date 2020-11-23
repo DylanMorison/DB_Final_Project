@@ -167,7 +167,7 @@ const Header = (props, { location }) => {
               to={{pathname: generatePath(Routes.USER_PROFILE, { username: props.auth.userUid }), state: {auth: props.auth.userUid}}}
             >
               <Button>
-                <Avatar image={defaultPic} size={40} />
+                <Avatar image={thisUser.avatar} size={40} />
               </Button>
             </Link>
           </UserContainer>
