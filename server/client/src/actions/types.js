@@ -22,5 +22,6 @@ export const CLEAR_POSTS = "clear_posts";
 export const CLEAR_HOME = "clear_home";
 export const CLEAR_USERS = "clear_users";
 export const CLEAR_EXPLORE = "clear_explore";
-export const DESTROY_SESSION = "destroy_session"
+export const DESTROY_SESSION = "destroy_session";
+export const UPDATE_AVATAR = "update_avatar";
 

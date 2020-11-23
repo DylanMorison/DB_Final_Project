@@ -25,6 +25,7 @@ import {
   DESTROY_SESSION,
   DELETE_HOME_POST,
   DELETE_EXPLORE_POST,
+  UPDATE_AVATAR
 } from "./types";
 
 export const getAllUsers = () => async (dispatch) => {
@@ -61,6 +62,7 @@ export const createUser = (newUserData) => async (dispatch) => {
       followers: res.data.userFollowers,
       following: res.data.userFollowing,
       posts: userPosts,
+      avatar: res.data.avatar
     },
     userUid: res.data.user_id,
   };
@@ -124,6 +126,8 @@ export const signInUser = (username, password) => async (dispatch) => {
       followers: res.data.userFollowers,
       following: res.data.userFollowing,
       posts: userPosts,
+      avatar: res.data.avatar
+
     },
     userUid: res.data.user_id,
   };
@@ -303,6 +307,15 @@ export const updateData = (
       dispatch({ type: CREATE_USER, payload: user });
     } else {
       //user exists, update info
+
+      //update profile pic
+      if (user.userData.avatar != userInfo[user.userData.userUid].avatar) {
+        const payloadObject ={
+          userUid: user.userData.userUid,
+          avatar: user.userData.avatar,
+        }
+       dispatch({ type: UPDATE_AVATAR, payload: payloadObject });
+      }
 
       //  UPDATE FOLLOWING
       let followingDifference = user.userData.following.filter(
@@ -497,4 +510,20 @@ export const updateData = (
   }
 
   console.log(res.data);
+};
+
+
+export const updateAvatar = (user_id, avatar) => async (dispatch) => {
+  const object ={
+    user_id: user_id,
+    avatar: avatar,
+  }
+
+  const res = await axios.post("/auth/avatar", object);
+  const payloadObject ={
+    userUid: res.data.user_id,
+    avatar: res.data.avatar,
+  }
+ dispatch({ type: UPDATE_AVATAR, payload: payloadObject });
+ console.log("update avatar")
 };

@@ -28,7 +28,7 @@ Now that the project is installed with dependencies, Download your preferred sol
 2. Create a table with the included DB_Creator SQL file. 
 3. Create .ENV file in the project’s root directory
 
-Env file should contain:
+Root Env file should contain:
 1. DATABASE = (name of database in phpmyadmin)
 2. DATABASE_HOST = (should be localhost if running on local machine)
 3. DATABASE_USER = (username for sql server)

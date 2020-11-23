@@ -147,11 +147,13 @@ const SignUp = (props) => {
 	};
 
 	const handleNewAccount = (email, password, displayName, fullName) => {
+		const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/dvation-5bea9.appspot.com/o/images%2Fdefault-pic.png?alt=media&token=67de752a-47b7-4ea2-8062-1d77ed6c1d47';
 		const userData = {
 			email: email,
 			username: displayName,
 			password: password,
-			fullName: fullName
+			fullName: fullName, 
+			avatar: defaultAvatar
 		};
 		props.createUser(userData);
 	};

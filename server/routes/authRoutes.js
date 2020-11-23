@@ -12,10 +12,10 @@ module.exports = (app) => {
 
 	app.post("/auth/register", async (req, res) => {
 		console.log("test");
-		const { email, password, username, fullName } = req.body;
+		const { email, password, username, fullName, avatar } = req.body;
 		try {
 			const db = dbService.getDbServiceInstance();
-			const result = await db.registerUser(email, password, username, fullName);
+			const result = await db.registerUser(email, password, username, fullName, avatar);
 
 			if (result) {
 				res.send(result);
@@ -32,7 +32,7 @@ module.exports = (app) => {
 			const userResult = await db.signIn(username);
 			// this gets a user
 			if (userResult) {
-				const { user_id, username, email, fullName } = userResult[0];
+				const { user_id, username, email, fullName, avatar } = userResult[0];
 				const userFollowersQuery = await db.getUsersFollowers(user_id);
 				const userFollowingQuery = await db.getUsersFollowing(user_id);
 				let userFollowers = [];
@@ -49,7 +49,8 @@ module.exports = (app) => {
 					email,
 					fullName,
 					userFollowers,
-					userFollowing
+					userFollowing,
+					avatar
 				};
 				const userPostResult = await db.getUserPosts(user_id);
 				const allPosts = await db.getAllPosts();
@@ -234,7 +235,8 @@ module.exports = (app) => {
 									fullName: tempUser.fullName,
 									followers: followers, //right here populate w users followers
 									following: following, //right here populate w users fololwing
-									posts: posts //right here populate w users posts
+									posts: posts, //right here populate w users posts
+									avatar: tempUser.avatar
 								},
 								userUid: tempUser.user_id
 							};
@@ -262,6 +264,22 @@ module.exports = (app) => {
 			res.status(401).send(
 				"No username match / or eror with comments, posts or likes"
 			);
+		}
+	});
+
+
+	app.post("/auth/avatar", async (req, res) => {
+		console.log("test");
+		const { user_id, avatar } = req.body;
+		try {
+			const db = dbService.getDbServiceInstance();
+			const result = await db.updateAvatar(user_id, avatar);
+
+			if (result) {
+				res.send({...result, user_id, avatar});
+			}
+		} catch (err) {
+			console.log(err);
 		}
 	});
 };
