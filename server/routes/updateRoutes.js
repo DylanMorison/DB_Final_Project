@@ -31,7 +31,8 @@ module.exports = (app) => {
 					email,
 					fullName,
 					userFollowers,
-					userFollowing
+					userFollowing, 
+					// avatar
 				};
 				const userPostResult = await db.getUserPosts(user_id);
 				const allPosts = await db.getAllPosts();
@@ -213,7 +214,8 @@ module.exports = (app) => {
 									fullName: tempUser.fullName,
 									followers: followers, //right here populate w users followers
 									following: following, //right here populate w users fololwing
-									posts: posts //right here populate w users posts
+									posts: posts, //right here populate w users posts, 
+									avatar: tempUser.avatar
 								},
 								userUid: tempUser.user_id
 							};

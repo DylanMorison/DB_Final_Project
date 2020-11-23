@@ -151,6 +151,31 @@ const AppLayout = (props) => {
   //   }
   // });
 
+  useClickOutside(sideBarRef, () => {
+    if (!isDesktop && isSideBarOpen) {
+      setIsSidebarOpen(false);
+    }
+  });
+
+  useEffect(() => {
+    setIsSidebarOpen(isDesktop);
+  }, [isDesktop]);
+
+  useEffect(() => {
+    return () => {
+      if (!isDesktop) {
+        setIsSidebarOpen(false);
+      }
+    };
+  }, [props.location.pathname, isDesktop]);
+
+  const handleSidebar = (params) => {
+    setIsSidebarOpen(!isSideBarOpen)
+    console.log("test")
+    
+  }
+  
+
   useEffect(()=>{
     
     console.log("update data")
@@ -190,7 +215,7 @@ const AppLayout = (props) => {
 
   return (
     <>
-      <Header toggleSideBar={() => setIsSidebarOpen(!isSideBarOpen)} />
+      <Header toggleSideBar={() => handleSidebar} />
       <Hero>
         <HeroImage>
           <HeroContent>

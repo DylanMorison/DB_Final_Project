@@ -57,15 +57,15 @@ class DbService {
 		}
 	}
 
-	async registerUser(email, password, username, fullName) {
+	async registerUser(email, password, username, fullName, avatar) {
 		try {
 			const insertId = await new Promise((resolve, reject) => {
 				const query =
-					"INSERT INTO users (user_id, username, email, user_password, fullName) VALUES (?,?,?,?,?); ";
+					"INSERT INTO users (user_id, username, email, user_password, fullName, avatar) VALUES (?,?,?,?,?,?); ";
 
 				connection.query(
 					query,
-					[null, username, email, password, fullName],
+					[null, username, email, password, fullName, avatar],
 					(err, result) => {
 						if (err) {
 							console.log(err.message);
@@ -76,7 +76,7 @@ class DbService {
 				);
 			});
 
-			return { insertId, username, email, fullName, password };
+			return { insertId, username, email, fullName, password , avatar};
 		} catch (err) {
 			console.log(err);
 		}
@@ -416,6 +416,28 @@ class DbService {
 			console.log(err);
 		}
 	}
+
+
+	async updateAvatar(user_id, avatar) {
+		try {
+			const response = await new Promise((resolve, reject) => {
+				const query =
+					"UPDATE users SET avatar = (?) WHERE user_id = (?);";
+				connection.query(query, [avatar, user_id], (err, results) => {
+					if (err) {
+						console.log(err.message);
+					}
+					resolve(results);
+				});
+			});
+			console.log("updateAvatar", response);
+			return response;
+		} catch (err) {
+			console.log(err);
+		}
+	}
 }
 
 module.exports = DbService;
+
+

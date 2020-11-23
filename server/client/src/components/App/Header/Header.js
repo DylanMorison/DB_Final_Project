@@ -122,7 +122,7 @@ const UserName = styled.div`
 /**
  * Header of the App when user is authenticated
  */
-const Header = (props, { location, toggleSideBar }) => {
+const Header = (props, { location }) => {
   const user = firebase.auth().currentUser;
   const thisUser = useSelector((state) => state.users.usersByUid[props.auth.userUid]);
 
@@ -171,7 +171,7 @@ const Header = (props, { location, toggleSideBar }) => {
               </Button>
             </Link>
           </UserContainer>
-          <Hamburger onClick={toggleSideBar}>
+          <Hamburger onClick={props.toggleSideBar()}>
             <MenuIcon />
           </Hamburger>
         </RightSection>

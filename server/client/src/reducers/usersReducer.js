@@ -1,4 +1,4 @@
-import { USER_ADD_POST, CREATE_USER, FOLLOW_USER, UNFOLLOW_USER, ADD_FOLLOWER, UNADD_FOLLOWER, CLEAR_USERS} from "../actions/types";
+import { USER_ADD_POST, CREATE_USER, FOLLOW_USER, UNFOLLOW_USER, ADD_FOLLOWER, UNADD_FOLLOWER, CLEAR_USERS, UPDATE_AVATAR} from "../actions/types";
 
 
 const initialState = {
@@ -97,6 +97,17 @@ export default function (state = initialState, action) {
                   },
                 },
               };
+              case UPDATE_AVATAR:
+                return {
+                  ...state,
+                  usersByUid: {
+                    ...state.usersByUid,
+                    [action.payload.userUid]: {
+                      ...state.usersByUid[action.payload.userUid],
+                      avatar:  action.payload.avatar,
+                    },
+                  },
+                };
               case CLEAR_USERS:
                 return {
                   ...state = undefined
@@ -105,6 +116,3 @@ export default function (state = initialState, action) {
       return state;
   }
 }
-
-
-
