@@ -74,7 +74,7 @@ const PeopleCard = (props) => {
           state: { auth: props.userUid },
         }}
       >
-        <Avatar size={70} />
+        <Avatar size={70} image={thisUser.avatar} />
       </Link>
       <UserName>{thisUser.username}</UserName>
       <UserBio>

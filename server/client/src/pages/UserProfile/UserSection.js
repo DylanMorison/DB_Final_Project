@@ -93,7 +93,7 @@ const Spacing = styled.div`
 `;
 
 const SpacingSmall = styled.div`
-  padding-bottom: 5px;
+  padding-bottom: 7px;
 `;
 
 const useStyles = makeStyles({
@@ -119,7 +119,7 @@ const useStyles = makeStyles({
     boxShadow: "0 3px 5px 2px rgba(8, 93, 132, .3)",
     color: "white",
     height: "25px",
-    width: "120px",
+    width: "70px",
     cursor: "pointer",
     textTransform: "none",
     "&:hover": {
@@ -229,7 +229,7 @@ const UserSection = (props) => {
     <>
       <UserWrapper>
         <AvatarWrapper>
-          <Avatar style={{ zIndex: 3 }} image={defaultPic} size={110} />
+          <Avatar style={{ zIndex: 3 }} image={props.userData.avatar} size={110} />
           <SettingsButton onClick={handleLogOut}>
             <GearIcon />
           </SettingsButton>
