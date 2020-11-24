@@ -30,6 +30,8 @@ module.exports = (app) => {
 		try {
 			const db = dbService.getDbServiceInstance();
 			const userResult = await db.signIn(username);
+			const topPostQuery = await db.getTopPost();
+			const topPost = topPostQuery[0].postUid
 			// this gets a user
 			if (userResult) {
 				const { user_id, username, email, fullName, avatar } = userResult[0];
@@ -254,7 +256,8 @@ module.exports = (app) => {
 						homePostArray,
 						userData,
 						userUids,
-						userPostResult
+						userPostResult,
+						topPost
 					});
 				} else {
 					res.send(user);

@@ -1,7 +1,10 @@
 import React from "react";
 import Avatar from "../Avatar";
 import styled from "styled-components";
-import DownloadIcon from "../../img/DownloadIcon.svg"
+import { connect, useSelector } from 'react-redux';
+import { Switch, Route, withRouter } from "react-router-dom";
+import DownloadIcon from "../icons/DownloadIcon";
+
 
 const AuthorContent = styled.div`
   display: flex;
@@ -52,18 +55,32 @@ const DownloadIconWrapper = styled.div`
 `;
 
 export const HeroModelCreator = (props) => {
+  const thisPost = useSelector(state => state.posts.postsByUids[props.topPost.topPostUid])
+  const postAuthor = useSelector(state => state.users.usersByUid[thisPost.authorUid])
+
   return (
     <AuthorContent>
       <AvatarWrapper>
-        <Avatar image={props.imageInfo} size={72} />
+        <Avatar image={postAuthor.avatar} size={72} />
       </AvatarWrapper>
       <AuthorNameWrapper>
-        <AuthorName>{props.AuthorName}</AuthorName>
-        <PostType>{props.PostType}</PostType>
+        <AuthorName>{postAuthor.username}</AuthorName>
+        <PostType>{thisPost.title}</PostType>
       </AuthorNameWrapper>
-      <DownloadIconWrapper><img src={DownloadIcon} alt="delete icon"/></DownloadIconWrapper>
+      <DownloadIconWrapper> <a href={`${thisPost.file}`} target="_blank" download><DownloadIcon /></a></DownloadIconWrapper>
     </AuthorContent>
   );
 };
 
-export default HeroModelCreator;
+
+function mapStatetoProps(state) {
+  return {
+    users: state.users,
+    posts: state.posts,
+    topPost: state.topPost,
+  };
+}
+
+export default connect(mapStatetoProps)(withRouter(HeroModelCreator));
+
+

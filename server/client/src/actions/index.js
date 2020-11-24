@@ -25,7 +25,8 @@ import {
   DESTROY_SESSION,
   DELETE_HOME_POST,
   DELETE_EXPLORE_POST,
-  UPDATE_AVATAR
+  UPDATE_AVATAR,
+  UPDATE_TOP_POST,
 } from "./types";
 
 export const getAllUsers = () => async (dispatch) => {
@@ -62,7 +63,7 @@ export const createUser = (newUserData) => async (dispatch) => {
       followers: res.data.userFollowers,
       following: res.data.userFollowing,
       posts: userPosts,
-      avatar: res.data.avatar
+      avatar: res.data.avatar,
     },
     userUid: res.data.user_id,
   };
@@ -82,6 +83,11 @@ export const createUser = (newUserData) => async (dispatch) => {
   res.data.homePostArray.map((postData) => {
     dispatch({ type: ADD_HOME_POSTS, payload: postData });
   });
+
+  const topPostPayload = {
+    postUid: res.data.topPost,
+  };
+  dispatch({type: UPDATE_TOP_POST, payload: topPostPayload})
 };
 
 export const logOut = () => async (dispatch) => {
@@ -126,8 +132,7 @@ export const signInUser = (username, password) => async (dispatch) => {
       followers: res.data.userFollowers,
       following: res.data.userFollowing,
       posts: userPosts,
-      avatar: res.data.avatar
-
+      avatar: res.data.avatar,
     },
     userUid: res.data.user_id,
   };
@@ -147,6 +152,10 @@ export const signInUser = (username, password) => async (dispatch) => {
   res.data.homePostArray.map((postData) => {
     dispatch({ type: ADD_HOME_POSTS, payload: postData });
   });
+  const topPostPayload = {
+    postUid: res.data.topPost,
+  };
+  dispatch({type: UPDATE_TOP_POST, payload: topPostPayload})
 };
 
 export const userAddPost = (thisPostData) => async (dispatch) => {
@@ -284,7 +293,8 @@ export const updateData = (
   home,
   explore,
   postsInfo,
-  userInfo
+  userInfo,
+  currentTopPost
 ) => async (dispatch) => {
   // let password = "dummyPa$$word1!"
   const currentData = {
@@ -310,11 +320,11 @@ export const updateData = (
 
       //update profile pic
       if (user.userData.avatar != userInfo[user.userData.userUid].avatar) {
-        const payloadObject ={
+        const payloadObject = {
           userUid: user.userData.userUid,
           avatar: user.userData.avatar,
-        }
-       dispatch({ type: UPDATE_AVATAR, payload: payloadObject });
+        };
+        dispatch({ type: UPDATE_AVATAR, payload: payloadObject });
       }
 
       //  UPDATE FOLLOWING
@@ -509,21 +519,29 @@ export const updateData = (
     });
   }
 
+  //res.data.topPost
+  //UPDATE_TOP_POST
+  if (res.data.topPost != currentTopPost) {
+    const postPayload = {
+      postUid: res.data.topPost,
+    };
+    dispatch({ type: UPDATE_TOP_POST, payload: postPayload });
+  }
+
   console.log(res.data);
 };
 
-
 export const updateAvatar = (user_id, avatar) => async (dispatch) => {
-  const object ={
+  const object = {
     user_id: user_id,
     avatar: avatar,
-  }
+  };
 
   const res = await axios.post("/auth/avatar", object);
-  const payloadObject ={
+  const payloadObject = {
     userUid: res.data.user_id,
     avatar: res.data.avatar,
-  }
- dispatch({ type: UPDATE_AVATAR, payload: payloadObject });
- console.log("update avatar")
+  };
+  dispatch({ type: UPDATE_AVATAR, payload: payloadObject });
+  console.log("update avatar");
 };

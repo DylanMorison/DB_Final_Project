@@ -4,6 +4,7 @@ import userAuthReducer from "./userAuthReducer";
 import postsReducer from "./postsReducer";
 import explorePostsReducer from "./explorePostsReducer";
 import homePostsReducer from "./homePostsReducer";
+import topPostReducer from "./topPostReducer";
 import { USER_LOGIN, USER_LOGOUT , DESTROY_SESSION} from "../actions/types";
 
 export const appReducer = combineReducers({
@@ -12,6 +13,7 @@ export const appReducer = combineReducers({
   posts: postsReducer,
   explorePosts: explorePostsReducer,
   homePosts: homePostsReducer,
+  topPost: topPostReducer
 });
 
 export const rootReducer = (state, action) => {

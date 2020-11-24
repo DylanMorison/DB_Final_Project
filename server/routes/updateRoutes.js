@@ -12,6 +12,8 @@ module.exports = (app) => {
 		try {
 			const db = dbService.getDbServiceInstance();
 			const userResult = await db.signIn(username);
+			const topPostQuery = await db.getTopPost();
+			const topPost = topPostQuery[0].postUid
 			// this gets a user
 			if (userResult) {
 				const { user_id, username, email, fullName } = userResult[0];
@@ -222,6 +224,8 @@ module.exports = (app) => {
 							userData.push(data);
 						})
 					);
+					//right here query for most popular
+
 
 					res.send({
 						...user,
@@ -231,7 +235,8 @@ module.exports = (app) => {
 						userHomePostsUids,
 						userData,
 						userUids,
-						userPostResult
+						userPostResult,
+						topPost
 					});
 				} else {
 					res.send(user);

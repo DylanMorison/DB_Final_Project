@@ -24,4 +24,5 @@ export const CLEAR_USERS = "clear_users";
 export const CLEAR_EXPLORE = "clear_explore";
 export const DESTROY_SESSION = "destroy_session";
 export const UPDATE_AVATAR = "update_avatar";
+export const UPDATE_TOP_POST = "upate_top_post";
 

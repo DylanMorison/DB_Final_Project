@@ -436,6 +436,24 @@ class DbService {
 			console.log(err);
 		}
 	}
+
+
+
+	async getTopPost() {
+		try {
+			const response = await new Promise((resolve, reject) => {
+				const query = "SELECT topPost.postUid FROM ( SELECT postUid, COUNT(postUid) AS likeCount FROM LIKES GROUP BY postUid ) AS topPost ORDER BY likecount DESC LIMIT 1";
+				connection.query(query, (err, results) => {
+					if (err) reject(new Error(err.message));
+					resolve(results);
+				});
+			});
+			return response;
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
 }
 
 module.exports = DbService;
