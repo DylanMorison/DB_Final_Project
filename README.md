@@ -14,6 +14,9 @@ Gives you the opportunity to find new people, and discover popular posts on the 
 Discover People: 
 Discover other 3D print designers, follow them, and use their designs!
 
+Top Posts:
+Discover the top designs across the network!
+
 
 
 ## Installation
