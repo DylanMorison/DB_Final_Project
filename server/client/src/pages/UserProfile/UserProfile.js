@@ -70,7 +70,7 @@ const UserProfile = (props) => {
         userData={thisUser}
         followers={thisUser.followers.length}
         following={thisUser.following.length}
-        posts={1}
+        posts={thisUser.posts.length}
       />
       <Spacing />
       {thisUser.posts.length > 0 ? (
