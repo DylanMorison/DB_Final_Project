@@ -13,6 +13,8 @@ require("./routes/authRoutes")(app);
 require("./routes/postRoutes")(app);
 require("./routes/followRoutes")(app);
 require("./routes/updateRoutes")(app);
+require("./routes/topPosts")(app);
+
 
 
 

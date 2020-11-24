@@ -27,14 +27,13 @@ import { connect, useSelector } from "react-redux";
 
 import Box from "@material-ui/core/Box";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import DesignOfWeek from "../../img/DesignOfWeek.png";
 import HeroModelCreator from "./HeroModelCreator";
 import HomeBackground from "../../img/HomeBackground.svg";
 
 import CreatePost from "../CreatePost/CreatePost";
 
 import styles from "./ServiceStyle.module.css";
-import { updateData } from "../../actions"
+import { updateData } from "../../actions";
 //className={styles.container}>
 
 const Root = styled.div`
@@ -67,24 +66,7 @@ const Hero = styled.div`
   }
 `;
 
-const HeroImage = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 200px;
-  background: linear-gradient(
-      30.67deg,
-      #003959 4.59%,
-      rgba(255, 255, 255, 0) 103.19%
-    ),
-    url(${DesignOfWeek});
-  border-radius: 0px 0px 18px 0px;
-  border-bottom: none;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-`;
+
 
 const HeroContent = styled.div`
   display: flex;
@@ -139,11 +121,34 @@ const AppLayout = (props) => {
   const [isSideBarOpen, setIsSidebarOpen] = useState(isDesktop);
 
   const sideBarRef = useRef("");
+  const topPostData = useSelector(state => state.posts.postsByUids[props.topPost.topPostUid])
+  const DesignOfWeek = topPostData.thumbnail
+
+  const HeroImage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(
+      30.67deg,
+      #003959 4.59%,
+      rgba(255, 255, 255, 0) 103.19%
+    ),
+    url(${DesignOfWeek});
+  border-bottom: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+`;
+
+
 
   const screenLarge = useMediaQuery("(min-width: 971px)");
   const screenSmall = useMediaQuery("(max-width: 971px)");
-  const thisUser = useSelector((state) => state.users.usersByUid[props.auth.userUid]);
-
+  const thisUser = useSelector(
+    (state) => state.users.usersByUid[props.auth.userUid]
+  );
 
   // useClickOutside(sideBarRef, () => {
   //   if (!isDesktop && isSideBarOpen) {
@@ -170,25 +175,28 @@ const AppLayout = (props) => {
   }, [props.location.pathname, isDesktop]);
 
   const handleSidebar = (params) => {
-    setIsSidebarOpen(!isSideBarOpen)
-    console.log("test")
-    
-  }
-  
+    setIsSidebarOpen(!isSideBarOpen);
+    console.log("test");
+  };
 
-  useEffect(()=>{
-    
-    console.log("update data")
+  useEffect(() => {
+    console.log("update data");
     const interval = setInterval(() => {
-      console.log('This will run every 10 seconds!');
-      props.updateData(thisUser.username, props.users.allUserUids, props.posts.allPostUids,  props.homePosts.allPostUids, props.explorePosts.allPostUids, props.posts.postsByUids, props.users.usersByUid)
+      console.log("This will run every 10 seconds!");
+      props.updateData(
+        thisUser.username,
+        props.users.allUserUids,
+        props.posts.allPostUids,
+        props.homePosts.allPostUids,
+        props.explorePosts.allPostUids,
+        props.posts.postsByUids,
+        props.users.usersByUid,
+        props.topPost.topPostUid
+      );
     }, 10000);
     return () => clearInterval(interval);
-    //(username, users, posts, home, explore) 
-
-
-})  // includes empty dependency array
-
+    //(username, users, posts, home, explore)
+  }); // includes empty dependency array
 
   const GetSidebarMarginSize = () => {
     if (screenLarge) {
@@ -244,8 +252,8 @@ const AppLayout = (props) => {
                 <Box pb={12}>
                   {" "}
                   <CreatePostWrapper>
-                <CreatePost />
-              </CreatePostWrapper>
+                    <CreatePost />
+                  </CreatePostWrapper>
                   <SideBar isOpen={isSideBarOpen} sideBarRef={sideBarRef} />
                 </Box>
                 <Box>
@@ -283,17 +291,16 @@ AppLayout.propTypes = {
   authUser: PropTypes.object.isRequired,
 };
 
-
 function mapStatetoProps(state) {
   return {
     auth: state.auth,
     homePosts: state.homePosts,
-    explorePosts: state.explorePosts, 
+    explorePosts: state.explorePosts,
     users: state.users,
-    posts: state.posts
+    posts: state.posts,
+    topPost: state.topPost,
   };
 }
 export default connect(mapStatetoProps, { updateData })(withRouter(AppLayout));
-
 
 //updateData
