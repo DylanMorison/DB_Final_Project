@@ -73,7 +73,6 @@ export const createUser = (newUserData) => async (dispatch) => {
     dispatch({ type: CREATE_USER, payload: user });
   });
 
-  dispatch({ type: USER_LOGIN, payload: userAuth });
   res.data.postDataArray.map((postData) => {
     dispatch({ type: ADD_POST, payload: postData });
   });
@@ -88,6 +87,9 @@ export const createUser = (newUserData) => async (dispatch) => {
     postUid: res.data.topPost,
   };
   dispatch({type: UPDATE_TOP_POST, payload: topPostPayload})
+
+  dispatch({ type: USER_LOGIN, payload: userAuth });
+
 };
 
 export const logOut = () => async (dispatch) => {
@@ -142,20 +144,24 @@ export const signInUser = (username, password) => async (dispatch) => {
     dispatch({ type: CREATE_USER, payload: user });
   });
 
-  dispatch({ type: USER_LOGIN, payload: userAuth });
   res.data.postDataArray.map((postData) => {
     dispatch({ type: ADD_POST, payload: postData });
   });
+
+  const topPostPayload = {
+    postUid: res.data.topPost,
+  };
+  dispatch({type: UPDATE_TOP_POST, payload: topPostPayload})
+
   res.data.explorePostArray.map((postData) => {
     dispatch({ type: ADD_EXPLORE_POST, payload: postData });
   });
   res.data.homePostArray.map((postData) => {
     dispatch({ type: ADD_HOME_POSTS, payload: postData });
   });
-  const topPostPayload = {
-    postUid: res.data.topPost,
-  };
-  dispatch({type: UPDATE_TOP_POST, payload: topPostPayload})
+
+  dispatch({ type: USER_LOGIN, payload: userAuth });
+
 };
 
 export const userAddPost = (thisPostData) => async (dispatch) => {
