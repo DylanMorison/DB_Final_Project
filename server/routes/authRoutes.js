@@ -28,12 +28,15 @@ module.exports = (app) => {
 	app.post("/auth/login", async (req, res) => {
 		const { username, password } = req.body;
 		try {
+			debugger;
 			const db = dbService.getDbServiceInstance();
 			const userResult = await db.signIn(username);
+			//set user result to null if password not equal 
 			const topPostQuery = await db.getTopPost();
 			const topPost = topPostQuery[0].postUid
+			const confirmedPassword = userResult[0].user_password
 			// this gets a user
-			if (userResult) {
+			if ((userResult) && (confirmedPassword == password)) {
 				const { user_id, username, email, fullName, avatar } = userResult[0];
 				const userFollowersQuery = await db.getUsersFollowers(user_id);
 				const userFollowingQuery = await db.getUsersFollowing(user_id);
@@ -263,9 +266,12 @@ module.exports = (app) => {
 					res.send(user);
 				}
 			}
+			else{
+				throw "incorrect passord" ;
+			}
 		} catch (err) {
-			res.status(401).send(
-				"No username match / or eror with comments, posts or likes"
+			res.status(204).send(
+				"No username match / or eror with comments, posts or likes" 
 			);
 		}
 	});
