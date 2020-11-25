@@ -5,6 +5,9 @@ node_modules/
 .idea/
 .vscode/
 
+#env
+.env
+
 # Misc
 .DS_Store
 firebase-debug.log

@@ -5,15 +5,16 @@ import 'firebase/storage';
 import defaultPic from '../img/default-pic.png';
 
 firebase.initializeApp({
-	apiKey: 'AIzaSyCw9btAZc0da-RYSItVmxbRWqdjYbIwPqw',
-	authDomain: 'dvation-5bea9.firebaseapp.com',
-	databaseURL: 'https://dvation-5bea9.firebaseio.com',
-	projectId: 'dvation-5bea9',
-	storageBucket: 'dvation-5bea9.appspot.com',
-	messagingSenderId: '831997251983',
-	appId: '1:831997251983:web:3980898e1963e9d5ccfbfa',
-	measurementId: 'G-P81PY3Q8DY'
+	apiKey: process.env.REACT_APP_API_KEY,
+	authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+	databaseURL: process.env.REACT_APP_DATABASE_URL,
+	projectId: process.env.REACT_APP_PROJECT_ID,
+	storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+	messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+	appId: process.env.REACT_APP_APP_ID,
+	measurementId: process.env.REACT_APP_MEASUREMENT_ID
 });
+
 
 export const firestore = firebase.firestore();
 export const auth = firebase.auth();
