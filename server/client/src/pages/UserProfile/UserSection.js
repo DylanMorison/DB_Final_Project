@@ -229,10 +229,16 @@ const UserSection = (props) => {
     <>
       <UserWrapper>
         <AvatarWrapper>
-          <Avatar style={{ zIndex: 3 }} image={props.userData.avatar} size={110} />
-          <SettingsButton onClick={handleLogOut}>
-            <GearIcon />
-          </SettingsButton>
+          <Avatar
+            style={{ zIndex: 3 }}
+            image={props.userData.avatar}
+            size={110}
+          />
+          {loggedInUser.userUid === thisUser.userUid ? (
+            <SettingsButton onClick={handleLogOut}>
+              <GearIcon />
+            </SettingsButton>
+          ) : null}
         </AvatarWrapper>
         <UserNameWrapper>
           <UserTitle>Creator:</UserTitle>

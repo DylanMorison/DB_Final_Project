@@ -2,7 +2,8 @@ import React from "react";
 import Avatar from "../Avatar";
 import styled from "styled-components";
 import { connect, useSelector } from 'react-redux';
-import { Switch, Route, withRouter } from "react-router-dom";
+import { withRouter, Link, generatePath } from "react-router-dom";
+import * as Routes from "routes";
 import DownloadIcon from "../icons/DownloadIcon";
 
 
@@ -61,7 +62,17 @@ export const HeroModelCreator = (props) => {
   return (
     <AuthorContent>
       <AvatarWrapper>
+      <Link
+        exact
+        to={{
+          pathname: generatePath(Routes.USER_PROFILE, {
+            username: postAuthor.userUid,
+          }),
+          state: { auth: postAuthor.userUid },
+        }}
+      >
         <Avatar image={postAuthor.avatar} size={72} />
+      </Link>
       </AvatarWrapper>
       <AuthorNameWrapper>
         <AuthorName>{postAuthor.username}</AuthorName>
