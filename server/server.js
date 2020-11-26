@@ -18,7 +18,7 @@ require("./routes/topPosts")(app);
 
 
 
-var port = 5000;
+var port = process.env.PORT;
 
 app.listen(port, () => {
 	console.log('server started on port 5000');
