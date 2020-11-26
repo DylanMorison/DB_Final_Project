@@ -21,5 +21,8 @@
     "mysql": "^2.18.1",
     "nodemon": "^2.0.6",
     "redux-devtools-extension": "^2.13.8"
+  },
+  "engines": {
+    "node": "14.8.0"
   }
 }
